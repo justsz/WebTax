@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="BrockSamson" name="webtax.MotuIntegrationTests" tests="2" time="1.264" timestamp="2011-06-20T13:30:30">
+  <properties />
+  <testcase classname="webtax.MotuIntegrationTests" name="testSaveAndLoad" time="1.222" />
+  <testcase classname="webtax.MotuIntegrationTests" name="testAddHitAndLoad" time="0.025" />
+  <system-out><![CDATA[--Output from testSaveAndLoad--
+--Output from testAddHitAndLoad--
+]]></system-out>
+  <system-err><![CDATA[--Output from testSaveAndLoad--
+--Output from testAddHitAndLoad--
+]]></system-err>
+</testsuite>
