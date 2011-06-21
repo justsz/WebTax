@@ -15,10 +15,25 @@ class BlastHit {
 	
 	static belongsTo = Motu
 	
-	def String toString() {
-		accNum
-	}
+//	def String toString() {
+//		accNum
+//	}
 
     static constraints = {
+		accNum()
+		bitscore()
+		taxID(nullable: true)
+		
+		species(nullable: true)
+		genus(nullable: true)
+		taxOrder(nullable: true) 
+		family(nullable: true)
+		taxClass(nullable: true) 
+		phylum(nullable: true)
+		
     }
+	
+	static mapping = {
+		sort bitScore: "desc"
+	}
 }

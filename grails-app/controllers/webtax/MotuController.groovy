@@ -16,22 +16,16 @@ class MotuController {
 		def f = request.getFile('myFile')
 		if(!f.empty) {
 		  f.transferTo( new File('./userUpload/input.fasta') )
-		  response.sendError(200,'Done');
-		  
-		 
+		  response.sendError(200,'Done');		 
 		  
 		  FastaParser parser = new FastaParser()
-		  parser.parse()
-		  
-		  new Motu(seqID: parser.ID, sequence: parser.sequence).save()
-		  redirect(action: "list") //If there is suddenly a problem, this might be the culprit (added later)
-		  
-		  
+		  parser.parseAndAdd()
 		}
 		else {
 		   flash.message = 'file cannot be empty'
 		   redirect(action:'uploadForm')
 		}
+		//redirect(action: "list") //redirect is still broken
 	}
 	
 	

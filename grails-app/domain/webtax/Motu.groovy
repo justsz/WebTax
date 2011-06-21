@@ -3,7 +3,7 @@ package webtax
 class Motu {
 	
 	String seqID
-	String sequence
+	String sequence //Might be a reserved name
 	
 	static hasMany = [hits: BlastHit]
 	
