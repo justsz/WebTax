@@ -34,7 +34,7 @@ class TaxIdProcessor {
 
                 // println "$myId is child of $parentId and has rank $myRank"
                 if ((count % 1000) ==0){
-                    print "processing node $count\n"
+                    //print "processing node $count\n"
                 }
                 // build new node
                 def node = new TreeNode(name : "my id is $myId", taxid : myId, rank:myRank)

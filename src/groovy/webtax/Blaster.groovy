@@ -6,7 +6,7 @@ class Blaster {
 
 	def blastDatabase = "/home/justs/workspace/WebTax/databases/silva/ssu_silva.fasta"
 	//def megablastPath = "/home/justs/Desktop/blast/megablast"
-	def megablastPath = "/usr/bin/megablast"
+	def megablastPath = "/usr/bin/megablast" //Note: works with megablast v 2.2.21. Doesn't work with v 2.4.21
 	def taxdumpPath = '/home/justs/workspace/WebTax/databases/NCBIdump'
 
 	def processors = 1
@@ -118,7 +118,7 @@ class Blaster {
 					// only add this tree node if we haven't already done so
 		
 					//println "adding info for $ancestor.taxid to database"
-					println "$ancestor.name, $ancestor.rank, $ancestor.taxid"
+					//println "$ancestor.name, $ancestor.rank, $ancestor.taxid"
 					
 					//taxid needed?
 					

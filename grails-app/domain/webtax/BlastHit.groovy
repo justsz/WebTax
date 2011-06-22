@@ -24,12 +24,12 @@ class BlastHit {
 		bitscore()
 		taxID(nullable: true)
 		
-		species(nullable: true)
-		genus(nullable: true)
-		taxOrder(nullable: true) 
-		family(nullable: true)
-		taxClass(nullable: true) 
 		phylum(nullable: true)
+		taxClass(nullable: true)
+		taxOrder(nullable: true)
+		family(nullable: true)
+		genus(nullable: true)
+		species(nullable: true)		
 		
     }
 	
