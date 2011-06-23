@@ -42,10 +42,37 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                  <label for="bitScore"><g:message code="blastHit.bitScore.label" default="Bit Score" /></label>
+                                  <label for="taxID"><g:message code="blastHit.taxID.label" default="Tax ID" /></label>
                                 </td>
-                                <td valign="top" class="value ${hasErrors(bean: blastHitInstance, field: 'bitScore', 'errors')}">
-                                    <g:textField name="bitScore" value="${fieldValue(bean: blastHitInstance, field: 'bitScore')}" />
+                                <td valign="top" class="value ${hasErrors(bean: blastHitInstance, field: 'taxID', 'errors')}">
+                                    <g:textField name="taxID" value="${fieldValue(bean: blastHitInstance, field: 'taxID')}" />
+                                </td>
+                            </tr>
+                        
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                  <label for="phylum"><g:message code="blastHit.phylum.label" default="Phylum" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: blastHitInstance, field: 'phylum', 'errors')}">
+                                    <g:textField name="phylum" value="${blastHitInstance?.phylum}" />
+                                </td>
+                            </tr>
+                        
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                  <label for="taxClass"><g:message code="blastHit.taxClass.label" default="Tax Class" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: blastHitInstance, field: 'taxClass', 'errors')}">
+                                    <g:textField name="taxClass" value="${blastHitInstance?.taxClass}" />
+                                </td>
+                            </tr>
+                        
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                  <label for="taxOrder"><g:message code="blastHit.taxOrder.label" default="Tax Order" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: blastHitInstance, field: 'taxOrder', 'errors')}">
+                                    <g:textField name="taxOrder" value="${blastHitInstance?.taxOrder}" />
                                 </td>
                             </tr>
                         
@@ -69,15 +96,6 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                  <label for="phylum"><g:message code="blastHit.phylum.label" default="Phylum" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: blastHitInstance, field: 'phylum', 'errors')}">
-                                    <g:textField name="phylum" value="${blastHitInstance?.phylum}" />
-                                </td>
-                            </tr>
-                        
-                            <tr class="prop">
-                                <td valign="top" class="name">
                                   <label for="species"><g:message code="blastHit.species.label" default="Species" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: blastHitInstance, field: 'species', 'errors')}">
@@ -87,28 +105,10 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                  <label for="taxClass"><g:message code="blastHit.taxClass.label" default="Tax Class" /></label>
+                                  <label for="bitScore"><g:message code="blastHit.bitScore.label" default="Bit Score" /></label>
                                 </td>
-                                <td valign="top" class="value ${hasErrors(bean: blastHitInstance, field: 'taxClass', 'errors')}">
-                                    <g:textField name="taxClass" value="${blastHitInstance?.taxClass}" />
-                                </td>
-                            </tr>
-                        
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                  <label for="taxID"><g:message code="blastHit.taxID.label" default="Tax ID" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: blastHitInstance, field: 'taxID', 'errors')}">
-                                    <g:textField name="taxID" value="${fieldValue(bean: blastHitInstance, field: 'taxID')}" />
-                                </td>
-                            </tr>
-                        
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                  <label for="taxOrder"><g:message code="blastHit.taxOrder.label" default="Tax Order" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: blastHitInstance, field: 'taxOrder', 'errors')}">
-                                    <g:textField name="taxOrder" value="${blastHitInstance?.taxOrder}" />
+                                <td valign="top" class="value ${hasErrors(bean: blastHitInstance, field: 'bitScore', 'errors')}">
+                                    <g:textField name="bitScore" value="${fieldValue(bean: blastHitInstance, field: 'bitScore')}" />
                                 </td>
                             </tr>
                         

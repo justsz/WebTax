@@ -1,10 +1,19 @@
 package webtax
 
+import org.springframework.context.ApplicationContext
+import org.springframework.web.context.support.WebApplicationContextUtils
+
 class MotuController {
+	
+	ApplicationContext appCtx = WebApplicationContextUtils.getWebApplicationContext(servletContext)
+	
+	
+	
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index = {
+		
         redirect(action: "list", params: params)
     }
 	
@@ -17,8 +26,15 @@ class MotuController {
 		if(!f.empty) {
 		  f.transferTo( new File('./userUpload/input.fasta') )
 		  response.sendError(200,'Done');		 
+		  //def parser = new FastaParser()
+		  def parser = appCtx.getBean("parser")
+		  //PostService postService = applicationContext.getBean("postService")
 		  
-		  FastaParser parser = new FastaParser()
+//		  InputStream is = new FileInputStream('/home/justs/Desktop/taxTreeObj');
+//		  ObjectInput oi = new ObjectInputStream(is);
+//		  TaxIdProcessor parser = oi.readObject();
+//		  oi.close();
+		  
 		  parser.parseAndAdd()
 		}
 		else {

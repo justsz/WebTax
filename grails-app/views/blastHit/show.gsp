@@ -37,9 +37,30 @@
                         </tr>
                     
                         <tr class="prop">
-                            <td valign="top" class="name"><g:message code="blastHit.bitScore.label" default="Bit Score" /></td>
+                            <td valign="top" class="name"><g:message code="blastHit.taxID.label" default="Tax ID" /></td>
                             
-                            <td valign="top" class="value">${fieldValue(bean: blastHitInstance, field: "bitScore")}</td>
+                            <td valign="top" class="value">${fieldValue(bean: blastHitInstance, field: "taxID")}</td>
+                            
+                        </tr>
+                    
+                        <tr class="prop">
+                            <td valign="top" class="name"><g:message code="blastHit.phylum.label" default="Phylum" /></td>
+                            
+                            <td valign="top" class="value">${fieldValue(bean: blastHitInstance, field: "phylum")}</td>
+                            
+                        </tr>
+                    
+                        <tr class="prop">
+                            <td valign="top" class="name"><g:message code="blastHit.taxClass.label" default="Tax Class" /></td>
+                            
+                            <td valign="top" class="value">${fieldValue(bean: blastHitInstance, field: "taxClass")}</td>
+                            
+                        </tr>
+                    
+                        <tr class="prop">
+                            <td valign="top" class="name"><g:message code="blastHit.taxOrder.label" default="Tax Order" /></td>
+                            
+                            <td valign="top" class="value">${fieldValue(bean: blastHitInstance, field: "taxOrder")}</td>
                             
                         </tr>
                     
@@ -58,13 +79,6 @@
                         </tr>
                     
                         <tr class="prop">
-                            <td valign="top" class="name"><g:message code="blastHit.phylum.label" default="Phylum" /></td>
-                            
-                            <td valign="top" class="value">${fieldValue(bean: blastHitInstance, field: "phylum")}</td>
-                            
-                        </tr>
-                    
-                        <tr class="prop">
                             <td valign="top" class="name"><g:message code="blastHit.species.label" default="Species" /></td>
                             
                             <td valign="top" class="value">${fieldValue(bean: blastHitInstance, field: "species")}</td>
@@ -72,23 +86,9 @@
                         </tr>
                     
                         <tr class="prop">
-                            <td valign="top" class="name"><g:message code="blastHit.taxClass.label" default="Tax Class" /></td>
+                            <td valign="top" class="name"><g:message code="blastHit.bitScore.label" default="Bit Score" /></td>
                             
-                            <td valign="top" class="value">${fieldValue(bean: blastHitInstance, field: "taxClass")}</td>
-                            
-                        </tr>
-                    
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="blastHit.taxID.label" default="Tax ID" /></td>
-                            
-                            <td valign="top" class="value">${fieldValue(bean: blastHitInstance, field: "taxID")}</td>
-                            
-                        </tr>
-                    
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="blastHit.taxOrder.label" default="Tax Order" /></td>
-                            
-                            <td valign="top" class="value">${fieldValue(bean: blastHitInstance, field: "taxOrder")}</td>
+                            <td valign="top" class="value">${fieldValue(bean: blastHitInstance, field: "bitScore")}</td>
                             
                         </tr>
                     

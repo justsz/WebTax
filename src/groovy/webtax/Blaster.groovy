@@ -13,6 +13,10 @@ class Blaster {
 
 	def motuID
 	def seq
+	
+	//def start = System.currentTimeMillis()	//benchmark
+	TaxIdProcessor myTreeData = new TaxIdProcessor(taxdumpPath)
+	//println System.currentTimeMillis() - start
 
 
 
@@ -33,7 +37,7 @@ class Blaster {
 		}
 
 		//call blast
-		def command = "$megablastPath -d $blastDatabase -i blastInput.fsa -a $processors -m 8 -v 1 -b 1 -H 1"
+		def command = "$megablastPath -d $blastDatabase -i blastInput.fsa -a $processors -m 8 -v 3 -b 3 -H 1"
 		Process proc = command.execute()
 		proc.waitFor()
 
@@ -44,10 +48,10 @@ class Blaster {
 			def rows = line.split(/\t/)
 			def motu = rows[0]
 			def hit = rows[1]
-			Integer score = rows[11].toFloat() //Changed from float to int. Can the score even be a float?
+			Integer score = rows[11] as Integer //Changed from float to int. Can the score even be a float?
 
 			def taxon = getTaxidForHit(hit)
-			
+
 
 			def aHit = new BlastHit(accNum: hit, bitScore: score, taxID: taxon)
 			addLineage(taxon, aHit)
@@ -90,44 +94,47 @@ class Blaster {
 
 
 	}
-	
+
 	void addLineage(Integer taxid, BlastHit hit) {		//might be problems if the databese is not accessed and only the BlastHit modified
-		TaxIdProcessor myTreeData = new TaxIdProcessor(taxdumpPath)
-		
-				println 'making node'
-				def node = myTreeData.getNodeForTaxid(taxid)
-				println 'node made'
-		
-				for (TreeNode ancestor in myTreeData.getAncestorsForNode(node)){
-					if (ancestor.rank == 'species') {
-						hit.species = ancestor.name
-					} else if (ancestor.rank == 'genus') {
-						hit.genus = ancestor.name
-					} else if (ancestor.rank == 'order') {
-						hit.taxOrder = ancestor.name
-					} else if (ancestor.rank == 'family') {
-						hit.family = ancestor.name
-					} else if (ancestor.rank == 'class') {
-						hit.taxClass = ancestor.name
-					} else if (ancestor.rank == 'phylum') {
-						hit.phylum = ancestor.name
-					} 
-					
-					
-					
-					// only add this tree node if we haven't already done so
-		
-					//println "adding info for $ancestor.taxid to database"
-					//println "$ancestor.name, $ancestor.rank, $ancestor.taxid"
-					
-					//taxid needed?
-					
-					
-					// keep a record of the taxid so we don't add it next time
-					//taxAdded.add(ancestor.taxid)
 		
 		
-				}
+
+		//println 'making node'
+
+		def node = myTreeData.getNodeForTaxid(taxid)
+		
+		//println 'node made'
+
+		for (TreeNode ancestor in myTreeData.getAncestorsForNode(node)){
+			if (ancestor.rank == 'species') {
+				hit.species = ancestor.name
+			} else if (ancestor.rank == 'genus') {
+				hit.genus = ancestor.name
+			} else if (ancestor.rank == 'order') {
+				hit.taxOrder = ancestor.name
+			} else if (ancestor.rank == 'family') {
+				hit.family = ancestor.name
+			} else if (ancestor.rank == 'class') {
+				hit.taxClass = ancestor.name
+			} else if (ancestor.rank == 'phylum') {
+				hit.phylum = ancestor.name
+			}
+
+
+
+			// only add this tree node if we haven't already done so
+
+			//println "adding info for $ancestor.taxid to database"
+			//println "$ancestor.name, $ancestor.rank, $ancestor.taxid"
+
+			//taxid needed?
+
+
+			// keep a record of the taxid so we don't add it next time
+			//taxAdded.add(ancestor.taxid)
+
+
+		}
 	}
 
 

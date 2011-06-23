@@ -2,9 +2,7 @@ package webtax
 
 import java.security.Identity;
 
-//This is a preliminary parser. It can only handle an input with one header and sequence. 
-//Some fiddling required to extend it to handling an arbitrary number of sequences.
-//(Stick in a counter that increases after each header and put parsed values into a list.)
+
 //The things in the header are parsed but not currently used for anything. Implement later when know what to do with it.
 
 

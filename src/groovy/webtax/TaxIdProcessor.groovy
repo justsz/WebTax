@@ -4,6 +4,15 @@
  */
 package webtax
 
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+
+import TreeNode;
+
+import java.util.List;
 import java.util.regex.Pattern
 /**
  *
@@ -11,8 +20,8 @@ import java.util.regex.Pattern
  */
 class TaxIdProcessor {
 
-    HashMap<Integer, TreeNode> taxid2node = [:]
-    HashMap<Integer, Integer> child2parent = [:]
+    List<TreeNode> taxid2node = []
+    List<Integer> child2parent = []
 
 
     def TaxIdProcessor(taxdumpPath){
@@ -21,23 +30,23 @@ class TaxIdProcessor {
         def nodePattern = ~/^(\d+)\t\|\t(\d+)\t\|\t(.+?)\t\|/
 
         println "reading ncbi taxonomy from $taxdumpPath"
-        def count=0
+        //def count=0
         // open the NCBI taxonomy for structure
         new File("${taxdumpPath}/nodes.dmp").eachLine{
             line ->
-            count++
+            //count++
             def matcher = (line =~ nodePattern)
             if (matcher.matches()){
-                Integer myId = matcher[0][1].toInteger()
-                Integer parentId = matcher[0][2].toInteger()
+                Integer myId = matcher[0][1] as Integer
+                Integer parentId = matcher[0][2] as Integer
                 String myRank = matcher[0][3]
 
                 // println "$myId is child of $parentId and has rank $myRank"
-                if ((count % 1000) ==0){
-                    //print "processing node $count\n"
-                }
+//                if ((count % 1000) ==0){
+//                    print "processing node $count\n"
+//                }
                 // build new node
-                def node = new TreeNode(name : "my id is $myId", taxid : myId, rank:myRank)
+                def node = new TreeNode(taxid : myId, rank:myRank)
                 // add node to lookup hash
                 taxid2node[(myId)] = node
                 // add to relationship hash
@@ -50,18 +59,26 @@ class TaxIdProcessor {
             }
         }
         // now process names file to add scientific names to nodes
+		println taxid2node.size()
+		println child2parent.size()
+		def counter = 0
         Pattern namePattern = ~/^(\d+)\t\|\t(.+)\t\|\t(.*)\t\|\t(.+)\t\|/
         new File("${taxdumpPath}/names.dmp").eachLine{
             line ->
             def nameMatcher = (line =~ namePattern)
+			counter++
 
 
             if (nameMatcher.matches() && nameMatcher[0][4].equals("scientific name") ){
-                Integer taxid = nameMatcher[0][1].toInteger()
+                Integer taxid = nameMatcher[0][1] as Integer
                 String myName = nameMatcher[0][2]
+				
+				if ((counter % 10000) ==0){
+					print "processing name $counter\n"
+				}
 
                 //println "scientific name is $name"
-                taxid2node.get(taxid).name = myName
+                taxid2node[taxid].name = myName
             }
         }
 
@@ -76,8 +93,8 @@ class TaxIdProcessor {
         while (current.taxid != 1){
             //println "adding $current.name"
             result.add(current)
-            def currentTaxid = child2parent.get(current.taxid)
-            def parent = taxid2node.get(currentTaxid)
+            def currentTaxid = child2parent[current.taxid]
+            def parent = taxid2node[currentTaxid]
             current = parent
          //   println "\tcurrent is $current.taxid"
         }
@@ -86,7 +103,7 @@ class TaxIdProcessor {
 
 
     TreeNode getNodeForTaxid(Integer taxid){
-        return this.taxid2node.get(taxid)
+        return this.taxid2node[taxid]
     }
 
 
