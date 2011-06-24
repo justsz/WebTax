@@ -8,7 +8,7 @@ import java.security.Identity;
 
 class FastaParser {
 	def userInput = new File("/home/justs/workspace/WebTax/userUpload/input.fasta")
-	def blaster = new Blaster()
+	def blaster
 
 	def headerRule = />(.*)\|([0-9]*)\|([0-9]*)\|(.*)/
 	def sequenceRule = /([CGAT]*)/
@@ -21,6 +21,10 @@ class FastaParser {
 	def sampleSite = []
 	
 	def sequence = []
+	
+	FastaParser() {
+		blaster = new Blaster()
+	}
 	
 
 	def parser = {

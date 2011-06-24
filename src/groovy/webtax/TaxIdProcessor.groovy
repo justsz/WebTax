@@ -12,6 +12,7 @@ package webtax
 
 import TreeNode;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.regex.Pattern
 /**
@@ -112,8 +113,8 @@ class TaxIdProcessor {
 // start NCBI stuff
 
 
-class TreeNode {
-    String name
-    String rank
-    Integer taxid
+class TreeNode implements Serializable{
+	String name
+	String rank
+	Integer taxid
 }

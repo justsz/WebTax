@@ -28,6 +28,7 @@ class MotuController {
 		  response.sendError(200,'Done');		 
 		  //def parser = new FastaParser()
 		  def parser = appCtx.getBean("parser")
+		  println "parser made?"
 		  //PostService postService = applicationContext.getBean("postService")
 		  
 //		  InputStream is = new FileInputStream('/home/justs/Desktop/taxTreeObj');
