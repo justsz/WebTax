@@ -12,6 +12,6 @@ class Motu {
 	}
 
     static constraints = {
-		
+		seqID(unique: true)
     }
 }

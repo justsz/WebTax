@@ -29,12 +29,6 @@ class MotuController {
 		  //def parser = new FastaParser()
 		  def parser = appCtx.getBean("parser")
 		  println "parser made?"
-		  //PostService postService = applicationContext.getBean("postService")
-		  
-//		  InputStream is = new FileInputStream('/home/justs/Desktop/taxTreeObj');
-//		  ObjectInput oi = new ObjectInputStream(is);
-//		  TaxIdProcessor parser = oi.readObject();
-//		  oi.close();
 		  
 		  parser.parseAndAdd()
 		}

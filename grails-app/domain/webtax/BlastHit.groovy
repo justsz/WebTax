@@ -21,7 +21,7 @@ class BlastHit {
 
     static constraints = {
 		accNum()
-		bitscore()
+		bitScore()
 		taxID(nullable: true)
 		
 		phylum(nullable: true)
