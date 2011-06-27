@@ -26,13 +26,13 @@ class FastaParser {
 	def void parseAndAdd() {
 		userInput.eachLine(parse)
 
-		println ID.size()
-
 		for (i in 0..<ID.size()) {
 
 			def motu = new Motu(seqID: ID[i], sequence: sequence[i])
 			if (motu.save()) {	//Check if MOTU is already in database.
 				blaster.doBlast(motu)
+			} else {
+				println "${motu.seqID} already in database."
 			}
 
 		}

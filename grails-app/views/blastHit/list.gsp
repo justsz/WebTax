@@ -26,13 +26,13 @@
                         
                             <g:sortableColumn property="accNum" title="${message(code: 'blastHit.accNum.label', default: 'Acc Num')}" />
                         
+                            <g:sortableColumn property="bitScore" title="${message(code: 'blastHit.bitScore.label', default: 'Bit Score')}" />
+                        
                             <g:sortableColumn property="taxID" title="${message(code: 'blastHit.taxID.label', default: 'Tax ID')}" />
                         
                             <g:sortableColumn property="phylum" title="${message(code: 'blastHit.phylum.label', default: 'Phylum')}" />
                         
                             <g:sortableColumn property="taxClass" title="${message(code: 'blastHit.taxClass.label', default: 'Tax Class')}" />
-                        
-                            <g:sortableColumn property="taxOrder" title="${message(code: 'blastHit.taxOrder.label', default: 'Tax Order')}" />
                         
                         </tr>
                     </thead>
@@ -44,13 +44,13 @@
                         
                             <td>${fieldValue(bean: blastHitInstance, field: "accNum")}</td>
                         
+                            <td>${fieldValue(bean: blastHitInstance, field: "bitScore")}</td>
+                        
                             <td>${fieldValue(bean: blastHitInstance, field: "taxID")}</td>
                         
                             <td>${fieldValue(bean: blastHitInstance, field: "phylum")}</td>
                         
                             <td>${fieldValue(bean: blastHitInstance, field: "taxClass")}</td>
-                        
-                            <td>${fieldValue(bean: blastHitInstance, field: "taxOrder")}</td>
                         
                         </tr>
                     </g:each>

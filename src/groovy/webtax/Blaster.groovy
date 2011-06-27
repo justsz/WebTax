@@ -1,4 +1,5 @@
 //Most of this file is a port of Martin Jones' Taxonerator.
+//
 
 package webtax
 
@@ -12,6 +13,10 @@ class Blaster {
 
 	def motuID
 	def seq
+
+	def acc2taxid = [:]
+	//def taxAdded = []
+	//def accAdded = []
 
 
 	TaxIdProcessor myTreeData = new TaxIdProcessor(taxdumpPath)
@@ -38,25 +43,50 @@ class Blaster {
 		proc.waitFor()
 
 		//process blast output
+		def acc = -1
+		def score = -1
+		def start = System.currentTimeMillis()
 		proc.in.eachLine{ line ->
 			def rows = line.split(/\t/)
-			def motu = rows[0]
-			def hit = rows[1]
-			Integer score = rows[11] as Integer //Changed from float to int. Can the score even be a float?
+			//def motu = rows[0]
+			acc = rows[1]
+			score = rows[11] as Integer //Changed from float to int. Can the score even be a float?
 
-			def taxon = getTaxidForHit(hit)
+			def taxid
+			
+			//Old blast hits are not reused. If you want them to be used, sort out actions on delete.
+			if (acc2taxid.containsKey(acc)) {
+				taxid = acc2taxid[acc]
+				//inputMotu.addToHits(BlastHit.list().find {it.accNum == acc })
+			} else {
+				taxid = getTaxidForAcc(acc)
+				acc2taxid.put(acc, taxid)
+			}
+				def hit = new BlastHit(accNum: acc, bitScore: score, taxID: taxid)
+				addLineage(taxid, hit)
+	
+				inputMotu.addToHits(hit)
 
-			def aHit = new BlastHit(accNum: hit, bitScore: score, taxID: taxon)
-			addLineage(taxon, aHit)
+			
+			
+			
 
-			Motu.get(inputMotu.id).addToHits(aHit)
+			//Motu.get(inputMotu.id).addToHits(hit)
 		}
+		
+		println (System.currentTimeMillis() - start)
 	}
 
 
-	//Not checking if the taxID has been already accessed before.
-	Integer getTaxidForHit(String acc){
+
+
+
+
+
+	Integer getTaxidForAcc(String acc){
 		String result
+
+
 		// use try catch because ncbi eutils are unreliable
 		try{
 			URL efetch = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nucleotide&id=$acc&rettype=gb".toURL()
@@ -81,25 +111,38 @@ class Blaster {
 	}
 
 
+
+
+
+
+
+
+
+
+
+
 	void addLineage(Integer taxid, BlastHit hit) {		//might be problems if the databese is not accessed and only the BlastHit modified
 		def node = myTreeData.getNodeForTaxid(taxid)
+		if (node == null){
+			println "WARNING: couldn't fine node with taxid $taxid in the NCBI taxdump"
+		} else {
 
-		for (TreeNode ancestor in myTreeData.getAncestorsForNode(node)){
-			if (ancestor.rank == 'species') {
-				hit.species = ancestor.name
-			} else if (ancestor.rank == 'genus') {
-				hit.genus = ancestor.name
-			} else if (ancestor.rank == 'order') {
-				hit.taxOrder = ancestor.name
-			} else if (ancestor.rank == 'family') {
-				hit.family = ancestor.name
-			} else if (ancestor.rank == 'class') {
-				hit.taxClass = ancestor.name
-			} else if (ancestor.rank == 'phylum') {
-				hit.phylum = ancestor.name
+			for (TreeNode ancestor in myTreeData.getAncestorsForNode(node)){
+				if (ancestor.rank == 'species') {
+					hit.species = ancestor.name
+				} else if (ancestor.rank == 'genus') {
+					hit.genus = ancestor.name
+				} else if (ancestor.rank == 'order') {
+					hit.taxOrder = ancestor.name
+				} else if (ancestor.rank == 'family') {
+					hit.family = ancestor.name
+				} else if (ancestor.rank == 'class') {
+					hit.taxClass = ancestor.name
+				} else if (ancestor.rank == 'phylum') {
+					hit.phylum = ancestor.name
+				}
+
 			}
-
-
 			// keep a record of the taxid so we don't add it next time
 			//taxAdded.add(ancestor.taxid)
 

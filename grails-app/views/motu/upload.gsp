@@ -8,6 +8,8 @@
 			<input type="file" name="myFile" />
 			<input type="submit" />
 		</g:form>
+		
+		<g:redirectMainPage/>
         
     </body>
 </html>

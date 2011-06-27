@@ -1,4 +1,5 @@
 //Most of this file is a port of Martin Jones' Taxonerator.
+//Private and final modifiers added to make the object immutable.
 
 package webtax
 
@@ -7,10 +8,10 @@ import TreeNode; //Class can be found at the end of this file.
 import java.util.List;
 import java.util.regex.Pattern
 
-class TaxIdProcessor {
+final class TaxIdProcessor {
 
-	def taxid2node = []
-	def child2parent = []
+	private final def taxid2node = []
+	private final def child2parent = []
 
 
 	//Constructor parses and builds up the taxonomy tree.
@@ -40,8 +41,8 @@ class TaxIdProcessor {
 		}
 
 		// now process names file to add scientific names to nodes
-		println taxid2node.size()
-		println child2parent.size()
+		
+		
 		def counter = 0
 		Pattern namePattern = ~/^(\d+)\t\|\t(.+)\t\|\t(.*)\t\|\t(.+)\t\|/
 		new File("${taxdumpPath}/names.dmp").eachLine{
@@ -87,8 +88,8 @@ class TaxIdProcessor {
 // start NCBI stuff
 
 
-class TreeNode implements Serializable{
-	String name
-	String rank
-	Integer taxid
+final class TreeNode{
+	private String name
+	private String rank
+	private Integer taxid
 }

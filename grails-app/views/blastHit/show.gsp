@@ -37,6 +37,13 @@
                         </tr>
                     
                         <tr class="prop">
+                            <td valign="top" class="name"><g:message code="blastHit.bitScore.label" default="Bit Score" /></td>
+                            
+                            <td valign="top" class="value">${fieldValue(bean: blastHitInstance, field: "bitScore")}</td>
+                            
+                        </tr>
+                    
+                        <tr class="prop">
                             <td valign="top" class="name"><g:message code="blastHit.taxID.label" default="Tax ID" /></td>
                             
                             <td valign="top" class="value">${fieldValue(bean: blastHitInstance, field: "taxID")}</td>
@@ -82,13 +89,6 @@
                             <td valign="top" class="name"><g:message code="blastHit.species.label" default="Species" /></td>
                             
                             <td valign="top" class="value">${fieldValue(bean: blastHitInstance, field: "species")}</td>
-                            
-                        </tr>
-                    
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="blastHit.bitScore.label" default="Bit Score" /></td>
-                            
-                            <td valign="top" class="value">${fieldValue(bean: blastHitInstance, field: "bitScore")}</td>
                             
                         </tr>
                     

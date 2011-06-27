@@ -33,19 +33,19 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                  <label for="hits"><g:message code="motu.hits.label" default="Hits" /></label>
+                                  <label for="seqID"><g:message code="motu.seqID.label" default="Seq ID" /></label>
                                 </td>
-                                <td valign="top" class="value ${hasErrors(bean: motuInstance, field: 'hits', 'errors')}">
-                                    <g:select name="hits" from="${webtax.BlastHit.list()}" multiple="yes" optionKey="id" size="5" value="${motuInstance?.hits*.id}" />
+                                <td valign="top" class="value ${hasErrors(bean: motuInstance, field: 'seqID', 'errors')}">
+                                    <g:textField name="seqID" value="${motuInstance?.seqID}" />
                                 </td>
                             </tr>
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                  <label for="seqID"><g:message code="motu.seqID.label" default="Seq ID" /></label>
+                                  <label for="hits"><g:message code="motu.hits.label" default="Hits" /></label>
                                 </td>
-                                <td valign="top" class="value ${hasErrors(bean: motuInstance, field: 'seqID', 'errors')}">
-                                    <g:textField name="seqID" value="${motuInstance?.seqID}" />
+                                <td valign="top" class="value ${hasErrors(bean: motuInstance, field: 'hits', 'errors')}">
+                                    <g:select name="hits" from="${webtax.BlastHit.list()}" multiple="yes" optionKey="id" size="5" value="${motuInstance?.hits*.id}" />
                                 </td>
                             </tr>
                         

@@ -30,6 +30,13 @@
                         </tr>
                     
                         <tr class="prop">
+                            <td valign="top" class="name"><g:message code="motu.seqID.label" default="Seq ID" /></td>
+                            
+                            <td valign="top" class="value">${fieldValue(bean: motuInstance, field: "seqID")}</td>
+                            
+                        </tr>
+                    
+                        <tr class="prop">
                             <td valign="top" class="name"><g:message code="motu.hits.label" default="Hits" /></td>
                             
                             <td valign="top" style="text-align: left;" class="value">
@@ -39,13 +46,6 @@
                                 </g:each>
                                 </ul>
                             </td>
-                            
-                        </tr>
-                    
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="motu.seqID.label" default="Seq ID" /></td>
-                            
-                            <td valign="top" class="value">${fieldValue(bean: motuInstance, field: "seqID")}</td>
                             
                         </tr>
                     

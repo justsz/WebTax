@@ -39,6 +39,15 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
+                                    <label for="bitScore"><g:message code="blastHit.bitScore.label" default="Bit Score" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: blastHitInstance, field: 'bitScore', 'errors')}">
+                                    <g:textField name="bitScore" value="${fieldValue(bean: blastHitInstance, field: 'bitScore')}" />
+                                </td>
+                            </tr>
+                        
+                            <tr class="prop">
+                                <td valign="top" class="name">
                                     <label for="taxID"><g:message code="blastHit.taxID.label" default="Tax ID" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: blastHitInstance, field: 'taxID', 'errors')}">
@@ -97,15 +106,6 @@
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: blastHitInstance, field: 'species', 'errors')}">
                                     <g:textField name="species" value="${blastHitInstance?.species}" />
-                                </td>
-                            </tr>
-                        
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                    <label for="bitScore"><g:message code="blastHit.bitScore.label" default="Bit Score" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: blastHitInstance, field: 'bitScore', 'errors')}">
-                                    <g:textField name="bitScore" value="${fieldValue(bean: blastHitInstance, field: 'bitScore')}" />
                                 </td>
                             </tr>
                         
