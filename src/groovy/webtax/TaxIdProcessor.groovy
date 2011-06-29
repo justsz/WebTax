@@ -9,13 +9,14 @@ import java.util.List;
 import java.util.regex.Pattern
 
 final class TaxIdProcessor {
+	private final def taxdumpPath = '/home/justs/workspace/WebTax/databases/NCBIdump'
 
-	private final def taxid2node = []
-	private final def child2parent = []
+	 private final def taxid2node = []
+	 private final def child2parent = []
 
 
 	//Constructor parses and builds up the taxonomy tree.
-	def TaxIdProcessor(taxdumpPath){
+	def TaxIdProcessor() {
 		def nodePattern = ~/^(\d+)\t\|\t(\d+)\t\|\t(.+?)\t\|/
 
 		println "reading ncbi taxonomy from $taxdumpPath"

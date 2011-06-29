@@ -40,7 +40,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         </property>
    </bean>
 
-	<bean id="parser" class="webtax.FastaParser"> </bean>
+	
 
     	
 </beans>

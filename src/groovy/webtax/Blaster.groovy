@@ -4,6 +4,10 @@
 package webtax
 
 class Blaster {
+	
+	Blaster() {
+		myTreeData = new TaxIdProcessor()
+	}
 
 	def blastDatabase = "/home/justs/workspace/WebTax/databases/silva/ssu_silva.fasta"
 	def megablastPath = "/usr/bin/megablast" //Note: works with megablast v 2.2.21. Doesn't work with v 2.4.21
@@ -19,9 +23,10 @@ class Blaster {
 	//def accAdded = []
 
 
-	TaxIdProcessor myTreeData = new TaxIdProcessor(taxdumpPath)
+	def myTreeData
 
 	def void doBlast(Motu inputMotu) {
+		//def start = System.currentTimeMillis()
 		// write a single sequence to the blast input file
 		motuID = inputMotu.seqID
 		seq = inputMotu.sequence
@@ -38,14 +43,19 @@ class Blaster {
 		}
 
 		//call blast
+		//def blastStart = System.currentTimeMillis()
 		def command = "$megablastPath -d $blastDatabase -i blastInput.fsa -a $processors -m 8 -v 10 -b 10 -H 1"
 		Process proc = command.execute()
 		proc.waitFor()
+		//println "Blast time: ${System.currentTimeMillis() - blastStart}"
+		
+		//proc.in.eachLine {println it}
 
 		//process blast output
 		def acc = -1
 		def score = -1
-		def start = System.currentTimeMillis()
+		//def hits = []
+		
 		proc.in.eachLine{ line ->
 			def rows = line.split(/\t/)
 			//def motu = rows[0]
@@ -56,25 +66,27 @@ class Blaster {
 			
 			//Old blast hits are not reused. If you want them to be used, sort out actions on delete.
 			if (acc2taxid.containsKey(acc)) {
+				//println "already have $acc"
 				taxid = acc2taxid[acc]
-				//inputMotu.addToHits(BlastHit.list().find {it.accNum == acc })
+				inputMotu.addToHits(BlastHit.list().find {it.accNum == acc })
 			} else {
 				taxid = getTaxidForAcc(acc)
+				//println "taxid = $taxid"
 				acc2taxid.put(acc, taxid)
-			}
-				def hit = new BlastHit(accNum: acc, bitScore: score, taxID: taxid)
+			
+				def hit = new BlastHit(accNum: acc, bitScore: score, taxID: taxid).save()
 				addLineage(taxid, hit)
-	
+				
+				//hits.add(hit)
+				
 				inputMotu.addToHits(hit)
-
-			
-			
-			
-
+			}
 			//Motu.get(inputMotu.id).addToHits(hit)
 		}
 		
-		println (System.currentTimeMillis() - start)
+		
+		
+		//println (System.currentTimeMillis() - start)
 	}
 
 

@@ -1,12 +1,17 @@
 package webtax
 
+//import org.hibernate.SessionFactory;
 import org.springframework.context.ApplicationContext
 import org.springframework.web.context.support.WebApplicationContextUtils
 
 class MotuController {
-	def parser 
+	//def parser
+	def inputParserService
+	
+	//SessionFactory sessionFactory
+	
 
-	ApplicationContext appCtx = WebApplicationContextUtils.getWebApplicationContext(servletContext)
+	//ApplicationContext appCtx = WebApplicationContextUtils.getWebApplicationContext(servletContext)
 
 
 
@@ -23,13 +28,21 @@ class MotuController {
 	//Necessary html is stuck into create.gsp in an ugly fashion
 	//not sure what happens if user uploads a random file
 	def upload = {
+		//if (sessionFactory.getCurrentSession() != null)
+		//println "Controller sessionFactory is ok."
+		
+		
+		def start = System.currentTimeMillis()
 		def f = request.getFile('myFile')
 		if(!f.empty) {
 			f.transferTo( new File('./userUpload/input.fasta') )
 			//response.sendError(200,'Done');
-			parser = appCtx.getBean("parser")
-
-			parser.parseAndAdd()
+			
+			//parser = appCtx.getBean("parser")
+			//parser.parseAndAdd()
+			
+			
+			inputParserService.parseAndAdd()
 			redirect(action:'list')
 
 
@@ -37,10 +50,10 @@ class MotuController {
 		else {
 			flash.message = 'file cannot be empty'
 
-			redirect(action:'uploadForm')	//Problem?
+			redirect(action:'uploadForm')
 		}
-
-		//redirect(action: "list") //redirect is still broken
+		println "Time to add file: ${(System.currentTimeMillis() - start)/1000}"
+		
 	}
 
 
