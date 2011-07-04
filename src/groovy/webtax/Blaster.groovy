@@ -4,19 +4,21 @@
 package webtax
 
 class Blaster {
-	
+
 	Blaster() {
 		myTreeData = new TaxIdProcessor()
 	}
 
-	def blastDatabase = "/home/justs/workspace/WebTax/databases/silva/ssu_silva.fasta"
-	def megablastPath = "/usr/bin/megablast" //Note: works with megablast v 2.2.21. Doesn't work with v 2.4.21
+	def blastDatabase = "/home/justs/workspace/WebTax/databases/silvaSmall/ssu_small.fasta"
+	def megablastPath = "/usr/bin/megablast" //Note: works with megablast v 2.2.21. Doesn't work with v 2.4.21 (Probably fault of my installation.)
 	def taxdumpPath = '/home/justs/workspace/WebTax/databases/NCBIdump'
 
 	def processors = 1 //Give user option to choose number of cores later on.
 
 	def motuID
 	def seq
+	BlastHit foundHit
+	
 
 	def acc2taxid = [:]
 	//def taxAdded = []
@@ -48,44 +50,60 @@ class Blaster {
 		Process proc = command.execute()
 		proc.waitFor()
 		//println "Blast time: ${System.currentTimeMillis() - blastStart}"
-		
+
 		//proc.in.eachLine {println it}
 
 		//process blast output
 		def acc = -1
 		def score = -1
 		//def hits = []
-		
+
 		proc.in.eachLine{ line ->
 			def rows = line.split(/\t/)
 			//def motu = rows[0]
 			acc = rows[1]
-			score = rows[11] as Integer //Changed from float to int. Can the score even be a float?
+			score = rows[11] as Double
 
 			def taxid
-			
-			//Old blast hits are not reused. If you want them to be used, sort out actions on delete.
+
+
+			//Find taxid
 			if (acc2taxid.containsKey(acc)) {
-				//println "already have $acc"
 				taxid = acc2taxid[acc]
-				inputMotu.addToHits(BlastHit.list().find {it.accNum == acc })
+				
+//				if (!(inputMotu.addToHits(BlastHit.list().find { it.accNum == acc }))) {
+//					def hit = new BlastHit(accNum: acc, bitScore: score, taxID: taxid).save()
+//					addLineage(taxid, hit)
+//					inputMotu.addToHits(hit)
+//				}
 			} else {
 				taxid = getTaxidForAcc(acc)
-				//println "taxid = $taxid"
 				acc2taxid.put(acc, taxid)
+				
+//				def hit = new BlastHit(accNum: acc, bitScore: score, taxID: taxid).save()
+//				addLineage(taxid, hit)
+//				inputMotu.addToHits(hit)
+			}
 			
+			//Add appropriate hit
+				//returns null if hit is not in database
+			//println foundHit
+			foundHit = BlastHit.list().find { it.accNum == acc }
+			if (!foundHit) {
+				//println "blaa"
 				def hit = new BlastHit(accNum: acc, bitScore: score, taxID: taxid).save()
 				addLineage(taxid, hit)
-				
-				//hits.add(hit)
-				
 				inputMotu.addToHits(hit)
+			} else {
+				inputMotu.addToHits(foundHit)
 			}
-			//Motu.get(inputMotu.id).addToHits(hit)
+
+
+			
 		}
-		
-		
-		
+
+
+
 		//println (System.currentTimeMillis() - start)
 	}
 
