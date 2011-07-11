@@ -9,10 +9,10 @@ import java.util.List;
 import java.util.regex.Pattern
 
 final class TaxIdProcessor {
-	private final def taxdumpPath = '/home/justs/workspace/WebTax/databases/NCBIdump'
+	private final def taxdumpPath = "./databases/NCBIdump"
 
-	 private final def taxid2node = []
-	 private final def child2parent = []
+	private final def taxid2node = []
+	private final def child2parent = []
 
 
 	//Constructor parses and builds up the taxonomy tree.
@@ -42,8 +42,8 @@ final class TaxIdProcessor {
 		}
 
 		// now process names file to add scientific names to nodes
-		
-		
+
+
 		def counter = 0
 		Pattern namePattern = ~/^(\d+)\t\|\t(.+)\t\|\t(.*)\t\|\t(.+)\t\|/
 		new File("${taxdumpPath}/names.dmp").eachLine{
@@ -68,6 +68,7 @@ final class TaxIdProcessor {
 	List<TreeNode> getAncestorsForNode(TreeNode n){
 		List<TreeNode> result = []
 		TreeNode current = n
+
 		while (current.taxid != 1){
 
 			result.add(current)
@@ -75,6 +76,7 @@ final class TaxIdProcessor {
 			def parent = taxid2node[currentTaxid]
 			current = parent
 		}
+
 		return result
 	}
 

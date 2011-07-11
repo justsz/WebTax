@@ -11,7 +11,7 @@ class InputParserService {
 
 
 
-	def userInput = new File("/home/justs/workspace/WebTax/userUpload/input.fasta")
+	def userInput = new File("/Users/markb/Desktop/Justs\' folder/workspace2/WebTax/userUpload/input.fasta")
 	def blaster
 	def sessionFactory
 
@@ -30,7 +30,7 @@ class InputParserService {
 	def progress
 
 
-	def void parseAndAdd(String ident) {
+	def void parseAndAdd(Long ident) {
 
 		def job = Job.get(ident)
 		
@@ -54,9 +54,8 @@ class InputParserService {
 
 
 			if (batch.size() > 50) {
-				batchCount++
-				progress = batchCount * 10000 / ID.size()	//Progress in percents
-				job.progress = progress
+				
+				
 
 				//Motu.withTransaction {	//No rollback needed
 				def batchAddStart = System.currentTimeMillis()
@@ -68,6 +67,8 @@ class InputParserService {
 					}
 				}
 				//100 motus with 10 blasts each
+				
+				
 
 
 				batch.clear()
@@ -77,6 +78,11 @@ class InputParserService {
 				sessionFactory.getCurrentSession().flush()	//Save all
 				sessionFactory.getCurrentSession().clear()	//Clear all
 				//println "transaction count after flush: ${sessionFactory.getStatistics().getEntityInsertCount()}"
+				
+				batchCount++
+				progress = batchCount * 5000 / ID.size()	//Progress in percents
+				job.progress = progress
+				job.save(flush:true)
 
 			}
 
@@ -98,6 +104,7 @@ class InputParserService {
 		
 		println "Done."
 		job.progress = 100
+		job.save()
 		runnedOnce = true
 	}
 

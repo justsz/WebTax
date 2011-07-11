@@ -43,9 +43,9 @@ class MotuController {
 			
 			def job = new Job(progress: 0).save(flush:true)
 			
-//			runAsync {
-//				inputParserService.parseAndAdd(job.id)
-//			}
+			runAsync {
+				inputParserService.parseAndAdd(job.id)
+			}
 			
 			redirect(action:'status', params:[jobId:job.id])
 
@@ -55,22 +55,24 @@ class MotuController {
 
 			redirect(action:'list')
 		}
-		println "Time to add file: ${(System.currentTimeMillis() - start)/1000}"
+		//println "Time to add file: ${(System.currentTimeMillis() - start)/1000}"
 		
 	}
 
 
 	def status = {
-		def job = Job.get(params.jobId)
+		//def job = Job.get(params.jobId)
 		
-		runAsync {
-			println "currJob: ${job.progress}"
-			println Job.get(1).progress
-			inputParserService.parseAndAdd(params.jobId)
-		}
+		//runAsync {
+			//println "currJob: ${job.progress}"
+			//println Job.get(1).progress
+			//Run.withTransaction {
+			//inputParserService.parseAndAdd(params.jobId)
+			//}
+		//}
 		
-		render (view:'status', model:[currJob:job])
-		
+		//render (view:'status', model:[currJob:job])
+		return [jobId:params.jobId]
 		
 		
 
@@ -78,9 +80,9 @@ class MotuController {
 		//		while (job.progress != 100) {
 		//			[prog: job.progress]
 		//		}
-		if (Job.get(params.jobId).progress == 100) {
-			redirect(controller: 'motu', action: 'list')
-		}
+//		if (Job.get(params.jobId).progress == 100) {
+//			redirect(controller: 'motu', action: 'list')
+//		}
 	}
 	
 	

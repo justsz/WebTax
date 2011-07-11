@@ -2,6 +2,9 @@
 
 <%@ page import="webtax.Motu" %>
 <html>
+	<head>
+		<meta name="layout" content="main" />
+	</head>
     <body>
         Upload Form: <br />
         
