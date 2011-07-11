@@ -27,11 +27,13 @@ class InputParserService {
 	//def memberCount =[]
 	//def sampleSite = []
 	def sequence
+	def progress
 
 
-	def void parseAndAdd() {
+	def void parseAndAdd(String ident) {
 
-
+		def job = Job.get(ident)
+		
 		ID = []
 		cutoff = []
 		sequence = []
@@ -39,7 +41,7 @@ class InputParserService {
 		def start = System.currentTimeMillis()
 		userInput.eachLine(parse)
 		println "${ID.size()} MOTUs will be added."
-		def progress = 0
+		progress = 0
 		def batchCount = 0
 
 		//println "transaction count at at first call of parseAndAdd: ${sessionFactory.getStatistics().getEntityInsertCount()}"
@@ -51,9 +53,10 @@ class InputParserService {
 			batch.add(motu)
 
 
-			if (batch.size() > 30) {
+			if (batch.size() > 50) {
 				batchCount++
 				progress = batchCount * 10000 / ID.size()	//Progress in percents
+				job.progress = progress
 
 				//Motu.withTransaction {	//No rollback needed
 				def batchAddStart = System.currentTimeMillis()
@@ -94,6 +97,7 @@ class InputParserService {
 		//BlastHit.list().each { if (it.motus.size() == 0) {it.delete()} }		
 		
 		println "Done."
+		job.progress = 100
 		runnedOnce = true
 	}
 

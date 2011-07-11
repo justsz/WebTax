@@ -88,7 +88,7 @@ class Blaster {
 			//Add appropriate hit
 				//returns null if hit is not in database
 			//println foundHit
-			foundHit = BlastHit.list().find { it.accNum == acc }
+			foundHit = BlastHit.findByAccNum(acc)
 			if (!foundHit) {
 				//println "blaa"
 				def hit = new BlastHit(accNum: acc, bitScore: score, taxID: taxid).save()

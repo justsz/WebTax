@@ -23,7 +23,7 @@ class BlastHit {
 //	}
 
     static constraints = {
-		//accNum(unique: true)
+		accNum(unique: true)
 		bitScore()
 		taxID(nullable: true)
 		
