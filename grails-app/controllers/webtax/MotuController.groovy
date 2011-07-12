@@ -7,14 +7,6 @@ import org.springframework.web.context.support.WebApplicationContextUtils
 class MotuController {
 	
 	def inputParserService
-	
-	
-	
-
-	//ApplicationContext appCtx = WebApplicationContextUtils.getWebApplicationContext(servletContext)
-
-
-
 
 	static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
@@ -30,17 +22,9 @@ class MotuController {
 	def upload = {
 		
 		
-		def start = System.currentTimeMillis()
 		def f = request.getFile('myFile')
 		if(!f.empty) {
-			f.transferTo( new File('./userUpload/input.fasta') )
-			//response.sendError(200,'Done');
-			
-			//parser = appCtx.getBean("parser")
-			//parser.parseAndAdd()
-			
-			
-			
+			f.transferTo( new File('./userUpload/input.fasta') )			
 			def job = new Job(progress: 0).save(flush:true)
 			
 			runAsync {
@@ -55,51 +39,28 @@ class MotuController {
 
 			redirect(action:'list')
 		}
-		//println "Time to add file: ${(System.currentTimeMillis() - start)/1000}"
+		
 		
 	}
 
 
 	def status = {
-		//def job = Job.get(params.jobId)
-		
-		//runAsync {
-			//println "currJob: ${job.progress}"
-			//println Job.get(1).progress
-			//Run.withTransaction {
-			//inputParserService.parseAndAdd(params.jobId)
-			//}
-		//}
-		
-		//render (view:'status', model:[currJob:job])
 		return [jobId:params.jobId]
+	}
+	
+	def search = {
+	}
+	
+	def results = {
+		def motus = Motu.findAllBySiteAndCutoff(params.site, params.cutoff)
 		
-		
-
-
-		//		while (job.progress != 100) {
-		//			[prog: job.progress]
-		//		}
-//		if (Job.get(params.jobId).progress == 100) {
-//			redirect(controller: 'motu', action: 'list')
-//		}
+		render (view:'list', model:[motuInstanceList: motus, motuInstanceTotal: motus.count()])
 	}
 	
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+		
 	
 	
 

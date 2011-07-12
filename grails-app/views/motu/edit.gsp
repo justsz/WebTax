@@ -42,6 +42,15 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
+                                  <label for="cutoff"><g:message code="motu.cutoff.label" default="Cutoff" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: motuInstance, field: 'cutoff', 'errors')}">
+                                    <g:textField name="cutoff" value="${motuInstance?.cutoff}" />
+                                </td>
+                            </tr>
+                        
+                            <tr class="prop">
+                                <td valign="top" class="name">
                                   <label for="hits"><g:message code="motu.hits.label" default="Hits" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: motuInstance, field: 'hits', 'errors')}">
@@ -55,6 +64,15 @@
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: motuInstance, field: 'sequence', 'errors')}">
                                     <g:textField name="sequence" value="${motuInstance?.sequence}" />
+                                </td>
+                            </tr>
+                        
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                  <label for="site"><g:message code="motu.site.label" default="Site" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: motuInstance, field: 'site', 'errors')}">
+                                    <g:textField name="site" value="${motuInstance?.site}" />
                                 </td>
                             </tr>
                         

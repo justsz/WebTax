@@ -21,14 +21,11 @@ class Blaster {
 	
 
 	def acc2taxid = [:]
-	//def taxAdded = []
-	//def accAdded = []
 
 
 	def myTreeData
 
 	def void doBlast(Motu inputMotu) {
-		//def start = System.currentTimeMillis()
 		// write a single sequence to the blast input file
 		motuID = inputMotu.seqID
 		seq = inputMotu.sequence
@@ -45,13 +42,10 @@ class Blaster {
 		}
 
 		//call blast
-		//def blastStart = System.currentTimeMillis()
+		
 		def command = "$megablastPath -d $blastDatabase -i blastInput.fsa -a $processors -m 8 -v 10 -b 10 -H 1"
 		Process proc = command.execute()
 		proc.waitFor()
-		//println "Blast time: ${System.currentTimeMillis() - blastStart}"
-
-		//proc.in.eachLine {println it}
 
 		//process blast output
 		def acc = -1
@@ -60,7 +54,6 @@ class Blaster {
 
 		proc.in.eachLine{ line ->
 			def rows = line.split(/\t/)
-			//def motu = rows[0]
 			acc = rows[1]
 			score = rows[11] as Double
 
@@ -173,8 +166,6 @@ class Blaster {
 				}
 
 			}
-			// keep a record of the taxid so we don't add it next time
-			//taxAdded.add(ancestor.taxid)
 
 
 		}

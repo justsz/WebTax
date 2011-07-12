@@ -37,6 +37,13 @@
                         </tr>
                     
                         <tr class="prop">
+                            <td valign="top" class="name"><g:message code="motu.cutoff.label" default="Cutoff" /></td>
+                            
+                            <td valign="top" class="value">${fieldValue(bean: motuInstance, field: "cutoff")}</td>
+                            
+                        </tr>
+                    
+                        <tr class="prop">
                             <td valign="top" class="name"><g:message code="motu.hits.label" default="Hits" /></td>
                             
                             <td valign="top" style="text-align: left;" class="value">
@@ -53,6 +60,13 @@
                             <td valign="top" class="name"><g:message code="motu.sequence.label" default="Sequence" /></td>
                             
                             <td valign="top" class="value">${fieldValue(bean: motuInstance, field: "sequence")}</td>
+                            
+                        </tr>
+                    
+                        <tr class="prop">
+                            <td valign="top" class="name"><g:message code="motu.site.label" default="Site" /></td>
+                            
+                            <td valign="top" class="value">${fieldValue(bean: motuInstance, field: "site")}</td>
                             
                         </tr>
                     

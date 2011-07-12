@@ -11,7 +11,6 @@
         <div class="nav">
             <span class="menuButton"><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></span>
             <span class="menuButton"><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></span>
-            <span class="menuButton"><g:link class="upload" action="upload"><g:message code="Upload" args="[entityName]" /></g:link></span>
         </div>
         <div class="body">
             <h1><g:message code="default.list.label" args="[entityName]" /></h1>
@@ -27,7 +26,11 @@
                         
                             <g:sortableColumn property="seqID" title="${message(code: 'motu.seqID.label', default: 'Seq ID')}" />
                         
-                            <g:sortableColumn property="sequence" title="${message(code: 'motu.sequence.label', default: 'Sequence')}" />
+                            <g:sortableColumn property="cutoff" title="${message(code: 'motu.cutoff.label', default: 'Cutoff')}" />
+                        
+<%--                            <g:sortableColumn property="sequence" title="${message(code: 'motu.sequence.label', default: 'Sequence')}" />--%>
+                        
+                            <g:sortableColumn property="site" title="${message(code: 'motu.site.label', default: 'Site')}" />
                         
                         </tr>
                     </thead>
@@ -39,7 +42,11 @@
                         
                             <td>${fieldValue(bean: motuInstance, field: "seqID")}</td>
                         
-                            <td>${fieldValue(bean: motuInstance, field: "sequence")}</td>
+                            <td>${fieldValue(bean: motuInstance, field: "cutoff")}</td>
+                        
+<%--                            <td>${fieldValue(bean: motuInstance, field: "sequence")}</td>--%>
+                        
+                            <td>${fieldValue(bean: motuInstance, field: "site")}</td>
                         
                         </tr>
                     </g:each>
@@ -48,6 +55,7 @@
             </div>
             <div class="paginateButtons">
                 <g:paginate total="${motuInstanceTotal}" />
+<%--                <g:paginate max =10 action="results" total="${motuInstanceTotal}" />--%>
             </div>
         </div>
     </body>
