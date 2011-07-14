@@ -36,7 +36,5 @@ class BlastHit {
 		
     }
 	
-	static mapping = {
-		sort bitScore: "desc"
-	}
+	
 }

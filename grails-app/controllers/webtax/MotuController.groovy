@@ -5,8 +5,9 @@ import org.springframework.context.ApplicationContext
 import org.springframework.web.context.support.WebApplicationContextUtils
 
 class MotuController {
-	
+
 	def inputParserService
+	
 
 	static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
@@ -16,21 +17,20 @@ class MotuController {
 	}
 
 
-	//Handles a file upload
-	//Necessary html is stuck into create.gsp in an ugly fashion
+	
 	//not sure what happens if user uploads a random file
 	def upload = {
-		
-		
+
+
 		def f = request.getFile('myFile')
 		if(!f.empty) {
-			f.transferTo( new File('./userUpload/input.fasta') )			
+			f.transferTo( new File('./userUpload/input.fasta') )
 			def job = new Job(progress: 0).save(flush:true)
-			
+
 			runAsync {
 				inputParserService.parseAndAdd(job.id)
 			}
-			
+
 			redirect(action:'status', params:[jobId:job.id])
 
 
@@ -39,34 +39,86 @@ class MotuController {
 
 			redirect(action:'list')
 		}
-		
-		
+
+
 	}
+	
+	def represent = {
+		def reps = [:]
+		def type = "family"
+		def cutoff = "0"
+		def site = "creer1"
+		
+		//def accessor = new BlastHit().properties.find {it.key == type}
+		//println accessor.getClass()
+		
+		def motus = Motu.findAllBySiteAndCutoff(site, cutoff)
+		def hits = motus.collect {it.hits.max {it.bitScore}}
+		
+		for (h in hits) {
+			if (h) {
+				if (reps.containsKey(h[type])) {
+					reps[h[type]]++
+				} else {
+					reps.put(h[type], 1)
+				}
+			}
+		}
+		reps = reps.sort {a, b -> b.value <=> a.value}
+		return [reps: reps, type: type]
+	}
+	 
 
 
 	def status = {
 		return [jobId:params.jobId]
 	}
-	
+
 	def search = {
 	}
-	
+
 	def results = {
 		def motus = Motu.findAllBySiteAndCutoff(params.site, params.cutoff)
-		
-		render (view:'list', model:[motuInstanceList: motus, motuInstanceTotal: motus.count()])
+		return [motuInstanceList: motus, motuInstanceTotal: motus.count()]
 	}
-	
-	
-	
-	
-		
-	
-	
+
+	def showTable = {
+		def motuInstance = Motu.get(params.id)
+		if (!motuInstance) {
+			flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'motu.label', default: 'Motu'), params.id])}"
+
+			redirect(action: "list")
+		}
+		else {
+
+
+			if (!params.max) params.max = 10
+			if (!params.offset) params.offset = 0
+			if (!params.sort) params.sort = "bitScore"
+			if (!params.order) params.order = "desc"
+
+			def hitS = BlastHit.withCriteria {
+				maxResults(params.max?.toInteger())
+				firstResult(params.offset?.toInteger())
+				'in'("id", motuInstance.hits*.id)
+
+				order(params.sort, params.order)
+			}
+			[motuInstance: motuInstance, hits: hitS]
+		}
+	}
+
+
+
+
+
+
+
 
 	def list = {
 		params.max = Math.min(params.max ? params.int('max') : 10, 100)
-		[motuInstanceList: Motu.list(params), motuInstanceTotal: Motu.count()]
+		return [motuInstanceList: Motu.list(params), motuInstanceTotal: Motu.count()]
+		
 	}
 
 	def create = {

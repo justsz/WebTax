@@ -1,10 +1,10 @@
 
-<%@ page import="webtax.Motu" %>
+<%@ page import="webtax.Job" %>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="layout" content="main" />
-        <g:set var="entityName" value="${message(code: 'motu.label', default: 'Motu')}" />
+        <g:set var="entityName" value="${message(code: 'job.label', default: 'Job')}" />
         <title><g:message code="default.show.label" args="[entityName]" /></title>
     </head>
     <body>
@@ -23,39 +23,16 @@
                     <tbody>
                     
                         <tr class="prop">
-                            <td valign="top" class="name"><g:message code="motu.id.label" default="Id" /></td>
+                            <td valign="top" class="name"><g:message code="job.id.label" default="Id" /></td>
                             
-                            <td valign="top" class="value">${fieldValue(bean: motuInstance, field: "id")}</td>
-                            
-                        </tr>
-                    
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="motu.seqID.label" default="Seq ID" /></td>
-                            
-                            <td valign="top" class="value">${fieldValue(bean: motuInstance, field: "seqID")}</td>
+                            <td valign="top" class="value">${fieldValue(bean: jobInstance, field: "id")}</td>
                             
                         </tr>
                     
                         <tr class="prop">
-                            <td valign="top" class="name"><g:message code="motu.cutoff.label" default="Cutoff" /></td>
+                            <td valign="top" class="name"><g:message code="job.progress.label" default="Progress" /></td>
                             
-                            <td valign="top" class="value">${fieldValue(bean: motuInstance, field: "cutoff")}</td>
-                            
-                        </tr>
-                    
-                        
-                    
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="motu.sequence.label" default="Sequence" /></td>
-                            
-                            <td valign="top" class="value">${fieldValue(bean: motuInstance, field: "sequence")}</td>
-                            
-                        </tr>
-                    
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="motu.site.label" default="Site" /></td>
-                            
-                            <td valign="top" class="value">${fieldValue(bean: motuInstance, field: "site")}</td>
+                            <td valign="top" class="value">${fieldValue(bean: jobInstance, field: "progress")}</td>
                             
                         </tr>
                     
@@ -64,7 +41,7 @@
             </div>
             <div class="buttons">
                 <g:form>
-                    <g:hiddenField name="id" value="${motuInstance?.id}" />
+                    <g:hiddenField name="id" value="${jobInstance?.id}" />
                     <span class="button"><g:actionSubmit class="edit" action="edit" value="${message(code: 'default.button.edit.label', default: 'Edit')}" /></span>
                     <span class="button"><g:actionSubmit class="delete" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" /></span>
                 </g:form>
