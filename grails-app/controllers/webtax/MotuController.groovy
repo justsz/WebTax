@@ -7,7 +7,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils
 class MotuController {
 
 	def inputParserService
-	
+
 
 	static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
@@ -17,57 +17,80 @@ class MotuController {
 	}
 
 
-	
-	//not sure what happens if user uploads a random file
+
+
 	def upload = {
 
+		withForm {
+			def f = request.getFile('myFile')
+			if(!f.empty) {
+				f.transferTo( new File('./userUpload/input.fasta') )
+				def job = new Job(progress: 0).save(flush:true)
 
-		def f = request.getFile('myFile')
-		if(!f.empty) {
-			f.transferTo( new File('./userUpload/input.fasta') )
-			def job = new Job(progress: 0).save(flush:true)
+				runAsync {
+					inputParserService.parseAndAdd(job.id)
+				}
 
-			runAsync {
-				inputParserService.parseAndAdd(job.id)
+				redirect(action:'status', params:[jobId:job.id])
+
+
+			} else {
+				flash.message = 'file cannot be empty'
+
+				redirect(action:'list')
 			}
-
-			redirect(action:'status', params:[jobId:job.id])
-
-
-		} else {
-			flash.message = 'file cannot be empty'
-
-			redirect(action:'list')
 		}
 
 
 	}
+
+	def repForm = {
+	}
 	
+	
+
 	def represent = {
-		def reps = [:]
-		def type = "family"
-		def cutoff = "0"
-		def site = "creer1"
+		def reps = []
+		def data = []
+		def type = params.type
+		def cutoff = params.cutoff
+		def sites = params.sites.split(",")
 		
-		//def accessor = new BlastHit().properties.find {it.key == type}
-		//println accessor.getClass()
+		for (i in 0..<sites.size()) {
+			sites[i] = sites[i].trim()
+		}
 		
+		def counter = 0
+		
+		for (site in sites) {
+		reps[counter] = [:]
+		data[counter] = []
 		def motus = Motu.findAllBySiteAndCutoff(site, cutoff)
 		def hits = motus.collect {it.hits.max {it.bitScore}}
 		
+
 		for (h in hits) {
 			if (h) {
-				if (reps.containsKey(h[type])) {
-					reps[h[type]]++
+				if (reps[counter].containsKey(h[type])) {
+					reps[counter][h[type]]++
 				} else {
-					reps.put(h[type], 1)
+					reps[counter].put(h[type], 1)
 				}
 			}
 		}
-		reps = reps.sort {a, b -> b.value <=> a.value}
-		return [reps: reps, type: type]
+		reps[counter] = reps[counter].sort {a, b -> b.value <=> a.value}
+
+		
+		reps[counter].each {key, value ->
+			def entry = [key, value]
+			data[counter].add(entry)
+		}
+		counter++
+		}
+
+		return [reps: reps, type: type, data: data, sites:sites, chart: params.chart]
 	}
-	 
+
 
 
 	def status = {
@@ -78,6 +101,7 @@ class MotuController {
 	}
 
 	def results = {
+		//Add some default values in case user doesn't want to give a value.
 		def motus = Motu.findAllBySiteAndCutoff(params.site, params.cutoff)
 		return [motuInstanceList: motus, motuInstanceTotal: motus.count()]
 	}
@@ -118,7 +142,7 @@ class MotuController {
 	def list = {
 		params.max = Math.min(params.max ? params.int('max') : 10, 100)
 		return [motuInstanceList: Motu.list(params), motuInstanceTotal: Motu.count()]
-		
+
 	}
 
 	def create = {

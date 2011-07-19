@@ -17,7 +17,5 @@ class Motu {
 		seqID(unique: true)
     }
 	
-//	static mapping = {
-//		hits sort: 'bitScore'
-//	}
+
 }

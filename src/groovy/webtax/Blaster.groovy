@@ -9,11 +9,11 @@ class Blaster {
 		myTreeData = new TaxIdProcessor()
 	}
 
-	def blastDatabase = "./databases/silvaSmall/ssu_small.fasta"
+	def blastDatabase = "./databases/silva/ssu_silva.fasta"
 	def megablastPath = "./blast/bin/megablast" //Note: works with megablast v 2.2.21. Doesn't work with v 2.4.21 (Probably fault of my installation.)
 	def taxdumpPath = "./databases/NCBIdump"
 
-	def processors = 1 //Give user option to choose number of cores later on.
+	def processors = 2 //Give user option to choose number of cores later on.
 
 	def motuID
 	def seq

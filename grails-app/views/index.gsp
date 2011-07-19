@@ -1,4 +1,4 @@
-${response.sendRedirect("motu/create")}
+${response.sendRedirect("motu/list")}
 
 <%--<html>--%>
 <%--    <head>--%>

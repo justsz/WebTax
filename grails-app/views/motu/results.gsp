@@ -8,6 +8,14 @@
         <title><g:message code="default.list.label" args="[entityName]" /></title>
     </head>
     <body>
+    	<div class="nav">
+            <span class="menuButton"><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></span>
+            <span class="menuButton"><g:link class="create" action="create"><g:message code="Add MOTUs" args="[entityName]" /></g:link></span>
+            <span class="menuButton"><g:link class="search" action="search"><g:message code="Search"/></g:link></span>
+            <span class="menuButton"><g:link class="represent" action="repForm"><g:message code="Represent"/></g:link></span>
+        </div>
+    
+    
         <div class="nav">
             <span class="menuButton"><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></span>
             <span class="menuButton"><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></span>
@@ -54,8 +62,7 @@
                 </table>
             </div>
             <div class="paginateButtons">
-                <g:paginate total="${motuInstanceTotal}" />
-<%--                <g:paginate max =10 action="results" total="${motuInstanceTotal}" />--%>
+             <g:paginate max =10 action="results" total="${motuInstanceTotal}" />
             </div>
         </div>
     </body>

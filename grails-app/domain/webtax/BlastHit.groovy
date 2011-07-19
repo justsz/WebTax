@@ -13,14 +13,7 @@ class BlastHit {
 	String taxClass //namespace issue with using the word 'class'
 	String phylum 
 	
-	//static belongsTo = Motu
-	//static hasMany = [motus: Motu]
-	//static belongsTo = [Motu]
-	//static belongsTo = [motus: Motu]
-	
-//	def String toString() {
-//		accNum
-//	}
+
 
     static constraints = {
 		accNum(unique: true)

@@ -43,7 +43,18 @@
                             
                         </tr>
                     
-                        
+                        <tr class="prop">
+                            <td valign="top" class="name"><g:message code="motu.hits.label" default="Hits" /></td>
+                            
+                            <td valign="top" style="text-align: left;" class="value">
+                                <ul>
+                                <g:each in="${motuInstance.hits}" var="h">
+                                    <li><g:link controller="blastHit" action="show" id="${h.id}">${h?.encodeAsHTML()}</g:link></li>
+                                </g:each>
+                                </ul>
+                            </td>
+                            
+                        </tr>
                     
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="motu.sequence.label" default="Sequence" /></td>

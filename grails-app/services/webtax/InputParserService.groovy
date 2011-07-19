@@ -53,7 +53,7 @@ class InputParserService {
 		for (i in 0..<ID.size()) {
 			
 
-			def motu = new Motu(seqID: "MOTU${ID[i]}bp${cutoff[i]}", cutoff: cutoff[i], site: sites[i], sequence: sequence[i])	
+			def motu = new Motu(seqID: "MOTU${ID[i]}bp${cutoff[i]}${sites[i]}", cutoff: cutoff[i], site: sites[i], sequence: sequence[i])	
 			batch.add(motu)
 
 
@@ -67,7 +67,7 @@ class InputParserService {
 					if (m.save()) {	//Check if MOTU is already in database.
 						blaster.doBlast(m)
 					} else {
-						println "${m.seqID} already in database."
+						//println "${m.seqID} already in database."
 					}
 				}
 				
