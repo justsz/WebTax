@@ -9,7 +9,7 @@ class Blaster {
 		myTreeData = new TaxIdProcessor()
 	}
 
-	def blastDatabase = "./databases/silva/ssu_silva.fasta"
+	def blastDatabase = "./databases/silvaSmall/ssu_small.fasta"
 	def megablastPath = "./blast/bin/megablast" //Note: works with megablast v 2.2.21. Doesn't work with v 2.4.21 (Probably fault of my installation.)
 	def taxdumpPath = "./databases/NCBIdump"
 

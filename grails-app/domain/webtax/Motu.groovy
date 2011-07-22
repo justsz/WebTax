@@ -8,6 +8,7 @@ class Motu {
 	String site
 	
 	static hasMany = [hits: BlastHit]
+	//static belongsTo = [dataset: Dataset]
 	
 	def String toString() {
 		"MOTU$seqID"

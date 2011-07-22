@@ -14,7 +14,9 @@
 		<g:else>
 			Job status: ${webtax.Job.get(jobId).progress as Integer} %
 		</g:else>
-	
+	<div id = 'linkToView'>
+	<a href ='<g:createLink absolute="true" controller="motu" action="status" params="${[jobId:jobId]}"/>'>Link to this page</a>
+	</div>
 	</body>
 
 </html>

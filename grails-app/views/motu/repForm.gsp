@@ -1,6 +1,6 @@
 <html> 
 <head> 
-    <title>Search Motus</title> 
+    <title>Find motu distribution.. something like that</title> 
     <meta name="layout" content="main"/> 
 </head> 
 <body> 
@@ -11,15 +11,27 @@
             <span class="menuButton"><g:link class="search" action="search"><g:message code="Search"/></g:link></span>
             <span class="menuButton"><g:link class="represent" action="repForm"><g:message code="Represent"/></g:link></span>
         </div>
-
+	
     <formset> 
-        <legend>Search for Motus</legend> 
-    <g:form action="results"> 
-        <label for="site">Site</label> 
-        <g:textField name="site" /> 
+        <legend>Get distributions</legend> 
+    <g:form action="represent"> 
+        <label for="sites">Sites</label> 
+        <g:textField name="sites" /> 
         <br/>
+        
+        <label for="threshold">Threshold</label> 
+        <g:textField name="threshold" /> 
+        <br/>
+        
         <label for="cutoff">Cutoff</label> 
         <g:textField name="cutoff" /> 
+        <br/>
+        
+        <label for="type">Taxonomic type</label>
+        <g:select name="type" " from="${['species', 'genus', 'taxOrder', 'family', 'taxClass', 'phylum']}" />
+        
+        <label for="chart">Chart type</label>
+        <g:select name="chart"  from="${['Pie chart', 'Bar chart', 'Column chart']}" />
         
         <g:submitButton name="search" value="Search"/> 
     </g:form> 

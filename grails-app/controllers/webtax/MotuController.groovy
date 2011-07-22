@@ -20,15 +20,23 @@ class MotuController {
 
 
 	def upload = {
+		def datasetName = params.datasetName
+		def dataset = new Dataset(name: datasetName).save(flush: true)
+		
+		
 
 		withForm {
+			
+			
 			def f = request.getFile('myFile')
 			if(!f.empty) {
+				
 				f.transferTo( new File('./userUpload/input.fasta') )
+				
 				def job = new Job(progress: 0).save(flush:true)
 
 				runAsync {
-					inputParserService.parseAndAdd(job.id)
+					inputParserService.parseAndAdd(job.id, datasetName)
 				}
 
 				redirect(action:'status', params:[jobId:job.id])
@@ -47,11 +55,19 @@ class MotuController {
 	def repForm = {
 	}
 	
+	def printable = {
+		//println params.datum
+		//params.datum.each { println it  }
+		//println params.datum
+		return [datum: params.datum as Integer, site: params.site, chartType: params.chartType]
+	}
+	
 	
 
 	def represent = {
 		def reps = []
 		def data = []
+		def totalHits = []
 		def type = params.type
 		def cutoff = params.cutoff
 		def sites = params.sites.split(",")
@@ -79,16 +95,25 @@ class MotuController {
 			}
 		}
 		reps[counter] = reps[counter].sort {a, b -> b.value <=> a.value}
-
+		totalHits[counter] = 0
+		reps[counter].each {key, value -> totalHits[counter] += value}
+		//println totalHits[counter]
+		def others = ['others', 0]
 		
-		reps[counter].each {key, value ->
-			def entry = [key, value]
-			data[counter].add(entry)
+		reps[counter].each {key, value -> 
+			if ((value / totalHits[counter]) > ((params.threshold as Integer) / 100)) {	//Don't draw chart sections for motus that represent less than threshold% of the total motu count
+				def entry = [key, value]			
+				data[counter].add(entry)
+			} else {
+				others[1] += value
+			}
 		}
+		data[counter].add(others)
 		counter++
 		}
+		session.data = data
 
-		return [reps: reps, type: type, data: data, sites:sites, chart: params.chart]
+		return [reps: reps, type: type, data: data, sites:sites, chart: params.chart, params: params]
 	}
 
 
@@ -146,9 +171,6 @@ class MotuController {
 	}
 
 	def create = {
-		def motuInstance = new Motu()
-		motuInstance.properties = params
-		return [motuInstance: motuInstance]
 	}
 
 	def save = {

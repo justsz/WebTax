@@ -13,12 +13,20 @@
         </div>
 
 	<div class ="upload">
+		
 		<g:form action="upload" useToken="true" method="post" enctype="multipart/form-data">
+			<label for="datasetName">Dataset name</label> 
+       		<g:textField name="datasetName" /> 
+        	<br/>
+			
 			<input type="file" name="myFile" />
 			<input type="submit" />
+			
 		</g:form>
+		
 	</div>
 		
+
 	</body>
 		
 </html>

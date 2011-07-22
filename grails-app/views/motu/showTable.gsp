@@ -92,5 +92,7 @@
                 </g:form>
             </div>
         </div>
+        <viewLink:thisView/>
     </body>
+    
 </html>

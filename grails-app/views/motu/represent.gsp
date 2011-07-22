@@ -45,9 +45,12 @@
         		
         	</g:each>
         </table>
-        <g:each in="${data}" status="i" var="datum">
+        
+        
+	</div>
+	<g:each in="${data}" status="i" var="datum">
         	<g:if test="${chart == 'Pie chart'}">
-			<gvisualization:pieCoreChart elementId="chart${i}" title="${sites[i]}" width="${450}" height="${300}"  
+			<gvisualization:pieCoreChart elementId="chart${i}" title="${sites[i]}" width="${600}" height="${600}"  
  			columns="${[['string', 'taxonomicType'], ['number', 'count']]}" data="${datum}" />
  			</g:if>
  			<g:if test="${chart == 'Bar chart'}">
@@ -58,16 +61,16 @@
 			<gvisualization:columnCoreChart elementId="chart${i}" title="${sites[i]}" width="${1000}" height="${500}" 
  			columns="${[['string', 'taxonomicType'], ['number', 'count']]}" data="${datum}" />
  			</g:if>
-       		<div style="float: left" id="chart${i}"></div>
-       		<br/>
+       		<div  id="chart${i}"></div>
        		
-       		<g:remoteLink action="list">Print ${sites[i]}</g:remoteLink>
-        </g:each>
-        
-	</div>
 
+       		<g:remoteLink action="printable" params="${[datum: i, chartType: chart, site:sites[i]]}">Print ${sites[i]}</g:remoteLink>
+        </g:each>
 	
-	
+<%--	<viewLink:thisView/>--%>
+	<div id = 'linkToView'>
+	<a href ='<g:createLink absolute="true" controller="motu" action="represent" params="${[sites:params.sites, threshold:params.threshold, cutoff:params.cutoff, type:params.type, chart:params.chart]}"/>'>Link to this page</a>
+	</div>
 	</body>
 
 
