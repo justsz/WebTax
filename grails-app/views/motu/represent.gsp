@@ -69,7 +69,7 @@
 	
 <%--	<viewLink:thisView/>--%>
 	<div id = 'linkToView'>
-	<a href ='<g:createLink absolute="true" controller="motu" action="represent" params="${[sites:params.sites, threshold:params.threshold, cutoff:params.cutoff, type:params.type, chart:params.chart]}"/>'>Link to this page</a>
+	<a href ='<g:createLink absolute="true" controller="motu" action="represent" params="${[sites:params.sites, threshold:params.threshold, cutoff:params.cutoff, type:params.type, chart:params.chart, keyPhrase:params.keyPhrase]}"/>'>Link to this page</a>
 	</div>
 	</body>
 

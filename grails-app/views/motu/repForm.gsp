@@ -23,6 +23,10 @@
         <g:textField name="threshold" /> 
         <br/>
         
+        <label for="keyPhrase">Filter by phrase</label> 
+        <g:textField name="keyPhrase" /> 
+        <br/>
+        
         <label for="cutoff">Cutoff</label> 
         <g:textField name="cutoff" /> 
         <br/>

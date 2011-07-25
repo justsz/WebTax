@@ -22,17 +22,17 @@ class MotuController {
 	def upload = {
 		def datasetName = params.datasetName
 		def dataset = new Dataset(name: datasetName).save(flush: true)
-		
-		
+
+
 
 		withForm {
-			
-			
+
+
 			def f = request.getFile('myFile')
 			if(!f.empty) {
-				
+
 				f.transferTo( new File('./userUpload/input.fasta') )
-				
+
 				def job = new Job(progress: 0).save(flush:true)
 
 				runAsync {
@@ -54,62 +54,67 @@ class MotuController {
 
 	def repForm = {
 	}
-	
+
 	def printable = {
 		//println params.datum
 		//params.datum.each { println it  }
 		//println params.datum
 		return [datum: params.datum as Integer, site: params.site, chartType: params.chartType]
 	}
-	
-	
+
+
 
 	def represent = {
+		def properties = ['species', 'genus', 'taxOrder', 'family', 'taxClass', 'phylum']
 		def reps = []
 		def data = []
 		def totalHits = []
 		def type = params.type
 		def cutoff = params.cutoff
 		def sites = params.sites.split(",")
-		
+
 		for (i in 0..<sites.size()) {
 			sites[i] = sites[i].trim()
 		}
-		
-		def counter = 0
-		
-		for (site in sites) {
-		reps[counter] = [:]
-		data[counter] = []
-		def motus = Motu.findAllBySiteAndCutoff(site, cutoff)
-		def hits = motus.collect {it.hits.max {it.bitScore}}
-		
 
-		for (h in hits) {
-			if (h) {
-				if (reps[counter].containsKey(h[type])) {
-					reps[counter][h[type]]++
-				} else {
-					reps[counter].put(h[type], 1)
+		def counter = 0
+
+		for (site in sites) {
+			reps[counter] = [:]
+			data[counter] = []
+			def motus = Motu.findAllBySiteAndCutoff(site, cutoff)
+			def hits = motus.collect {it.hits.max {it.bitScore}}
+
+			for (h in hits) {
+				if (h) {
+					for (prop in properties) {
+						if (h[prop] =~ ".*${params.keyPhrase}.*") {
+							if (reps[counter].containsKey(h[type])) {
+								reps[counter][h[type]]++
+							} else {
+								reps[counter].put(h[type], 1)
+							}
+							break
+						}
+					}
 				}
 			}
-		}
-		reps[counter] = reps[counter].sort {a, b -> b.value <=> a.value}
-		totalHits[counter] = 0
-		reps[counter].each {key, value -> totalHits[counter] += value}
-		//println totalHits[counter]
-		def others = ['others', 0]
-		
-		reps[counter].each {key, value -> 
-			if ((value / totalHits[counter]) > ((params.threshold as Integer) / 100)) {	//Don't draw chart sections for motus that represent less than threshold% of the total motu count
-				def entry = [key, value]			
-				data[counter].add(entry)
-			} else {
-				others[1] += value
+			reps[counter] = reps[counter].sort {a, b -> b.value <=> a.value}
+			totalHits[counter] = 0
+			reps[counter].each {key, value -> totalHits[counter] += value}
+			//println totalHits[counter]
+			def others = ['others', 0]
+
+			reps[counter].each {key, value ->
+				if ((value / totalHits[counter]) > ((params.threshold as Integer) / 100)) {	//Clump together under "others" chart sections for motus that represent less than threshold% of the total motu count
+					def entry = [key, value]
+					data[counter].add(entry)
+				} else {
+					others[1] += value
+				}
 			}
-		}
-		data[counter].add(others)
-		counter++
+			data[counter].add(others)
+			counter++
 		}
 		session.data = data
 
