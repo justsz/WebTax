@@ -170,6 +170,20 @@ class MotuController {
 	    //response.getOutputStream() << new ByteArrayInputStream( out )
 		response.outputStream << file.newInputStream()
 	}
+	
+	def downloadListView = {
+		def file = csvService.makeListViewCSV(params.dataset)
+		response.setContentType( "application-xdownload")
+		response.setHeader("Content-Disposition", "attachment; filename=${params.dataset}.csv")
+		response.outputStream << file.newInputStream()
+	}
+	
+	def downloadRepresentView = {
+		def file = csvService.makeRepresentViewCSV(params.data, params.sites, params.type)
+		response.setContentType( "application-xdownload")
+		response.setHeader("Content-Disposition", "attachment; filename=temporaryTitle.csv")
+		response.outputStream << file.newInputStream()
+	}
 
 
 

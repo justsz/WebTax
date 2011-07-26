@@ -71,6 +71,12 @@
 	<div id = 'linkToView'>
 	<a href ='<g:createLink absolute="true" controller="motu" action="represent" params="${[sites:params.sites, threshold:params.threshold, cutoff:params.cutoff, type:params.type, chart:params.chart, keyPhrase:params.keyPhrase]}"/>'>Link to this page</a>
 	</div>
+	<g:form action="downloadRepresentView">
+			<g:hiddenField name="sites" value="${sites.toString()}" />
+			<g:hiddenField name="data" value="${data}" />
+			<g:hiddenField name="type" value="${type}" />
+			<g:submitButton name="download CSV" value="Download CSV"/>
+	</g:form>
 	</body>
 
 

@@ -53,6 +53,7 @@ class InputParserService {
 		println "${ID.size()} MOTUs will be added."
 		progress = 0
 		def batchCount = 0
+		def motusForDataset = []
 
 		
 
@@ -73,11 +74,12 @@ class InputParserService {
 					
 					if (m.save()) {	//Check if MOTU is already in database.
 						blaster.doBlast(m)
-						dataset.addToMotus(m)	//currently impossible to add same data to different datasets. have to change motu's name to do that.						
+						//dataset.addToMotus(m)	//currently impossible to add same data to different datasets. have to change motu's name to do that.
+						motusForDataset.add(m)						
 					} 
 					
 				}
-				
+				//dataset.save()
 				batch.clear()				
 				sessionFactory.getCurrentSession().flush()	//Save all
 				sessionFactory.getCurrentSession().clear()	//Clear all				
@@ -96,9 +98,19 @@ class InputParserService {
 			
 			if (m.save()) {	//Check if MOTU is already in database.
 				blaster.doBlast(m)
-				dataset.addToMotus(m)	
+				//dataset.addToMotus(m)
+				motusForDataset.add(m)	
 			} 			
-		}		
+		}
+		//dataset.save()
+		motusForDataset.each {
+			//println it 
+			dataset.addToMotus(it)
+			//println "added ${it}"
+			//dataset.save(flush:true) 
+			//println "saved ${it}"
+		}
+		//dataset.save()		
 		job.progress = 100
 		job.save(flush:true)
 		runnedOnce = true

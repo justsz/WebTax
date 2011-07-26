@@ -62,5 +62,10 @@
             
         </div>
         
+        <g:form action="downloadListView">
+			<g:hiddenField name="dataset" value="beach" />
+			<g:submitButton name="download CSV" value="Download CSV"/>
+		</g:form>
+        
     </body>
 </html>
