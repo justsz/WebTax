@@ -92,7 +92,18 @@
                 </g:form>
             </div>
         </div>
+       		<g:jasperReport jasper="motus" format="XLS" name="Motus">
+				<input type="hidden" name="motu_id" value="${motuInstance.id}" />
+			</g:jasperReport>
+        
         <viewLink:thisView/>
+
+
+		<g:form action="downloadTableView">
+			<g:hiddenField name="motuInstance" value="${motuInstance}" />
+			<g:hiddenField name="hits" value="${hits}" />
+			<g:submitButton name="download CSV" value="Download CSV"/>
+		</g:form>
     </body>
     
 </html>

@@ -59,6 +59,7 @@
                 <g:paginate total="${motuInstanceTotal}" />
 <%--                <g:paginate max =10 action="results" total="${motuInstanceTotal}" />--%>
             </div>
+            
         </div>
         
     </body>

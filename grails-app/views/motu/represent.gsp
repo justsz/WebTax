@@ -64,7 +64,7 @@
        		<div  id="chart${i}"></div>
        		
 
-       		<g:remoteLink action="printable" params="${[datum: i, chartType: chart, site:sites[i]]}">Print ${sites[i]}</g:remoteLink>
+       		<g:remoteLink action="printable" params="${[datum: datum, chartType: chart, site:sites[i]]}">Print ${sites[i]}</g:remoteLink>
         </g:each>
 	
 <%--	<viewLink:thisView/>--%>

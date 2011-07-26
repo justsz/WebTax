@@ -1,8 +1,13 @@
 <html>
 	<head>
 		<meta http-equiv="refresh" content="10">
-		<meta name="layout" content="main" /> 
+		<meta name="layout" content="main" />
+		<title>
+			${webtax.Job.get(jobId).progress as Integer} %
+		</title> 
 	</head>
+	
+	
 
 	<body>
 		

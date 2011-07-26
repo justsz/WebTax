@@ -7,7 +7,8 @@ import org.springframework.web.context.support.WebApplicationContextUtils
 class MotuController {
 
 	def inputParserService
-
+	def csvService
+	def printableService
 
 	static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
@@ -57,9 +58,9 @@ class MotuController {
 
 	def printable = {
 		//println params.datum
-		//params.datum.each { println it  }
-		//println params.datum
-		return [datum: params.datum as Integer, site: params.site, chartType: params.chartType]
+		//println params.datum.getClass()
+		def data = printableService.reFormat(params.datum as String)
+		return [datum: data, site: params.site, chartType: params.chartType]
 	}
 
 
@@ -114,9 +115,9 @@ class MotuController {
 				}
 			}
 			data[counter].add(others)
+			reps[counter].put(others)
 			counter++
 		}
-		session.data = data
 
 		return [reps: reps, type: type, data: data, sites:sites, chart: params.chart, params: params]
 	}
@@ -161,9 +162,14 @@ class MotuController {
 			[motuInstance: motuInstance, hits: hitS]
 		}
 	}
-
-
-
+	
+	def downloadTableView = {		
+		def file = csvService.makeTableViewCSV(params.hits)
+		response.setContentType( "application-xdownload")
+		response.setHeader("Content-Disposition", "attachment; filename=${params.motuInstance}.csv")
+	    //response.getOutputStream() << new ByteArrayInputStream( out )
+		response.outputStream << file.newInputStream()
+	}
 
 
 
