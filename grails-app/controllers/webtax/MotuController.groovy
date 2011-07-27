@@ -172,10 +172,12 @@ class MotuController {
 	}
 	
 	def downloadListView = {
+		
 		def file = csvService.makeListViewCSV(params.dataset)
 		response.setContentType( "application-xdownload")
 		response.setHeader("Content-Disposition", "attachment; filename=${params.dataset}.csv")
 		response.outputStream << file.newInputStream()
+		
 	}
 	
 	def downloadRepresentView = {

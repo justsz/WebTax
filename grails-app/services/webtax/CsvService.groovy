@@ -31,10 +31,11 @@ class CsvService {
 		out.delete()
 		
 		def header = 'Seq ID,cutoff,site,'
-		for (i in 1..10) {
-			def blastHeader = "Acc Num$i,bitscore$i,species$i,genus$i,order$i,family$i,class$i,phylum$i"
+		for (i in 1..9) {
+			def blastHeader = "Acc Num$i,bitscore$i,species$i,genus$i,order$i,family$i,class$i,phylum$i,"
 			header += blastHeader
 		}
+		header += "Acc Num10,bitscore10,species10,genus10,order10,family10,class10,phylum10\n"
 		out.append header
 		
 		def motus = Dataset.findByName(dataset).motus
@@ -43,7 +44,8 @@ class CsvService {
 		
 		motus.each {
 			def row = [it.seqID, it.cutoff, it.site]
-			it.hits.each {
+			def hits = it.hits.sort {-it.bitScore}
+			hits.each {
 				row += [it.accNum, it.bitScore, it.species, it.genus, it.taxOrder, it.family, it.taxClass, it.phylum]
 			}
 			out.append row.join(',')
@@ -83,7 +85,7 @@ class CsvService {
 }
 
 //represent view input sample
-//[[Tardigrada environmental sample, 190], [Arthrinium sacchari, 1], [others, 0]], [[others, 0]]
+//[[[Tardigrada environmental sample, 190], [Arthrinium sacchari, 1], [others, 0]], [[others, 0]]]
 //[creer1, creer2]
 //species
 
