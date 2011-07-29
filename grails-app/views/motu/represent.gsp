@@ -68,8 +68,12 @@
         </g:each>
 	
 <%--	<viewLink:thisView/>--%>
+
+
 	<div id = 'linkToView'>
-	<a href ='<g:createLink absolute="true" controller="motu" action="represent" params="${[sites:params.sites, threshold:params.threshold, cutoff:params.cutoff, type:params.type, chart:params.chart, keyPhrase:params.keyPhrase]}"/>'>Link to this page</a>
+		Link to this page:
+		<input onclick="this.select(); pageTracker._trackEvent('new-done-click','short-click');" readonly="readonly" class="readonly" 
+		value="<g:createLink absolute="true" controller="motu" action="represent" params="${[sites:params.sites, threshold:params.threshold, cutoff:params.cutoff, type:params.type, chart:params.chart, keyPhrase:params.keyPhrase, dataset:params.dataset]}"/>"/>
 	</div>
 	<g:form action="downloadRepresentView">
 			<g:hiddenField name="sites" value="${sites.toString()}" />

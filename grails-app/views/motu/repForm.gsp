@@ -37,6 +37,8 @@
         <label for="chart">Chart type</label>
         <g:select name="chart"  from="${['Pie chart', 'Bar chart', 'Column chart']}" />
         
+        <g:hiddenField name="dataset" value="${dataset}" />
+        
         <g:submitButton name="search" value="Search"/> 
     </g:form> 
     </formset> 

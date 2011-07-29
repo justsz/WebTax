@@ -30,6 +30,8 @@ class Blaster {
 		// write a single sequence to the blast input file
 		motuID = inputMotu.seqID
 		seq = inputMotu.sequence
+		
+		 
 
 		File blastInput = new File('blastInput.fsa')
 		blastInput.delete()

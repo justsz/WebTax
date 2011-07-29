@@ -12,7 +12,7 @@
             <span class="menuButton"><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></span>
             <span class="menuButton"><g:link class="create" action="create"><g:message code="Add MOTUs" args="[entityName]" /></g:link></span>
             <span class="menuButton"><g:link class="search" action="search"><g:message code="Search"/></g:link></span>
-            <span class="menuButton"><g:link class="represent" action="repForm"><g:message code="Represent"/></g:link></span>
+            <span class="menuButton"><g:link class="represent" action="repForm" params="[dataset: dataset]"><g:message code="Represent"/></g:link></span>
         </div>
         <div class="body">
             <h1><g:message code="default.list.label" args="[entityName]" /></h1>
@@ -57,13 +57,13 @@
             </div>
             <div class="paginateButtons">
                 <g:paginate total="${motuInstanceTotal}" />
-<%--                <g:paginate max =10 action="results" total="${motuInstanceTotal}" />--%>
+<%--                <g:paginate action="results" total="${motuInstanceTotal}" />--%>
             </div>
             
         </div>
         
         <g:form action="downloadListView">
-			<g:hiddenField name="dataset" value="beach" />
+			<g:hiddenField name="dataset" value="${dataset}" />
 			<g:submitButton name="download CSV" value="Download CSV"/>
 		</g:form>
         

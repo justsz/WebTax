@@ -40,7 +40,7 @@ class MotuController {
 					inputParserService.parseAndAdd(job.id, datasetName)
 				}
 
-				redirect(action:'status', params:[jobId:job.id])
+				redirect(action:'status', params:[jobId:job.id, dataset: datasetName])
 
 
 			} else {
@@ -54,6 +54,7 @@ class MotuController {
 	}
 
 	def repForm = {
+		return [dataset: params.dataset]
 	}
 
 	def printable = {
@@ -83,8 +84,21 @@ class MotuController {
 		for (site in sites) {
 			reps[counter] = [:]
 			data[counter] = []
-			def motus = Motu.findAllBySiteAndCutoff(site, cutoff)
+			
+			def motus = Motu.withCriteria {
+				'in'("id", Dataset.findByName(params.dataset).motus*.id)
+				eq("site", site)
+				eq("cutoff", cutoff)
+			}
+			
+			
 			def hits = motus.collect {it.hits.max {it.bitScore}}
+
+			
+			
+			
+			
+			
 
 			for (h in hits) {
 				if (h) {
@@ -125,7 +139,7 @@ class MotuController {
 
 
 	def status = {
-		return [jobId:params.jobId]
+		return [jobId:params.jobId, dataset: params.dataset]
 	}
 
 	def search = {
@@ -133,8 +147,20 @@ class MotuController {
 
 	def results = {
 		//Add some default values in case user doesn't want to give a value.
-		def motus = Motu.findAllBySiteAndCutoff(params.site, params.cutoff)
-		return [motuInstanceList: motus, motuInstanceTotal: motus.count()]
+		//def motus = Motu.findAllBySiteAndCutoff(params.site, params.cutoff)
+		params.max = Math.min(params.max ? params.int('max') : 10, 100)
+		def query = {
+			eq('site', params.site)
+			eq('cutoff', params.cutoff)
+		}
+		
+		def motus = Motu.createCriteria().list(params, query)
+		def total = Motu.createCriteria().count(query)
+		
+//		request.motuInstanceList = motus
+//		request.motuInstanceTotal = total
+		
+		return [motuInstanceList: motus, motuInstanceTotal: total, params:params]
 	}
 
 	def showTable = {
@@ -172,7 +198,7 @@ class MotuController {
 	}
 	
 	def downloadListView = {
-		
+		println params.dataset
 		def file = csvService.makeListViewCSV(params.dataset)
 		response.setContentType( "application-xdownload")
 		response.setHeader("Content-Disposition", "attachment; filename=${params.dataset}.csv")
@@ -193,7 +219,7 @@ class MotuController {
 
 	def list = {
 		params.max = Math.min(params.max ? params.int('max') : 10, 100)
-		return [motuInstanceList: Motu.list(params), motuInstanceTotal: Motu.count()]
+		return [motuInstanceList: Motu.list(params), motuInstanceTotal: Motu.count(), dataset: params.dataset]
 
 	}
 

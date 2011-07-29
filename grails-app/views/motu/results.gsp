@@ -32,9 +32,7 @@
                             <g:sortableColumn property="seqID" title="${message(code: 'motu.seqID.label', default: 'Seq ID')}" />
                         
                             <g:sortableColumn property="cutoff" title="${message(code: 'motu.cutoff.label', default: 'Cutoff')}" />
-                        
-<%--                            <g:sortableColumn property="sequence" title="${message(code: 'motu.sequence.label', default: 'Sequence')}" />--%>
-                        
+                                           
                             <g:sortableColumn property="site" title="${message(code: 'motu.site.label', default: 'Site')}" />
                         
                         </tr>
@@ -47,10 +45,8 @@
                         
                             <td>${fieldValue(bean: motuInstance, field: "seqID")}</td>
                         
-                            <td>${fieldValue(bean: motuInstance, field: "cutoff")}</td>
-                        
-<%--                            <td>${fieldValue(bean: motuInstance, field: "sequence")}</td>--%>
-                        
+                            <td>${fieldValue(bean: motuInstance, field: "cutoff")}</td>                        
+                      
                             <td>${fieldValue(bean: motuInstance, field: "site")}</td>
                         
                         </tr>
@@ -59,7 +55,7 @@
                 </table>
             </div>
             <div class="paginateButtons">
-             <g:paginate max =10 action="results" total="${motuInstanceTotal}" />
+             <g:paginate total="${motuInstanceTotal}" params="${params}" />
             </div>
         </div>
         <div id = 'linkToView'>

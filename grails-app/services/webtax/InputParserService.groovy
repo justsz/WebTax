@@ -28,8 +28,10 @@ class InputParserService {
 	def ID
 	def cutoff
 	def sequence
-		
+	
 	def progress
+	
+	def jobStack
 
 
 	def void parseAndAdd(Long ident, String datasetName) {
@@ -48,8 +50,9 @@ class InputParserService {
 		cutoff = []
 		sequence = []
 		def batch = []
-		def start = System.currentTimeMillis()
+		
 		userInput.eachLine(parse)
+		runnedOnce = true
 		println "${ID.size()} MOTUs will be added."
 		progress = 0
 		def batchCount = 0
@@ -107,7 +110,7 @@ class InputParserService {
 				
 		job.progress = 100
 		job.save(flush:true)
-		runnedOnce = true
+		
 	}
 
 	

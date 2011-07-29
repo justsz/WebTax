@@ -14,7 +14,10 @@
 		
 		
 		<g:if test="${webtax.Job.get(jobId).progress == 100}">
-			${response.sendRedirect("list")}
+<%--			${response.sendRedirect("list")}--%>
+			Upload complete. Link to dataset: 
+			<input onclick="this.select(); pageTracker._trackEvent('new-done-click','short-click');" readonly="readonly" class="readonly" 
+		value="<g:createLink absolute="true" controller="motu" action="list" params="${[dataset: dataset]}"/>"/>
 		</g:if>
 		<g:else>
 			Job status: ${webtax.Job.get(jobId).progress as Integer} %
