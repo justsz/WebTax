@@ -17,7 +17,8 @@ class InputParserService {
 	def batchSize = 50
 
 	//def headerPattern = />(.*)\|([0-9]*)\|([0-9]*)\|(.*)/ //Change for whatever information will be accepted from the header.
-	def headerPattern = />(.+)_(?:.*)_MOTU(\d+)cutoff=(\d+)/		//>creer1_0bp_MOTU0893cutoff=0
+	//def headerPattern = />(.+)_(?:.*)_MOTU(\d+)cutoff=(\d+)/		//>creer1_0bp_MOTU0893cutoff=0	>site=creer1motu=MOTU0893cutoff=0freq=10
+	def headerPattern = />site=(.*?)motu=(.*?)cutoff=(\d+)freq=(\d+)/	//>site=creer1motu=MOTU0893cutoff=0freq=10
 	def sequencePattern = /([CGATNcgatn]*)/
 
 	def counter = -1
@@ -26,8 +27,10 @@ class InputParserService {
 	def sites
 	
 	def ID
+	def motuIds
 	def cutoff
 	def sequence
+	def freqs
 	
 	def progress
 	
@@ -39,31 +42,27 @@ class InputParserService {
 		def job = Job.get(ident)
 		def dataset = Dataset.findByName(datasetName)
 		
-		
-//		if(!dataset.isAttached()){
-//			dataset.attach()
-//	   }
-		
 		sites = []
 		
 		ID = []
+		motuIds = []
 		cutoff = []
 		sequence = []
+		freqs = []
+		
 		def batch = []
 		
 		userInput.eachLine(parse)
 		runnedOnce = true
 		println "${ID.size()} MOTUs will be added."
 		progress = 0
-		def batchCount = 0
-	
-
-		
+		def batchCount = 0		
 
 		for (i in 0..<ID.size()) {
 			
+			
 
-			def motu = new Motu(seqID: ID[i], cutoff: cutoff[i], site: sites[i], sequence: sequence[i])	
+			def motu = new Motu(seqID: ID[i], motuId: motuIds[i], cutoff: cutoff[i], site: sites[i], sequence: sequence[i], freq: freqs[i])	
 			batch.add(motu)
 
 
@@ -125,11 +124,12 @@ class InputParserService {
 
 		if (headerFilter.matches()) {
 			counter++
-
-			sites[counter] = headerFilter[0][1]
 			
 			ID[counter] = headerFilter[0][0]
+			sites[counter] = headerFilter[0][1]
+			motuIds[counter] = headerFilter[0][2]
 			cutoff[counter] = headerFilter[0][3]
+			freqs[counter] = headerFilter[0][4]
 
 			sequence[counter] = '' //Initialise sequence string so it doesn't start with 'null'
 

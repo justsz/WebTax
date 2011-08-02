@@ -7,11 +7,11 @@
 	<body>
 	
 	<div class="nav">
-            <span class="menuButton"><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></span>
-            <span class="menuButton"><g:link class="create" action="create"><g:message code="Add MOTUs" args="[entityName]" /></g:link></span>
-            <span class="menuButton"><g:link class="search" action="search"><g:message code="Search"/></g:link></span>
-            <span class="menuButton"><g:link class="represent" action="repForm"><g:message code="Represent"/></g:link></span>
-    </div>
+        	<span class="menuButton"><g:link class="home" action="index" params="[dataset: dataset]"><g:message code="Home"/></g:link></span>
+            <span class="menuButton"><g:link class="create" action="create" params="[dataset: dataset]"><g:message code="Add MOTUs" args="[entityName]" /></g:link></span>
+            <span class="menuButton"><g:link class="search" action="search" params="[dataset: dataset]"><g:message code="Search"/></g:link></span>
+            <span class="menuButton"><g:link class="represent" action="repForm" params="[dataset: dataset]"><g:message code="Represent"/></g:link></span>
+        </div>
     
     
 	
@@ -76,11 +76,22 @@
 		value="<g:createLink absolute="true" controller="motu" action="represent" params="${[sites:params.sites, threshold:params.threshold, cutoff:params.cutoff, type:params.type, chart:params.chart, keyPhrase:params.keyPhrase, dataset:params.dataset]}"/>"/>
 	</div>
 	<g:form action="downloadRepresentView">
+			<g:hiddenField name="separator" value="csv" />
 			<g:hiddenField name="sites" value="${sites.toString()}" />
 			<g:hiddenField name="data" value="${data}" />
 			<g:hiddenField name="type" value="${type}" />
 			<g:submitButton name="download CSV" value="Download CSV"/>
 	</g:form>
+	
+	<g:form action="downloadRepresentView">
+			<g:hiddenField name="separator" value="tsv" />
+			<g:hiddenField name="sites" value="${sites.toString()}" />
+			<g:hiddenField name="data" value="${data}" />
+			<g:hiddenField name="type" value="${type}" />
+			<g:submitButton name="download TSV" value="Download TSV"/>
+	</g:form>
+	
+	
 	</body>
 
 

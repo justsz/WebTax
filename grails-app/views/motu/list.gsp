@@ -9,9 +9,9 @@
     </head>
     <body>
         <div class="nav">
-            <span class="menuButton"><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></span>
-            <span class="menuButton"><g:link class="create" action="create"><g:message code="Add MOTUs" args="[entityName]" /></g:link></span>
-            <span class="menuButton"><g:link class="search" action="search"><g:message code="Search"/></g:link></span>
+        	<span class="menuButton"><g:link class="home" action="index" params="[dataset: dataset]"><g:message code="Home"/></g:link></span>
+            <span class="menuButton"><g:link class="create" action="create" params="[dataset: dataset]"><g:message code="Add MOTUs" args="[entityName]" /></g:link></span>
+            <span class="menuButton"><g:link class="search" action="search" params="[dataset: dataset]"><g:message code="Search"/></g:link></span>
             <span class="menuButton"><g:link class="represent" action="repForm" params="[dataset: dataset]"><g:message code="Represent"/></g:link></span>
         </div>
         <div class="body">
@@ -24,15 +24,13 @@
                     <thead>
                         <tr>
                         
-                            <g:sortableColumn property="id" title="${message(code: 'motu.id.label', default: 'Id')}" />
+                            <g:sortableColumn property="id" params="[dataset:dataset]" title="${message(code: 'motu.id.label', default: 'Id')}" />
                         
-                            <g:sortableColumn property="seqID" title="${message(code: 'motu.seqID.label', default: 'Seq ID')}" />
+                            <g:sortableColumn property="seqID" params="[dataset:dataset]" title="${message(code: 'motu.seqID.label', default: 'Seq ID')}" />
                         
-                            <g:sortableColumn property="cutoff" title="${message(code: 'motu.cutoff.label', default: 'Cutoff')}" />
-                        
-<%--                            <g:sortableColumn property="sequence" title="${message(code: 'motu.sequence.label', default: 'Sequence')}" />--%>
-                        
-                            <g:sortableColumn property="site" title="${message(code: 'motu.site.label', default: 'Site')}" />
+                            <g:sortableColumn property="cutoff" params="[dataset:dataset]" title="${message(code: 'motu.cutoff.label', default: 'Cutoff')}" />
+                                            
+                            <g:sortableColumn property="site" params="[dataset:dataset]" title="${message(code: 'motu.site.label', default: 'Site')}" />
                         
                         </tr>
                     </thead>
@@ -44,10 +42,8 @@
                         
                             <td>${fieldValue(bean: motuInstance, field: "seqID")}</td>
                         
-                            <td>${fieldValue(bean: motuInstance, field: "cutoff")}</td>
-                        
-<%--                            <td>${fieldValue(bean: motuInstance, field: "sequence")}</td>--%>
-                        
+                            <td>${fieldValue(bean: motuInstance, field: "cutoff")}</td>                    
+                       
                             <td>${fieldValue(bean: motuInstance, field: "site")}</td>
                         
                         </tr>
@@ -56,15 +52,21 @@
                 </table>
             </div>
             <div class="paginateButtons">
-                <g:paginate total="${motuInstanceTotal}" />
-<%--                <g:paginate action="results" total="${motuInstanceTotal}" />--%>
+                <g:paginate params="${params}" total="${motuInstanceTotal}" />
             </div>
             
         </div>
         
         <g:form action="downloadListView">
+        	<g:hiddenField name="separator" value="csv" />
 			<g:hiddenField name="dataset" value="${dataset}" />
 			<g:submitButton name="download CSV" value="Download CSV"/>
+		</g:form>
+		
+		<g:form action="downloadListView">
+			<g:hiddenField name="separator" value="tsv" />
+			<g:hiddenField name="dataset" value="${dataset}" />
+			<g:submitButton name="download TSV" value="Download TSV"/>
 		</g:form>
         
     </body>

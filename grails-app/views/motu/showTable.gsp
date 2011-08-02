@@ -11,9 +11,10 @@
     </head>
     <body>
         <div class="nav">
-            <span class="menuButton"><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></span>
-            <span class="menuButton"><g:link class="list" action="list"><g:message code="default.list.label" args="[entityName]" /></g:link></span>
-            <span class="menuButton"><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></span>
+        	<span class="menuButton"><g:link class="home" action="index" params="[dataset: dataset]"><g:message code="Home"/></g:link></span>
+            <span class="menuButton"><g:link class="create" action="create" params="[dataset: dataset]"><g:message code="Add MOTUs" args="[entityName]" /></g:link></span>
+            <span class="menuButton"><g:link class="search" action="search" params="[dataset: dataset]"><g:message code="Search"/></g:link></span>
+            <span class="menuButton"><g:link class="represent" action="repForm" params="[dataset: dataset]"><g:message code="Represent"/></g:link></span>
         </div>
         <div class="body">
             <h1>Showing table for MOTU: ${motuInstance.seqID} from site: ${motuInstance.site}</h1>
@@ -100,9 +101,17 @@
 
 
 		<g:form action="downloadTableView">
+			<g:hiddenField name="separator" value="csv" />
 			<g:hiddenField name="motuInstance" value="${motuInstance}" />
 			<g:hiddenField name="hits" value="${hits}" />
 			<g:submitButton name="download CSV" value="Download CSV"/>
+		</g:form>
+		
+		<g:form action="downloadTableView">
+			<g:hiddenField name="separator" value="tsv" />
+			<g:hiddenField name="motuInstance" value="${motuInstance}" />
+			<g:hiddenField name="hits" value="${hits}" />
+			<g:submitButton name="download TSV" value="Download TSV"/>
 		</g:form>
     </body>
     

@@ -7,13 +7,12 @@ import org.springframework.web.context.support.WebApplicationContextUtils
 class MotuController {
 
 	def inputParserService
-	def csvService
+	def exportDataService
 	def printableService
 
 	static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
 	def index = {
-
 		redirect(action: "list", params: params)
 	}
 
@@ -92,11 +91,24 @@ class MotuController {
 			}
 			
 			
-			def hits = motus.collect {it.hits.max {it.bitScore}}
-
+//			def hits = motus.collect {it.hits.max {it.bitScore}}
+//			(hits, bitScoreTooLow) = hits.split { it.bitScore >= params.minBitScore }
+			def minBitScore = params.minBitScore as Integer
+			def minBitScoreStep = params.minBitScoreStep as Integer
+			def hits = motus.collect { it.hits }		
 			
+			hits = hits*.sort { -it.bitScore }
 			
-			
+			hits = hits.collect { it  = it.split{ it.bitScore >= minBitScore  }[0] }		//change to  x -> x.... format for readability
+				
+				hits = hits.split { it.size() > 1 }[0]	//trim out singletons
+			if (minBitScoreStep != 0) {
+				hits = hits.collect { if ((it[0].bitScore - it[1].bitScore) >= minBitScoreStep) it = it[0]
+										else it = null }
+				hits = hits.split{it}[0]	//trim out nulls
+			} else {
+				hits = hits.collect { it = it[0] }
+			}			
 			
 			
 
@@ -117,7 +129,6 @@ class MotuController {
 			reps[counter] = reps[counter].sort {a, b -> b.value <=> a.value}
 			totalHits[counter] = 0
 			reps[counter].each {key, value -> totalHits[counter] += value}
-			//println totalHits[counter]
 			def others = ['others', 0]
 
 			reps[counter].each {key, value ->
@@ -143,6 +154,7 @@ class MotuController {
 	}
 
 	def search = {
+		return [dataset:params.dataset]
 	}
 
 	def results = {
@@ -190,26 +202,25 @@ class MotuController {
 	}
 	
 	def downloadTableView = {		
-		def file = csvService.makeTableViewCSV(params.hits)
+		def file = exportDataService.makeTableView(params.hits, params.separator)
 		response.setContentType( "application-xdownload")
-		response.setHeader("Content-Disposition", "attachment; filename=${params.motuInstance}.csv")
+		response.setHeader("Content-Disposition", "attachment; filename=${params.motuInstance}.${params.separator}")
 	    //response.getOutputStream() << new ByteArrayInputStream( out )
 		response.outputStream << file.newInputStream()
 	}
 	
 	def downloadListView = {
-		println params.dataset
-		def file = csvService.makeListViewCSV(params.dataset)
+		def file = exportDataService.makeListView(params.dataset, params.separator)
 		response.setContentType( "application-xdownload")
-		response.setHeader("Content-Disposition", "attachment; filename=${params.dataset}.csv")
+		response.setHeader("Content-Disposition", "attachment; filename=${params.dataset}.${params.separator}")
 		response.outputStream << file.newInputStream()
 		
 	}
 	
 	def downloadRepresentView = {
-		def file = csvService.makeRepresentViewCSV(params.data, params.sites, params.type)
+		def file = exportDataService.makeRepresentView(params.data, params.sites, params.type, params.separator)
 		response.setContentType( "application-xdownload")
-		response.setHeader("Content-Disposition", "attachment; filename=temporaryTitle.csv")
+		response.setHeader("Content-Disposition", "attachment; filename=${params.sites}${params.type}.${params.separator}")
 		response.outputStream << file.newInputStream()
 	}
 
@@ -218,8 +229,20 @@ class MotuController {
 
 
 	def list = {
+		
 		params.max = Math.min(params.max ? params.int('max') : 10, 100)
-		return [motuInstanceList: Motu.list(params), motuInstanceTotal: Motu.count(), dataset: params.dataset]
+		if (!params.sort) params.sort = "id"
+		if (!params.order) params.order = "asc"
+		
+		def query = {
+			'in'("id", Dataset.findByName(params.dataset).motus*.id)
+			//order(params.sort, params.order)
+		}
+		
+		def motus = Motu.createCriteria().list(params, query)
+		def total = Motu.createCriteria().count(query)
+		
+		return [motuInstanceList: motus, motuInstanceTotal: total, dataset: params.dataset]
 
 	}
 
