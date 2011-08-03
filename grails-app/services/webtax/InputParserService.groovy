@@ -11,7 +11,7 @@ class InputParserService {
 
 	
 
-	def userInput = new File("./userUpload/input.fasta")
+	//def userInput = new File("./userUpload/input.fasta")
 	def blaster
 	def sessionFactory
 	def batchSize = 50
@@ -37,10 +37,11 @@ class InputParserService {
 	def jobStack
 
 
-	def void parseAndAdd(Long ident, String datasetName) {
+	def void parseAndAdd(Long ident, String datasetName, String db, String destination, String fileName) {
 		
 		def job = Job.get(ident)
 		def dataset = Dataset.findByName(datasetName)
+		blaster.setBlastDatabase(db)
 		
 		sites = []
 		
@@ -52,7 +53,10 @@ class InputParserService {
 		
 		def batch = []
 		
-		userInput.eachLine(parse)
+		def file = new File(destination, fileName)
+		println file.getName()
+		
+		file.eachLine(parse)
 		runnedOnce = true
 		println "${ID.size()} MOTUs will be added."
 		progress = 0

@@ -3,6 +3,7 @@ package webtax
 
 import org.springframework.context.ApplicationContext
 import org.springframework.web.context.support.WebApplicationContextUtils
+import java.util.zip.*
 
 class MotuController {
 
@@ -16,11 +17,71 @@ class MotuController {
 		redirect(action: "list", params: params)
 	}
 
+	def create2 = {
+		if (params.datasetName) return [datasetName: params.datasetName]
+	}
 
+
+	def uploadFiles = {
+		def datasetName = params.datasetName
+		def ant = new AntBuilder()
+		def destination = new File("./userUpload/${datasetName}")
+
+		withForm {
+			def up = request.getFile("myFile")
+			def file = up.getFileItem().getStoreLocation()
+			ant.unzip(src: file, dest: destination, overwrite:"true")
+			new File(destination, '__MACOSX').delete()	//deletes the thingy mac throws in its zip files
+		}
+		
+		redirect(action:"review", params: [destination: destination, datasetName: datasetName])
+
+	}
+	
+	//Refactoring oppurtunity: pass just the dataset and rebuild destination from that.
+	
+	def review = {
+		def dir = new File(params.destination)
+		def files = []
+		dir.eachFile{ files.add(it.getName()) }
+		
+		def databaseFile = new File("./databases/databases.txt")
+		def dbs = []
+		databaseFile.eachLine { dbs.add(it) }
+
+		return [files: files, destination: params.destination, datasetName: params.datasetName, dbs:dbs]
+	}
+	
+	def deleteFiles = {
+		params.each { if(it.value == 'on') new File(params.destination, it.key).delete() }
+		redirect (action:'review', params: [destination: params.destination, datasetName: params.datasetName])
+	}
+	
+	def blast = {
+		def datasetName = params.datasetName
+		def database = params.database
+		def destination = params.destination
+		def dataset = new Dataset(name: datasetName).save(flush: true)
+		
+		def dir = new File(params.destination)
+		def files = []
+		dir.eachFile{ files.add(it) }
+		
+		files.each {
+			def job = new Job(progress: 0).save(flush:true)
+			def fileName = it.getName()
+			runAsync {
+				inputParserService.parseAndAdd(job.id, datasetName, database, destination, fileName)	//Refactioring opportunity: just pass a file.
+			}
+		}
+		
+		redirect(action:'list', controller:'job')
+	}
 
 
 	def upload = {
 		def datasetName = params.datasetName
+		def database = params.database
 		def dataset = new Dataset(name: datasetName).save(flush: true)
 
 
@@ -28,15 +89,18 @@ class MotuController {
 		withForm {
 
 
-			def f = request.getFile('myFile')
+			def f = request.getFile("myFile")
 			if(!f.empty) {
-
-				f.transferTo( new File('./userUpload/input.fasta') )
+				//def webRootDir = servletContext.getRealPath("/")
+				//def dir = new File("./userUpload/${datasetName}")
+				//dir.mkdirs()
+				//f.transferTo( new File(dir, "${f.originalFilename}") )
+				f.transferTo("./userUpload/input.fasta")
 
 				def job = new Job(progress: 0).save(flush:true)
 
 				runAsync {
-					inputParserService.parseAndAdd(job.id, datasetName)
+					inputParserService.parseAndAdd(job.id, datasetName, database, './userUpload/', 'input.fasta')
 				}
 
 				redirect(action:'status', params:[jobId:job.id, dataset: datasetName])
@@ -83,34 +147,34 @@ class MotuController {
 		for (site in sites) {
 			reps[counter] = [:]
 			data[counter] = []
-			
+
 			def motus = Motu.withCriteria {
 				'in'("id", Dataset.findByName(params.dataset).motus*.id)
 				eq("site", site)
 				eq("cutoff", cutoff)
 			}
-			
-			
-//			def hits = motus.collect {it.hits.max {it.bitScore}}
-//			(hits, bitScoreTooLow) = hits.split { it.bitScore >= params.minBitScore }
+
+
+			//			def hits = motus.collect {it.hits.max {it.bitScore}}
+
 			def minBitScore = params.minBitScore as Integer
 			def minBitScoreStep = params.minBitScoreStep as Integer
-			def hits = motus.collect { it.hits }		
-			
+			def hits = motus.collect { it.hits }
+
 			hits = hits*.sort { -it.bitScore }
-			
+
 			hits = hits.collect { it  = it.split{ it.bitScore >= minBitScore  }[0] }		//change to  x -> x.... format for readability
-				
-				hits = hits.split { it.size() > 1 }[0]	//trim out singletons
+
+			hits = hits.split { it.size() > 1 }[0]	//trim out singletons
 			if (minBitScoreStep != 0) {
 				hits = hits.collect { if ((it[0].bitScore - it[1].bitScore) >= minBitScoreStep) it = it[0]
-										else it = null }
+					else it = null }
 				hits = hits.split{it}[0]	//trim out nulls
 			} else {
 				hits = hits.collect { it = it[0] }
-			}			
-			
-			
+			}
+
+
 
 			for (h in hits) {
 				if (h) {
@@ -165,13 +229,13 @@ class MotuController {
 			eq('site', params.site)
 			eq('cutoff', params.cutoff)
 		}
-		
+
 		def motus = Motu.createCriteria().list(params, query)
 		def total = Motu.createCriteria().count(query)
-		
-//		request.motuInstanceList = motus
-//		request.motuInstanceTotal = total
-		
+
+		//		request.motuInstanceList = motus
+		//		request.motuInstanceTotal = total
+
 		return [motuInstanceList: motus, motuInstanceTotal: total, params:params]
 	}
 
@@ -200,23 +264,23 @@ class MotuController {
 			[motuInstance: motuInstance, hits: hitS]
 		}
 	}
-	
-	def downloadTableView = {		
+
+	def downloadTableView = {
 		def file = exportDataService.makeTableView(params.hits, params.separator)
 		response.setContentType( "application-xdownload")
 		response.setHeader("Content-Disposition", "attachment; filename=${params.motuInstance}.${params.separator}")
-	    //response.getOutputStream() << new ByteArrayInputStream( out )
+		//response.getOutputStream() << new ByteArrayInputStream( out )
 		response.outputStream << file.newInputStream()
 	}
-	
+
 	def downloadListView = {
 		def file = exportDataService.makeListView(params.dataset, params.separator)
 		response.setContentType( "application-xdownload")
 		response.setHeader("Content-Disposition", "attachment; filename=${params.dataset}.${params.separator}")
 		response.outputStream << file.newInputStream()
-		
+
 	}
-	
+
 	def downloadRepresentView = {
 		def file = exportDataService.makeRepresentView(params.data, params.sites, params.type, params.separator)
 		response.setContentType( "application-xdownload")
@@ -229,24 +293,28 @@ class MotuController {
 
 
 	def list = {
-		
+
 		params.max = Math.min(params.max ? params.int('max') : 10, 100)
 		if (!params.sort) params.sort = "id"
 		if (!params.order) params.order = "asc"
-		
+
 		def query = {
 			'in'("id", Dataset.findByName(params.dataset).motus*.id)
 			//order(params.sort, params.order)
 		}
-		
+
 		def motus = Motu.createCriteria().list(params, query)
 		def total = Motu.createCriteria().count(query)
-		
+
 		return [motuInstanceList: motus, motuInstanceTotal: total, dataset: params.dataset]
 
 	}
 
 	def create = {
+		def databaseFile = new File("./databases/databases.txt")
+		def dbs = []
+		databaseFile.eachLine { dbs.add(it) }
+		return [dbs:dbs]
 	}
 
 	def save = {
