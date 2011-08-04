@@ -67,15 +67,22 @@ class MotuController {
 		def files = []
 		dir.eachFile{ files.add(it) }
 		
+		def jobIds = []
+		
 		files.each {
-			def job = new Job(progress: 0).save(flush:true)
 			def fileName = it.getName()
+			def job = new Job(progress: 0, name: fileName).save(flush:true)
+			jobIds.add(job.id)			
 			runAsync {
 				inputParserService.parseAndAdd(job.id, datasetName, database, destination, fileName)	//Refactioring opportunity: just pass a file.
 			}
 		}
 		
-		redirect(action:'list', controller:'job')
+		redirect(action:'statuses', params:[jobIds: jobIds, dataset: datasetName])
+	}
+	
+	def statuses = {
+		return [jobIds: params.jobIds, dataset: params.dataset]
 	}
 
 
