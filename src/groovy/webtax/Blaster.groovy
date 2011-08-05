@@ -5,14 +5,18 @@ package webtax
 
 class Blaster {
 
-	Blaster() {
-		myTreeData = new TaxIdProcessor()
+	Blaster(String mbPath, String taxdumpPath, String dbPath) {
+		myTreeData = new TaxIdProcessor(taxdumpPath)
+		megablastPath = mbPath
+		
+		databasePath = dbPath
 	}
 
 	def blastDatabase
 	
-	def megablastPath = "./blast/bin/megablast" //Note: works with megablast v 2.2.21. Doesn't work with v 2.4.21 (Probably fault of my installation.)
-	def taxdumpPath = "./databases/NCBIdump"
+	def megablastPath //Note: works with megablast v 2.2.21. Doesn't work with v 2.4.21 (Probably fault of my installation.)
+	
+	def databasePath
 
 	def processors = 2 //Give user option to choose number of cores later on.
 
@@ -27,7 +31,7 @@ class Blaster {
 	def myTreeData
 	
 	def void setBlastDatabase(String db) {
-		blastDatabase = "./databases/${db}/${db}.fasta"
+		blastDatabase = "${databasePath}${db}/${db}.fasta"
 	}
 
 	def void doBlast(Motu inputMotu) {

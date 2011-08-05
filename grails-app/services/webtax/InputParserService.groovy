@@ -1,23 +1,27 @@
 package webtax
 import org.hibernate.SessionFactory;
+import org.codehaus.groovy.grails.commons.*
 
 class InputParserService {
 
 	static transactional = false
+	
 
-	InputParserService() {
-		blaster = new Blaster()
-	}
+//	InputParserService() {
+//		config = ConfigurationHolder.config
+//		blaster = new Blaster(config.megablastPath, config.taxdumpPath, config.databasePath)
+//		
+//		println config.userInputPath
+//	}
 
 	
 
 	//def userInput = new File("./userUpload/input.fasta")
-	def blaster
+	def config = ConfigurationHolder.config
+	def blaster = new Blaster(config.megablastPath, config.taxdumpPath, config.databasePath)
 	def sessionFactory
-	def batchSize = 50
+	def batchSize = config.batchSize
 
-	//def headerPattern = />(.*)\|([0-9]*)\|([0-9]*)\|(.*)/ //Change for whatever information will be accepted from the header.
-	//def headerPattern = />(.+)_(?:.*)_MOTU(\d+)cutoff=(\d+)/		//>creer1_0bp_MOTU0893cutoff=0	>site=creer1motu=MOTU0893cutoff=0freq=10
 	def headerPattern = />site=(.*?)motu=(.*?)cutoff=(\d+)freq=(\d+)/	//>site=creer1motu=MOTU0893cutoff=0freq=10
 	def sequencePattern = /([CGATNcgatn]*)/
 

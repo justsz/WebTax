@@ -18,7 +18,7 @@ class InputController {
 	def uploadFiles = {
 		def dataset = params.dataset
 		def ant = new AntBuilder()
-		def destination = new File("./userUpload/${dataset}")
+		def destination = new File("${grailsApplication.config.userInputPath}${dataset}")
 
 		withForm {
 			def up = request.getFile("myFile")
@@ -38,7 +38,7 @@ class InputController {
 		def files = []
 		dir.eachFile{ files.add(it.getName()) }
 
-		def databaseFile = new File("./databases/databases.txt")
+		def databaseFile = new File("${grailsApplication.config.databasePath}databases.txt")
 		def dbs = []
 		databaseFile.eachLine { dbs.add(it) }
 

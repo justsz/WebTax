@@ -9,15 +9,17 @@ import java.util.List;
 import java.util.regex.Pattern
 
 final class TaxIdProcessor {
-	private final def taxdumpPath = "./databases/NCBIdump"
+	
+	private final def taxdumpPath
 
 	private final def taxid2node = []
 	private final def child2parent = []
 
 
 	//Constructor parses and builds up the taxonomy tree.
-	def TaxIdProcessor() {
+	def TaxIdProcessor(String tdPath) {
 		def nodePattern = ~/^(\d+)\t\|\t(\d+)\t\|\t(.+?)\t\|/
+		taxdumpPath = tdPath
 
 		println "reading ncbi taxonomy from $taxdumpPath"
 		// open the NCBI taxonomy for structure
