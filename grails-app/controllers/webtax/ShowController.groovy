@@ -86,7 +86,7 @@ class ShowController {
 			counter++
 		}
 
-		return [reps: reps, type: type, data: data, sites:sites, chart: params.chart, params: params]
+		return [reps: reps, type: type, data: data, sites:sites, chart: params.chart, params: params, dataset:params.dataset]
 	}
 
 	def search = {
@@ -108,7 +108,7 @@ class ShowController {
 		//		request.motuInstanceList = motus
 		//		request.motuInstanceTotal = total
 
-		return [motuInstanceList: motus, motuInstanceTotal: total, params:params]
+		return [motuInstanceList: motus, motuInstanceTotal: total, params:params, dataset:params.dataset]
 	}
 
 	def showTable = {
@@ -133,7 +133,7 @@ class ShowController {
 
 				order(params.sort, params.order)
 			}
-			[motuInstance: motuInstance, hits: hitS]
+			[motuInstance: motuInstance, hits: hitS, dataset:params.dataset]
 		}
 	}
 

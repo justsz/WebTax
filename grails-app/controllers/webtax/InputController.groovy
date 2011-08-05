@@ -3,7 +3,7 @@ package webtax
 
 
 class InputController {
-	//def inputParserService
+	def inputParserService
 
 	//allowedMethods ?
 

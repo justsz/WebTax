@@ -58,7 +58,7 @@
        		<div  id="chart${i}"></div>
        		
 
-       		<g:remoteLink action="printable" params="${[datum: datum, chartType: chart, site:sites[i]]}">Print ${sites[i]}</g:remoteLink>
+       		<g:remoteLink controller="output" action="printable" params="${[datum: datum, chartType: chart, site:sites[i], dataset:dataset]}">PNG version of ${sites[i]}</g:remoteLink>
         </g:each>
 	
 <%--	<viewLink:thisView/>--%>
@@ -67,9 +67,9 @@
 	<div id = 'linkToView'>
 		Link to this page:
 		<input onclick="this.select(); pageTracker._trackEvent('new-done-click','short-click');" readonly="readonly" class="readonly" 
-		value="<g:createLink absolute="true" controller="motu" action="represent" params="${[sites:params.sites, threshold:params.threshold, cutoff:params.cutoff, type:params.type, chart:params.chart, keyPhrase:params.keyPhrase, dataset:params.dataset]}"/>"/>
+		value="<g:createLink absolute="true" controller="show" action="represent" params="${[sites:params.sites, threshold:params.threshold, cutoff:params.cutoff, type:params.type, chart:params.chart, keyPhrase:params.keyPhrase, dataset:params.dataset]}"/>"/>
 	</div>
-	<g:form action="downloadRepresentView">
+	<g:form controller="output" action="downloadRepresentView">
 			<g:hiddenField name="separator" value="csv" />
 			<g:hiddenField name="sites" value="${sites.toString()}" />
 			<g:hiddenField name="data" value="${data}" />
@@ -77,7 +77,7 @@
 			<g:submitButton name="download CSV" value="Download CSV"/>
 	</g:form>
 	
-	<g:form action="downloadRepresentView">
+	<g:form controller="output" action="downloadRepresentView">
 			<g:hiddenField name="separator" value="tsv" />
 			<g:hiddenField name="sites" value="${sites.toString()}" />
 			<g:hiddenField name="data" value="${data}" />

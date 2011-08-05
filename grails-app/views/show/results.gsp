@@ -36,7 +36,7 @@
                     <g:each in="${motuInstanceList}" status="i" var="motuInstance">
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
                         
-                            <td><g:link action="showTable" id="${motuInstance.id}">${fieldValue(bean: motuInstance, field: "id")}</g:link></td>
+                            <td><g:link action="showTable" id="${motuInstance.id}" params="[dataset:params.dataset]">${fieldValue(bean: motuInstance, field: "id")}</g:link></td>
                         
                             <td>${fieldValue(bean: motuInstance, field: "seqID")}</td>
                         

@@ -18,13 +18,13 @@
                     <thead>
                         <tr>
                         
-                            <g:sortableColumn property="id" params="[dataset:dataset]" title="${message(code: 'motu.id.label', default: 'Id')}" />
+                            <g:sortableColumn property="id" params="[dataset:dataset]" title="Id" />
                         
-                            <g:sortableColumn property="seqID" params="[dataset:dataset]" title="${message(code: 'motu.seqID.label', default: 'Seq ID')}" />
+                            <g:sortableColumn property="seqID" params="[dataset:dataset]" title="Seq ID" />
                         
-                            <g:sortableColumn property="cutoff" params="[dataset:dataset]" title="${message(code: 'motu.cutoff.label', default: 'Cutoff')}" />
+                            <g:sortableColumn property="cutoff" params="[dataset:dataset]" title="Cutoff" />
                                             
-                            <g:sortableColumn property="site" params="[dataset:dataset]" title="${message(code: 'motu.site.label', default: 'Site')}" />
+                            <g:sortableColumn property="site" params="[dataset:dataset]" title="Site" />
                         
                         </tr>
                     </thead>
@@ -32,7 +32,7 @@
                     <g:each in="${motuInstanceList}" status="i" var="motuInstance">
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
                         
-                            <td><g:link action="showTable" id="${motuInstance.id}">${fieldValue(bean: motuInstance, field: "id")}</g:link></td>
+                            <td><g:link action="showTable" id="${motuInstance.id}" params="[dataset:dataset]">${fieldValue(bean: motuInstance, field: "id")}</g:link></td>
                         
                             <td>${fieldValue(bean: motuInstance, field: "seqID")}</td>
                         
@@ -51,13 +51,13 @@
             
         </div>
         
-        <g:form action="downloadListView">
+        <g:form controller="output" action="downloadListView">
         	<g:hiddenField name="separator" value="csv" />
 			<g:hiddenField name="dataset" value="${dataset}" />
 			<g:submitButton name="download CSV" value="Download CSV"/>
 		</g:form>
 		
-		<g:form action="downloadListView">
+		<g:form controller="output" action="downloadListView">
 			<g:hiddenField name="separator" value="tsv" />
 			<g:hiddenField name="dataset" value="${dataset}" />
 			<g:submitButton name="download TSV" value="Download TSV"/>

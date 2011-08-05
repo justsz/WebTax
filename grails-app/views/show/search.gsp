@@ -8,7 +8,8 @@
 
     <formset> 
         <legend>Search for Motus</legend> 
-    <g:form action="results"> 
+    <g:form method="get" action="results"> 
+    	<g:hiddenField name="dataset" value="${dataset}" />
         <label for="site">Site</label> 
         <g:textField name="site" /> 
         <br/>

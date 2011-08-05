@@ -33,6 +33,6 @@ class OutputController {
 		//println params.datum
 		//println params.datum.getClass()
 		def data = printableService.reFormat(params.datum as String)
-		return [datum: data, site: params.site, chartType: params.chartType]
+		return [datum: data, site: params.site, chartType: params.chartType, dataset: params.dataset]
 	}
 }

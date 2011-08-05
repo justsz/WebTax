@@ -8,7 +8,7 @@
 	
     <formset> 
         <legend>Get distributions</legend> 
-    <g:form action="represent"> 
+    <g:form method="get" action="represent"> 
         <label for="sites">Sites</label> 
         <g:textField name="sites" /> 
         <br/>
