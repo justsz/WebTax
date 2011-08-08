@@ -25,6 +25,8 @@
                             <g:sortableColumn property="cutoff" params="[dataset:dataset]" title="Cutoff" />
                                             
                             <g:sortableColumn property="site" params="[dataset:dataset]" title="Site" />
+                            
+                            <g:sortableColumn property="freq" params="[dataset:dataset]" title="Freq" />
                         
                         </tr>
                     </thead>
@@ -39,6 +41,8 @@
                             <td>${fieldValue(bean: motuInstance, field: "cutoff")}</td>                    
                        
                             <td>${fieldValue(bean: motuInstance, field: "site")}</td>
+                            
+                            <td>${fieldValue(bean: motuInstance, field: "freq")}</td>
                         
                         </tr>
                     </g:each>

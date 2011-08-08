@@ -37,8 +37,6 @@ class InputParserService {
 	def freqs
 	
 	def progress
-	
-	def jobStack
 
 
 	def void parseAndAdd(Long ident, String datasetName, String db, String destination, String fileName) {

@@ -29,6 +29,14 @@ class OutputController {
 		response.outputStream << file.newInputStream()
 	}
 	
+	def downloadSearchView = {
+		println params.motus
+		def file = exportDataService.makeSearchView(params.motus, params.separator)
+		response.setContentType( "application-xdownload")
+		response.setHeader("Content-Disposition", "attachment; filename=${params.dataset}.${params.separator}")
+		response.outputStream << file.newInputStream()
+	}
+	
 	def printable = {
 		//println params.datum
 		//println params.datum.getClass()

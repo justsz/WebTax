@@ -43,7 +43,7 @@ class ExportDataService {
 		def out = new File('list')
 		out.delete()
 		
-		def header = "seqID${s}cutoff${s}site${s}"
+		def header = "seqID${s}cutoff${s}site${s}freq${s}"
 		for (i in 1..9) {
 			def blastHeader = "accNum$i${s}bitscore$i${s}species$i${s}genus$i${s}order$i${s}family$i${s}class$i${s}phylum$i${s}"
 			header += blastHeader
@@ -56,7 +56,44 @@ class ExportDataService {
 		
 		
 		motus.each {
-			def row = [it.seqID, it.cutoff, it.site]
+			def row = [it.seqID, it.cutoff, it.site, it.freq]
+			def hits = it.hits.sort {-it.bitScore}
+			hits.each {
+				row += [it.accNum, it.bitScore, it.species, it.genus, it.taxOrder, it.family, it.taxClass, it.phylum]
+			}
+			out.append row.join("${s}")
+			out.append '\n'
+		}
+		
+		
+		return out
+	}
+	
+	def File makeSearchView(List motus, String separator) {
+		def s
+		if (separator == 'csv') {
+			s = ','
+		} else if (separator == 'tsv') {
+			s = '\t'
+		}
+		
+		def out = new File('list')
+		out.delete()
+		
+		def header = "seqID${s}cutoff${s}site${s}freq${s}"
+		for (i in 1..9) {
+			def blastHeader = "accNum$i${s}bitscore$i${s}species$i${s}genus$i${s}order$i${s}family$i${s}class$i${s}phylum$i${s}"
+			header += blastHeader
+		}
+		header += "accNum10${s}bitscore10${s}species10${s}genus10${s}order10${s}family10${s}class10${s}phylum10\n"
+		out.append header
+		
+		//def motus = Dataset.findByName(dataset).motus
+		
+		
+		
+		motus.each {
+			def row = [it.seqID, it.cutoff, it.site, it.freq]
 			def hits = it.hits.sort {-it.bitScore}
 			hits.each {
 				row += [it.accNum, it.bitScore, it.species, it.genus, it.taxOrder, it.family, it.taxClass, it.phylum]

@@ -29,6 +29,8 @@
                             <g:sortableColumn property="cutoff" title="${message(code: 'motu.cutoff.label', default: 'Cutoff')}" />
                                            
                             <g:sortableColumn property="site" title="${message(code: 'motu.site.label', default: 'Site')}" />
+                            
+                            <g:sortableColumn property="freq" title="${message(code: 'motu.site.label', default: 'Freq')}" />
                         
                         </tr>
                     </thead>
@@ -43,6 +45,8 @@
                             <td>${fieldValue(bean: motuInstance, field: "cutoff")}</td>                        
                       
                             <td>${fieldValue(bean: motuInstance, field: "site")}</td>
+                            
+                            <td>${fieldValue(bean: motuInstance, field: "freq")}</td>
                         
                         </tr>
                     </g:each>
@@ -53,6 +57,19 @@
              <g:paginate total="${motuInstanceTotal}" params="${params}" />
             </div>
         </div>
+        
+         <g:form controller="output" action="downloadSearchView">
+        	<g:hiddenField name="separator" value="csv" />
+			<g:hiddenField name="motus" value="${motus}" />
+			<g:submitButton name="download CSV" value="Download CSV"/>
+		</g:form>
+		
+		<g:form controller="output" action="downloadSearchView">
+			<g:hiddenField name="separator" value="tsv" />
+			<g:hiddenField name="motus" value="${motus}" />
+			<g:submitButton name="download TSV" value="Download TSV"/>
+		</g:form>
+        
         <div id = 'linkToView'>
 		<a href ='<g:createLink absolute="true" controller="motu" action="results" params="${[motuInstanceList:motuInstanceList, motuInstanceTotal:motuInstanceTotal]}"/>'>Link to this page</a>
 		</div>

@@ -37,31 +37,48 @@ class ShowController {
 
 			def minBitScore = params.minBitScore as Integer
 			def minBitScoreStep = params.minBitScoreStep as Integer
-			def hits = motus.collect { it.hits }
+			def freqs = motus.collect {it.freq}
+			def hits = motus.collect { it.hits }	//[[h1, h2...], [h11, h12...],...]
+			
 
 			hits = hits*.sort { -it.bitScore }
 
 			hits = hits.collect { it  = it.split{ it.bitScore >= minBitScore  }[0] }		//change to  x -> x.... format for readability
-
-			hits = hits.split { it.size() > 1 }[0]	//trim out singletons
+			
+			//hits = hits.split { it.size() > 1 }[0]	//trim out singletons
 			if (minBitScoreStep != 0) {
-				hits = hits.collect { if ((it[0].bitScore - it[1].bitScore) >= minBitScoreStep) it = it[0]
-					else it = null }
-				hits = hits.split{it}[0]	//trim out nulls
+				hits = hits.collect {
+					if (it[0] != null && it[1] != null) { 
+					if ((it[0].bitScore - it[1].bitScore) >= minBitScoreStep) {it = it[0]}
+					else it = null
+					} else it = null 
+					}
+				//hits = hits.split{it}[0]	//trim out nulls
 			} else {
 				hits = hits.collect { it = it[0] }
 			}
+			
+			def hitsWithFreqs = [:]
+			for (i in 0..<hits.size()) {
+				hitsWithFreqs.put (hits[i], 0)
+			}
+			
+			for (i in 0..<hits.size()) {
+				hitsWithFreqs[hits[i]] += freqs[i].toInteger()
+			}
+			
 
 
 
-			for (h in hits) {
-				if (h) {
+			for (h in hitsWithFreqs) {
+				
+				if (h.key) {
 					for (prop in properties) {
-						if (h[prop] =~ ".*${params.keyPhrase}.*") {
-							if (reps[counter].containsKey(h[type])) {
-								reps[counter][h[type]]++
+						if (h.key[prop] =~ ".*${params.keyPhrase}.*") {
+							if (reps[counter].containsKey(h.key[type])) {
+								reps[counter][h.key[type]] += (h.value.toInteger()) 
 							} else {
-								reps[counter].put(h[type], 1)
+								reps[counter].put(h.key[type], h.value.toInteger())
 							}
 							break
 						}

@@ -1,5 +1,6 @@
 package webtax
 
+import java.util.UUID
 
 
 class InputController {
@@ -22,8 +23,13 @@ class InputController {
 
 		withForm {
 			def up = request.getFile("myFile")
-			def file = up.getFileItem().getStoreLocation()
+			UUID uuid = UUID.randomUUID()
+			def file = new File("${grailsApplication.config.userInputPath}temp${uuid}")
+			up.transferTo(file)
+			//def file = up.getFileItem().getStoreLocation()
+		
 			ant.unzip(src: file, dest: destination, overwrite:"true")
+			file.delete()
 			new File(destination, '__MACOSX').delete()	//deletes the thingy mac throws in its zip files
 		}
 
