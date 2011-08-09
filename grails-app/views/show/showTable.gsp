@@ -38,12 +38,12 @@
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">                                                
                             <td>${fieldValue(bean: hit, field: "accNum")}</td>
                             <td>${fieldValue(bean: hit, field: "bitScore")}</td>
-                            <td>${fieldValue(bean: hit, field: "species")}</td>
-                            <td>${fieldValue(bean: hit, field: "genus")}</td>
-                            <td>${fieldValue(bean: hit, field: "taxOrder")}</td>
-                            <td>${fieldValue(bean: hit, field: "family")}</td>
-                            <td>${fieldValue(bean: hit, field: "taxClass")}</td>
-                            <td>${fieldValue(bean: hit, field: "phylum")}</td>                      
+                            <td><a href ="http://www.ncbi.nlm.nih.gov/taxonomy?term=${fieldValue(bean: hit, field: "species")}">${fieldValue(bean: hit, field: "species")}</a></td>
+                            <td><a href ="http://www.ncbi.nlm.nih.gov/taxonomy?term=${fieldValue(bean: hit, field: "genus")}">${fieldValue(bean: hit, field: "genus")}</a></td>
+                            <td><a href ="http://www.ncbi.nlm.nih.gov/taxonomy?term=${fieldValue(bean: hit, field: "taxOrder")}">${fieldValue(bean: hit, field: "taxOrder")}</a></td>
+                            <td><a href ="http://www.ncbi.nlm.nih.gov/taxonomy?term=${fieldValue(bean: hit, field: "family")}">${fieldValue(bean: hit, field: "family")}</a></td>
+                            <td><a href ="http://www.ncbi.nlm.nih.gov/taxonomy?term=${fieldValue(bean: hit, field: "taxClass")}">${fieldValue(bean: hit, field: "taxClass")}</a></td>
+                            <td><a href ="http://www.ncbi.nlm.nih.gov/taxonomy?term=${fieldValue(bean: hit, field: "phylum")}">${fieldValue(bean: hit, field: "phylum")}</a></td>                      
                         </tr>
                     </g:each>
                     </tbody>

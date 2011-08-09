@@ -102,6 +102,7 @@ class ShowController {
 			reps[counter].put(others)
 			counter++
 		}
+		
 
 		return [reps: reps, type: type, data: data, sites:sites, chart: params.chart, params: params, dataset:params.dataset]
 	}

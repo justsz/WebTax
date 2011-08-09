@@ -60,13 +60,13 @@
         
          <g:form controller="output" action="downloadSearchView">
         	<g:hiddenField name="separator" value="csv" />
-			<g:hiddenField name="motus" value="${motus}" />
+			<g:hiddenField name="motus" value="${motuInstanceList}" />
 			<g:submitButton name="download CSV" value="Download CSV"/>
 		</g:form>
 		
 		<g:form controller="output" action="downloadSearchView">
 			<g:hiddenField name="separator" value="tsv" />
-			<g:hiddenField name="motus" value="${motus}" />
+			<g:hiddenField name="motus" value="${motuInstanceList}" />
 			<g:submitButton name="download TSV" value="Download TSV"/>
 		</g:form>
         

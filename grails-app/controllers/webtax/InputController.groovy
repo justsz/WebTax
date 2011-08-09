@@ -30,7 +30,7 @@ class InputController {
 		
 			ant.unzip(src: file, dest: destination, overwrite:"true")
 			file.delete()
-			new File(destination, '__MACOSX').delete()	//deletes the thingy mac throws in its zip files
+			//new File(destination, '__MACOSX').delete()	//deletes the thingy mac throws in its zip files
 		}
 
 		redirect(action:"review", params: [destination: destination, dataset: dataset])
@@ -47,6 +47,10 @@ class InputController {
 		def databaseFile = new File("${grailsApplication.config.databasePath}databases.txt")
 		def dbs = []
 		databaseFile.eachLine { dbs.add(it) }
+		
+//		def databaseDir = new File(grailsApplication.config.databasePath)
+//		def dbs = []
+//		databaseDir.eachFile { dbs.add(it.getName()) }
 
 		return [files: files, destination: params.destination, dataset: params.dataset, dbs:dbs]
 	}

@@ -12,16 +12,14 @@
 	
 	
 	
-	<div style="float: left" class="list">
+<%--	<div style="float: left" class="list">--%>
+		<g:each in="${reps}" status="j" var="rep">
 		<table>
-			<g:each in="${reps}" status="j" var="rep">
+			
 			<thead>
 				<tr>
-                    <th>${type}</th>
-<%--                    <g:each in="${sites}" var="site">--%>
-                    
-                    	<th>${sites[j]}</th>
-<%--                    </g:each>--%>
+                    <th>${type}</th>                    
+                    <th>${sites[j]}</th>
 				</tr>	
 			</thead>
 		
@@ -29,19 +27,17 @@
 			<tbody>
 			
 				<g:each in="${rep.entrySet()}" status="i" var="entry">
-                        <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">                        
-								<td>${entry.key}</td>
+                        <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
+								<td><a href="http://www.ncbi.nlm.nih.gov/taxonomy?term=${entry.key}">${entry.key}</a></td>								
 								<td>${entry.value}</td>
                         </tr>
-        		</g:each>
-        	
+        		</g:each>        	
         	</tbody>
-        		
-        	</g:each>
         </table>
+        </g:each>
         
         
-	</div>
+<%--	</div>--%>
 	<g:each in="${data}" status="i" var="datum">
         	<g:if test="${chart == 'Pie chart'}">
 			<gvisualization:pieCoreChart elementId="chart${i}" title="${sites[i]}" width="${600}" height="${600}"  
