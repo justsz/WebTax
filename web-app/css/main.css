@@ -72,6 +72,18 @@ input:focus, select:focus, textarea:focus {
     padding: 7px 12px;
 }
 
+.currentDataset {
+	font-size: 10px;
+    padding: 0 5px;
+    float: right;
+}
+
+.currentDataset .switchDataset {
+    color: #955;
+    padding-left: 20px;
+    
+}
+
 .menuButton {
     font-size: 10px;
     padding: 0 5px;
@@ -80,6 +92,7 @@ input:focus, select:focus, textarea:focus {
     color: #333;
     padding: 4px 6px;
 }
+
 .menuButton a.home {
     background: url(../images/skin/house.png) center left no-repeat;
     color: #333;

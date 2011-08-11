@@ -8,6 +8,12 @@ class ShowController {
 	}
 
 	def represent = {
+		if(!params.dataset) {
+			flash.message = "No dataset supplied!"
+			redirect(action:'repForm', params: params)
+			return
+		}
+		
 		if(!params.sites) {
 			flash.message = "Please enter site(s)."
 			redirect(action:'repForm', params: params)
