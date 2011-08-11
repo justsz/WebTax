@@ -11,6 +11,9 @@
     </head>
     <body>
     <g:navigationBar dataset="${dataset}" />
+    <g:if test="${flash.message}">
+    <div class="message">${flash.message}</div>
+    </g:if>
     
         <div class="body">
             <h1>Showing table for MOTU: ${motuInstance.seqID} from site: ${motuInstance.site}</h1>

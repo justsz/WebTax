@@ -18,7 +18,7 @@ class InputParserService {
 
 	//def userInput = new File("./userUpload/input.fasta")
 	def config = ConfigurationHolder.config
-	def blaster = new Blaster(config.megablastPath, config.taxdumpPath, config.databasePath)
+	def blaster = new Blaster(config.megablastPath, config.taxdumpPath, config.databasePath, config.processorCores)
 	def sessionFactory
 	def batchSize = config.batchSize
 
@@ -58,15 +58,21 @@ class InputParserService {
 		def file = new File(destination, fileName)
 		println file.getName()
 		
+		try {
 		file.eachLine(parse)
+		} catch(Exception e) {
+			job.progress = -1
+			return
+		}
+			
+		
 		runnedOnce = true
 		println "${ID.size()} MOTUs will be added."
 		progress = 0
+		job.progress = progress
 		def batchCount = 0		
 
 		for (i in 0..<ID.size()) {
-			
-			
 
 			def motu = new Motu(seqID: ID[i], motuId: motuIds[i], cutoff: cutoff[i], site: sites[i], sequence: sequence[i], freq: freqs[i])	
 			batch.add(motu)
@@ -112,6 +118,7 @@ class InputParserService {
 				dataset.addToMotus(m)
 			} 			
 		}
+		
 				
 		job.progress = 100
 		job.save(flush:true)

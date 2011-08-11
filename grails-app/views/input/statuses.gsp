@@ -6,7 +6,10 @@
 	</head>
 	
 	<body>
-	<g:navigationBar dataset="${dataset}" />	
+	<g:navigationBar dataset="${dataset}" />
+	<g:if test="${flash.message}">
+    <div class="message">${flash.message}</div>
+    </g:if>	
 	
 	<div style="float: left" class="list">
 		 
@@ -30,6 +33,9 @@
 									<g:if test="${ webtax.Job.get(entry).progress == 0 }" >
 									Pending
 									</g:if>
+									<g:elseif test="${ webtax.Job.get(entry).progress == -1 }">
+									Not accepted type, incorrectly formatted or empty file.
+									</g:elseif>
 									<g:elseif test="${ webtax.Job.get(entry).progress == 100 }">
 									Complete
 									</g:elseif>

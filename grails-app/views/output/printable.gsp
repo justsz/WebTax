@@ -7,6 +7,9 @@
 	
 	<body>
 	<g:navigationBar dataset="${dataset}" />
+	<g:if test="${flash.message}">
+    <div class="message">${flash.message}</div>
+    </g:if>
  			
  			<g:if test="${chartType == 'Pie chart'}">
 			<gvisualization:imagePieChart elementId="chart" title="${site}" width="${750}" height="${400}"  labels="value"

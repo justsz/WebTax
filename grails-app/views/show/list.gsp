@@ -8,10 +8,10 @@
         <title><g:message code="default.list.label" args="[entityName]" /></title>
     </head>
     <body>
-        <g:navigationBar dataset="${dataset}" />
+        <g:navigationBarWithChangeDataset dataset="${dataset}" />
         <div class="body">
-            <g:if test="${flash.message}">
-            <div class="message">${flash.message}</div>
+            <g:if test="${flash.listMessage}">
+            <div class="message">${flash.listMessage}</div>
             </g:if>
             <div class="list">
                 <table>
@@ -32,11 +32,13 @@
                     </thead>
                     <tbody>
                     <g:each in="${motuInstanceList}" status="i" var="motuInstance">
-                        <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
+                        <tr class="${(i % 2) == 0 ? 'odd' : 'even'}" >
+                       
                         
                             <td><g:link action="showTable" id="${motuInstance.id}" params="[dataset:dataset]">${fieldValue(bean: motuInstance, field: "id")}</g:link></td>
+<%--							<td>${fieldValue(bean: motuInstance, field: "id")}</td>--%>
                         
-                            <td>${fieldValue(bean: motuInstance, field: "seqID")}</td>
+                            <td><g:link action="showTable" id="${motuInstance.id}" params="[dataset:dataset]">${fieldValue(bean: motuInstance, field: "seqID")}</g:link></td>
                         
                             <td>${fieldValue(bean: motuInstance, field: "cutoff")}</td>                    
                        

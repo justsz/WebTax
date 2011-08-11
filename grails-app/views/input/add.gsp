@@ -4,11 +4,11 @@
 	</head>
 	
 	<body>        
-    <g:navigationBar dataset="${dataset}" />
+    <g:navigationBar dataset="${dataset}" />	
         
 	<g:if test="${flash.message}">
-            <div class="message">${flash.message}</div>
-            </g:if>
+    <div class="message">${flash.message}</div>
+    </g:if>
 
 	<div class ="upload">
 	

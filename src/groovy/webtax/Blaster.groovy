@@ -5,9 +5,10 @@ package webtax
 
 class Blaster {
 
-	Blaster(String mbPath, String taxdumpPath, String dbPath) {
+	Blaster(String mbPath, String taxdumpPath, String dbPath, Integer procs) {
 		myTreeData = new TaxIdProcessor(taxdumpPath)
 		megablastPath = mbPath
+		processors = procs
 		
 		databasePath = dbPath
 	}
@@ -18,7 +19,7 @@ class Blaster {
 	
 	def databasePath
 
-	def processors = 2 //Give user option to choose number of cores later on.
+	def processors //Give user option to choose number of cores later on.
 
 	def motuID
 	def seq

@@ -6,6 +6,9 @@
 	
 	<body>
 	<g:navigationBar dataset="${dataset}" />
+	<g:if test="${flash.message}">
+    <div class="message">${flash.message}</div>
+    </g:if>
 	
 	<div style="float: left" class="list">
 		 <g:form action='deleteFiles'>

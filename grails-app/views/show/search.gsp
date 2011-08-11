@@ -4,7 +4,10 @@
     <meta name="layout" content="main"/> 
 </head> 
 <body> 
-<g:navigationBar dataset="${dataset}" />
+<g:navigationBarWithChangeDataset dataset="${dataset}" />
+	<g:if test="${flash.message}">
+    <div class="message">${flash.message}</div>
+    </g:if>
 
     <formset> 
         <legend>Search for Motus</legend> 

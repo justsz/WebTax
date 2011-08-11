@@ -13,7 +13,7 @@ class InputController {
 	}
 
 	def add = {
-		return [dataset: params.dataset]	//pretty sure that the if is not needed
+		return [dataset: params.dataset]
 	}
 
 	def uploadFiles = {
@@ -22,19 +22,36 @@ class InputController {
 		def destination = new File("${grailsApplication.config.userInputPath}${dataset}")
 
 		withForm {
+			if (!dataset) {
+				flash.message = "Please enter a dataset to work within."
+				redirect (action:'add')
+				return
+			}
+			
 			def up = request.getFile("myFile")
+			if(up.empty) {
+				flash.message = "Uploaded file was empty."
+				redirect (action:'add', params:[dataset:dataset])
+				return
+			}
+			
 			UUID uuid = UUID.randomUUID()
 			def file = new File("${grailsApplication.config.userInputPath}temp${uuid}")
 			up.transferTo(file)
 			//def file = up.getFileItem().getStoreLocation()
-		
-			ant.unzip(src: file, dest: destination, overwrite:"true")
+			try {
+				ant.unzip(src: file, dest: destination, overwrite:"true")
+			} catch(Exception e) {
+				flash.message = "Unaccepted file format. Please upload a .zip file."
+				file.delete()
+				redirect (action:'add', params:[dataset:dataset])
+				return
+			}
+			
 			file.delete()
 			//new File(destination, '__MACOSX').delete()	//deletes the thingy mac throws in its zip files
+			redirect(action:"review", params: [destination: destination, dataset: dataset])
 		}
-
-		redirect(action:"review", params: [destination: destination, dataset: dataset])
-
 	}
 
 	//Refactoring oppurtunity: pass just the dataset and rebuild destination from that.
@@ -47,10 +64,10 @@ class InputController {
 		def databaseFile = new File("${grailsApplication.config.databasePath}databases.txt")
 		def dbs = []
 		databaseFile.eachLine { dbs.add(it) }
-		
-//		def databaseDir = new File(grailsApplication.config.databasePath)
-//		def dbs = []
-//		databaseDir.eachFile { dbs.add(it.getName()) }
+
+		//		def databaseDir = new File(grailsApplication.config.databasePath)
+		//		def dbs = []
+		//		databaseDir.eachFile { dbs.add(it.getName()) }
 
 		return [files: files, destination: params.destination, dataset: params.dataset, dbs:dbs]
 	}
@@ -69,6 +86,12 @@ class InputController {
 		def dir = new File(params.destination)
 		def files = []
 		dir.eachFile{ files.add(it) }
+		
+		if (files.size() == 0) {
+			flash.message = "No files to annotate!"
+			redirect (action:'review', params: params)
+			return
+		}
 
 		def jobIds = []
 

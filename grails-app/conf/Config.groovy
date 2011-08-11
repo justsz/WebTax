@@ -6,7 +6,10 @@
 //                             "file:${userHome}/.grails/${appName}-config.properties",
 //                             "file:${userHome}/.grails/${appName}-config.groovy"]
 
-grails.config.locations = ["file:${userHome}/app-config/${appName}-config.groovy"]
+grails.config.locations = ["file:${userHome}/app-config/${appName}-config.groovy"]	//development
+//grails.config.locations = ["file:/home/justs/config.groovy"]	//production
+
+
 
 
 // if(System.properties["${appName}.config.location"]) { 
@@ -58,7 +61,8 @@ grails.exceptionresolver.params.exclude = ['password']
 // set per-environment serverURL stem for creating absolute links
 environments {
     production {
-        grails.serverURL = "http://www.changeme.com"
+		grails.serverURL = "http://webtax.bio.ed.ac.uk"
+		grails.app.context = "/"
     }
     development {
         grails.serverURL = "http://localhost:8080/${appName}"
