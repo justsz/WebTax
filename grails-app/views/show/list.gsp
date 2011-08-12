@@ -35,8 +35,8 @@
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}" >
                        
                         
-                            <td><g:link action="showTable" id="${motuInstance.id}" params="[dataset:dataset]">${fieldValue(bean: motuInstance, field: "id")}</g:link></td>
-<%--							<td>${fieldValue(bean: motuInstance, field: "id")}</td>--%>
+<%--                            <td><g:link action="showTable" id="${motuInstance.id}" params="[dataset:dataset]">${fieldValue(bean: motuInstance, field: "id")}</g:link></td>--%>
+							<td>${fieldValue(bean: motuInstance, field: "id")}</td>
                         
                             <td><g:link action="showTable" id="${motuInstance.id}" params="[dataset:dataset]">${fieldValue(bean: motuInstance, field: "seqID")}</g:link></td>
                         

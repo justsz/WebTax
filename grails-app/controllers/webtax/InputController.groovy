@@ -5,6 +5,7 @@ import java.util.UUID
 
 class InputController {
 	def inputParserService
+	def ant = new AntBuilder()
 
 	//allowedMethods ?
 
@@ -18,7 +19,7 @@ class InputController {
 
 	def uploadFiles = {
 		def dataset = params.dataset
-		def ant = new AntBuilder()
+
 		def destination = new File("${grailsApplication.config.userInputPath}${dataset}")
 
 		withForm {
@@ -27,14 +28,14 @@ class InputController {
 				redirect (action:'add')
 				return
 			}
-			
+
 			def up = request.getFile("myFile")
 			if(up.empty) {
 				flash.message = "Uploaded file was empty."
 				redirect (action:'add', params:[dataset:dataset])
 				return
 			}
-			
+
 			UUID uuid = UUID.randomUUID()
 			def file = new File("${grailsApplication.config.userInputPath}temp${uuid}")
 			up.transferTo(file)
@@ -47,7 +48,7 @@ class InputController {
 				redirect (action:'add', params:[dataset:dataset])
 				return
 			}
-			
+
 			file.delete()
 			//new File(destination, '__MACOSX').delete()	//deletes the thingy mac throws in its zip files
 			redirect(action:"review", params: [destination: destination, dataset: dataset])
@@ -73,7 +74,13 @@ class InputController {
 	}
 
 	def deleteFiles = {
-		params.each { if(it.value == 'on') new File(params.destination, it.key).delete() }
+		params.each { if(it.value == 'on') {
+				def file = new File(params.destination, it.key)
+				if (file.isFile()) file.delete()
+				else ant.delete(dir: "${params.destination}/${it.key}")
+			}
+		}
+
 		redirect (action:'review', params: [destination: params.destination, dataset: params.dataset])
 	}
 
@@ -86,7 +93,7 @@ class InputController {
 		def dir = new File(params.destination)
 		def files = []
 		dir.eachFile{ files.add(it) }
-		
+
 		if (files.size() == 0) {
 			flash.message = "No files to annotate!"
 			redirect (action:'review', params: params)

@@ -183,8 +183,9 @@ class ShowController {
 
 	def showTable = {
 		def motuInstance = Motu.get(params.id)
+		
 		if (!motuInstance) {
-			flash.listM	essage = "MOTU not found."
+			flash.listMessage = "MOTU not found."
 			redirect(action: "list", params: [dataset: params.dataset])
 		}
 		else {
@@ -194,6 +195,10 @@ class ShowController {
 			if (!params.offset) params.offset = 0
 			if (!params.sort) params.sort = "bitScore"
 			if (!params.order) params.order = "desc"
+			
+			if (!motuInstance.hits*.id.size()) {
+				return [motuInstance: motuInstance, hits: [], dataset:params.dataset]
+			}
 
 			def hitS = BlastHit.withCriteria {
 				maxResults(params.max?.toInteger())
@@ -202,7 +207,7 @@ class ShowController {
 
 				order(params.sort, params.order)
 			}
-			[motuInstance: motuInstance, hits: hitS, dataset:params.dataset]
+			return [motuInstance: motuInstance, hits: hitS, dataset:params.dataset]
 		}
 	}
 

@@ -27,7 +27,7 @@ environments {
         dataSource {
             dbCreate = "update"
             url = "jdbc:hsqldb:file:prodDb;shutdown=true"	//for normal
-//			url = "jdbc:hsqldb:file:mem:prodDb"	//for deployment while things are still shakey
+//			url = "jdbc:hsqldb:mem:prodDb"	//for deployment while things are still shakey
         }
     }
 }

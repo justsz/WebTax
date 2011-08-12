@@ -21,6 +21,7 @@ class InputParserService {
 	def blaster = new Blaster(config.megablastPath, config.taxdumpPath, config.databasePath, config.processorCores)
 	def sessionFactory
 	def batchSize = config.batchSize
+	def ant = new AntBuilder()
 
 	def headerPattern = />site=(.*?)motu=(.*?)cutoff=(\d+)freq=(\d+)/	//>site=creer1motu=MOTU0893cutoff=0freq=10
 	def sequencePattern = /([CGATNcgatn]*)/
@@ -62,6 +63,15 @@ class InputParserService {
 		file.eachLine(parse)
 		} catch(Exception e) {
 			job.progress = -1
+			if (file.isFile()) file.delete()
+			else ant.delete(dir: "${destination}/${fileName}")
+			
+			def fileCount = 0
+			new File(destination).eachFile {fileCount++}
+			println fileCount
+			if (!fileCount) {
+				ant.delete(dir: destination)
+			}
 			return
 		}
 			
@@ -87,10 +97,17 @@ class InputParserService {
 				
 				for (Motu m: batch) {
 					
-					if (m.save()) {	//Check if MOTU is already in database.
+//					if (m.save()) {	//Check if MOTU is already in database.
+//						blaster.doBlast(m)
+//						dataset.addToMotus(m)	//currently impossible to add same data to different datasets. have to change motu's name to do that.					
+//					} 
+					
+					if (!dataset.motus*.seqID.contains(m.seqID)) {
+						m.save()
 						blaster.doBlast(m)
-						dataset.addToMotus(m)	//currently impossible to add same data to different datasets. have to change motu's name to do that.					
-					} 
+						dataset.addToMotus(m)
+					}
+					
 					
 				}
 				
@@ -113,15 +130,27 @@ class InputParserService {
 		dataset = dataset.merge()
 		for (Motu m: batch) {
 			
-			if (m.save()) {	//Check if MOTU is already in database.
-				blaster.doBlast(m)
-				dataset.addToMotus(m)
-			} 			
+			if (!dataset.motus*.seqID.contains(m.seqID)) {
+						m.save()
+						blaster.doBlast(m)
+						dataset.addToMotus(m)
+					}			
 		}
 		
 				
 		job.progress = 100
 		job.save(flush:true)
+		file.delete()
+		
+		//Check if the directory of the dataset is empty. If it is, delete the directory.
+		def fileCount = 0
+		new File(destination).eachFile {fileCount++}
+		println fileCount
+		if (!fileCount) {
+			ant.delete(dir: destination)
+		}
+		
+		
 		
 	}
 
