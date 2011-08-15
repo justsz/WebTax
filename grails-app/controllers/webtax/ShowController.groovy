@@ -1,13 +1,41 @@
+/*
+*---------------------------------ShowController-------------------------------------
+* This controller handles all the display aspects of the user's input
+* after blasting and annotating. This includes listing all MOTUs, showing an
+* individual MOTU in a table with its 10 best matches from megablast, searching
+* through motus based on sample name and cutoff value, and a summary view that
+* has a selection of criteria and chart types to produce an overview of what kinds of
+* creatures are in the user's sample. 
+* Charts are drawn using Google's visualization API plugin.
+* Data can be downloaded via OutputController.
+*------------------------------------------------------------------------------------
+* Common things: the dataset String is always passed around so that it would be unique
+* to the browser window and links could be easily shared.
+*/
+
 package webtax
 
 class ShowController {
+	def visualizeService
+	
 	def index = { }
 
+	/*-------repForm--------
+	* Takes user's criteria for the summary view, represent. The criteria are
+	* list of sample sites, MOTU clustering cutoff, clumping threshold (put poorly represented MOTU's in one category),
+	* a filtering phrase that applies to the MOTU's hits, minimum bitscore, minimum difference between first and next bitscore,
+	* taxonomic type to show, and chart type to display.
+	*/
 	def repForm = {
 		return [dataset: params.dataset, params: params]
 	}
 
+	/*------represent--------
+	* Gets criteria from repForm, constructs and executes queries (these have many steps)
+	* and draws the results in tables and charts.
+	*/
 	def represent = {
+		//user input validity checks
 		if(!params.dataset) {
 			flash.message = "No dataset supplied!"
 			redirect(action:'repForm', params: params)
@@ -25,8 +53,8 @@ class ShowController {
 			return
 
 		}
-		if(!params.cutoff) {
-			flash.message = "Please enter a cutoff."
+		if(!params.cutoff.isNumber()) {
+			flash.message = "Cutoff must be a number."
 			redirect(action:'repForm', params: params)
 			return
 		}
@@ -40,109 +68,28 @@ class ShowController {
 			redirect(action:'repForm', params: params)
 			return
 		}
+		//end of validity checks
 
-		def properties = ['species', 'genus', 'taxOrder', 'family', 'taxClass', 'phylum']
-		def reps = []
-		def data = []
-		def totalHits = []
+		//take user's input
 		def type = params.type
 		def cutoff = params.cutoff
-		def sites = params.sites.split(",")
+		def minBitScore = params.minBitScore as Integer
+		def minBitScoreStep = params.minBitScoreStep as Integer
 
+		//make the sites string into a list and trim off excess whitespace
+		def sites = params.sites.split(",")
 		for (i in 0..<sites.size()) {
 			sites[i] = sites[i].trim()
 		}
+		//println sites.getClass()
+		
+		visualizeService.processCriteria(params.dataset, sites as List, params.threshold, params.keyPhrase, cutoff, minBitScore, minBitScoreStep, type)
+		def reps = visualizeService.getReps()	
+		def data = visualizeService.getData()
+		def tableData = visualizeService.getTableData(reps)	
+		
 
-		def counter = 0
-
-		for (site in sites) {
-			reps[counter] = [:]
-			data[counter] = []
-
-			def motus = Motu.withCriteria {
-				'in'("id", Dataset.findByName(params.dataset).motus*.id)
-				eq("site", site)
-				eq("cutoff", cutoff)
-			}
-
-
-			//			def hits = motus.collect {it.hits.max {it.bitScore}}
-
-			def minBitScore = params.minBitScore as Integer
-			def minBitScoreStep = params.minBitScoreStep as Integer
-			def freqs = motus.collect {it.freq}
-			def hits = motus.collect { it.hits }	//[[h1, h2...], [h11, h12...],...]
-
-
-			hits = hits*.sort { -it.bitScore }
-
-			hits = hits.collect { it  = it.split{ it.bitScore >= minBitScore  }[0] }		//change to  x -> x.... format for readability
-
-			//hits = hits.split { it.size() > 1 }[0]	//trim out singletons
-			if (minBitScoreStep != 0) {
-				hits = hits.collect {
-					if (it[0] != null && it[1] != null) {
-						if ((it[0].bitScore - it[1].bitScore) >= minBitScoreStep) {it = it[0]}
-						else it = null
-					} else it = null
-				}
-				//hits = hits.split{it}[0]	//trim out nulls
-			} else {
-				hits = hits.collect { it = it[0] }
-			}
-
-			def hitsWithFreqs = [:]
-			for (i in 0..<hits.size()) {
-				hitsWithFreqs.put (hits[i], 0)
-			}
-
-			for (i in 0..<hits.size()) {
-				hitsWithFreqs[hits[i]] += freqs[i].toInteger()
-			}
-
-
-
-
-			for (h in hitsWithFreqs) {
-
-				if (h.key) {
-					for (prop in properties) {
-						if (h.key[prop] =~ ".*${params.keyPhrase}.*") {
-							if (reps[counter].containsKey(h.key[type])) {
-								reps[counter][h.key[type]] += (h.value.toInteger())
-							} else {
-								reps[counter].put(h.key[type], h.value.toInteger())
-							}
-							break
-						}
-					}
-				}
-			}
-			reps[counter] = reps[counter].sort {a, b -> b.value <=> a.value}
-
-
-			totalHits[counter] = 0
-			reps[counter].each {key, value -> totalHits[counter] += value}
-			def others = ['others', 0]
-
-			reps[counter].each {key, value ->
-				if ((value / totalHits[counter]) > ((params.threshold.toDouble()) / 100)) {	//Clump together under "others" chart sections for motus that represent less than threshold% of the total motu count
-					def entry = [key, value]
-					data[counter].add(entry)
-				} else {
-					others[1] += value
-				}
-			}
-			if((params.threshold.toDouble()) != 0) {
-				data[counter].add(others)
-				reps[counter].put(others)
-			}
-
-			counter++
-		}
-
-
-		return [reps: reps, type: type, data: data, sites:sites, chart: params.chart, params: params, dataset:params.dataset]
+		return [reps: reps, tableData: tableData, type: type, data: data, sites:sites, chart: params.chart, params: params, dataset:params.dataset]
 	}
 
 	def search = {

@@ -1,27 +1,54 @@
+/*
+ *-------------------------------InputController---------------------------------
+ * This controller handles user uploaded .zips with text files of MOTUs in them.
+ * The zip is extracted into a directory, the user can review what files there are
+ * and delete or add more. After they are satisfied, a blast database can be selected
+ * from a list and files sent to megablast. An auto-refreshing status screen keeps the
+ * user informed on progress.
+ *---------------------------------------------------------------------------------
+ * Common things: the dataset String is always passed around so that it would be unique
+ * to the browser window and links could be easily shared. Also, the dataset's save path
+ * is passed around, though it could be recreated form just by knowing the dataset..
+ */
+
 package webtax
 
 import java.util.UUID
 
 
 class InputController {
-	def inputParserService
-	def ant = new AntBuilder()
-
-	//allowedMethods ?
+	def inputParserService	//inject the service that does blasting an annotation
+	def ant = new AntBuilder()	//AntBuilder for unzipping and folder deletion
 
 	def index = {
 		redirect(action: "add", params: params)
 	}
 
+	/* ------add------
+	 * Add takes a .zip file (.jar and .war are also accepted by ant) and dataset.
+	 * The zip is sent to uploadFiles and the dataset set to the current dataset.
+	 */
 	def add = {
 		return [dataset: params.dataset]
 	}
 
+
+	/*-------uploadFiles--------
+	 * Takes a zip file from add, saves it on disk and then uses the one on 
+	 * disk to unzip. This is done because Grais uses CommonsMultipartFile
+	 * and the safest and easiest way to convert that to a plain File is by 
+	 * using transferTo to get it on disk. Ant cannot work with the Grails 
+	 * interpretation of File.
+	 *
+	 *
+	 */	
 	def uploadFiles = {
 		def dataset = params.dataset
 
+		//save path created by appending the dataset name to the save location defined in the config file
 		def destination = new File("${grailsApplication.config.userInputPath}${dataset}")
 
+		//tokenized input so that clicking on submit twice doesn't crash the app
 		withForm {
 			if (!dataset) {
 				flash.message = "Please enter a dataset to work within."
@@ -29,6 +56,7 @@ class InputController {
 				return
 			}
 
+			//download file that the user has submitted
 			def up = request.getFile("myFile")
 			if(up.empty) {
 				flash.message = "Uploaded file was empty."
@@ -36,10 +64,14 @@ class InputController {
 				return
 			}
 
+			//create unique temporary file
 			UUID uuid = UUID.randomUUID()
 			def file = new File("${grailsApplication.config.userInputPath}temp${uuid}")
+
+			//and save user's upload there
 			up.transferTo(file)
-			//def file = up.getFileItem().getStoreLocation()
+
+			//use AntBuilder to unzip the file and then delete the temporary file created above
 			try {
 				ant.unzip(src: file, dest: destination, overwrite:"true")
 			} catch(Exception e) {
@@ -55,41 +87,63 @@ class InputController {
 		}
 	}
 
-	//Refactoring oppurtunity: pass just the dataset and rebuild destination from that.
-
+	/*-------review-------
+	 * Displays a list of files that the user uploaded in the zip.
+	 * Files can be deleted or more added. Deletion is done with deleteFiles action,
+	 * addition is just a redirect to the add action. The user can then select the database to 
+	 * blast against.
+	 */
 	def review = {
+		//create a list of all files in the dataset directory
 		def dir = new File(params.destination)
 		def files = []
 		dir.eachFile{ files.add(it.getName()) }
 
+		//create a list of available databases from the config-like databases.txt
 		def databaseFile = new File("${grailsApplication.config.databasePath}databases.txt")
 		def dbs = []
 		databaseFile.eachLine { dbs.add(it) }
 
-		//		def databaseDir = new File(grailsApplication.config.databasePath)
-		//		def dbs = []
-		//		databaseDir.eachFile { dbs.add(it.getName()) }
-
 		return [files: files, destination: params.destination, dataset: params.dataset, dbs:dbs]
 	}
 
+	/*-------deleteFiles--------
+	 * Deletes the files the user ticked in the review view by reading the params map.
+	 * A ticked file will look like this [someFile.fasta : on].
+	 */
 	def deleteFiles = {
 		params.each { if(it.value == 'on') {
 				def file = new File(params.destination, it.key)
+
+				//a single file and a directory need to be deleted differently. Ant is more concise than
+				//standard Groovy for directory deletion
 				if (file.isFile()) file.delete()
 				else ant.delete(dir: "${params.destination}/${it.key}")
 			}
 		}
-
 		redirect (action:'review', params: [destination: params.destination, dataset: params.dataset])
 	}
 
+
+	/*-------blast--------
+	 * Takes the user's uploaded files, creates a Job object for each and 
+	 * sends the files off to inputParserService to be megablasted and annotated.
+	 * Jobs are done asyncronously (but still with only 1 job at a time) so that the
+	 * progresses could be displayed. Grails won't let you go to another view while the
+	 * current action is still running, so runAsync (from executor plugin) spins off a new
+	 * thread for each job.
+	 */
 	def blast = {
+		//for some reason inputParserService doesn't take values from params so I have
+		//created a variable for the needed param variables
 		def dataset = params.dataset
 		def database = params.database
 		def destination = params.destination
-		new Dataset(name: dataset).save(flush: true)	//test if dataset name is unique
 
+		//test if dataset name is unique
+		new Dataset(name: dataset).save(flush: true)
+
+		//create list of files to blast from upload location
 		def dir = new File(params.destination)
 		def files = []
 		dir.eachFile{ files.add(it) }
@@ -100,20 +154,30 @@ class InputController {
 			return
 		}
 
+		//a list of all the jobs begun in this batch, these will be used by statuses to display the correct progresses
 		def jobIds = []
 
 		files.each {
 			def fileName = it.getName()
+
+			//job is saved and persisted immediately so that the statuses page can access the progress value
 			def job = new Job(progress: 0, name: fileName).save(flush:true)
 			jobIds.add(job.id)
+
+			//spin off a thread for each file
 			runAsync {
-				inputParserService.parseAndAdd(job.id, dataset, database, destination, fileName)	//Refactioring opportunity: just pass a file.
+				inputParserService.parseAndAdd(job.id, dataset, database, destination, fileName)
 			}
 		}
 
 		redirect(action:'statuses', params:[jobIds: jobIds, dataset: dataset])
 	}
 
+
+	/*-------statuses---------
+	 * Displays a list of running jobs and their progresses.
+	 * Page reloads every 10 seconds to show changes.
+	 */
 	def statuses = {
 		return [jobIds: params.jobIds, dataset: params.dataset]
 	}

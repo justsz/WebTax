@@ -16,28 +16,55 @@
 	
 	
 <%--	<div style="float: left" class="list">--%>
-		<g:each in="${reps}" status="j" var="rep">
+
+<%--		<g:each in="${reps}" status="j" var="rep">--%>
+<%--		<table>--%>
+<%--			--%>
+<%--			<thead>--%>
+<%--				<tr>--%>
+<%--                    <th>${type}</th>                    --%>
+<%--                    <th>${sites[j]}</th>--%>
+<%--				</tr>	--%>
+<%--			</thead>--%>
+<%--		--%>
+<%--		--%>
+<%--			<tbody>--%>
+<%--			--%>
+<%--				<g:each in="${rep.entrySet()}" status="i" var="entry">--%>
+<%--                        <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">--%>
+<%--								<td><a href="http://www.ncbi.nlm.nih.gov/taxonomy?term=${entry.key}">${entry.key}</a></td>								--%>
+<%--								<td>${entry.value}</td>--%>
+<%--                        </tr>--%>
+<%--        		</g:each>        	--%>
+<%--        	</tbody>--%>
+<%--        </table>--%>
+<%--        </g:each>--%>
+
+		
 		<table>
 			
 			<thead>
 				<tr>
-                    <th>${type}</th>                    
-                    <th>${sites[j]}</th>
+                    <th>${type}</th>
+                    <g:each in="${sites}" var="site">                    
+                    <th>${site}</th>
+                    </g:each>
 				</tr>	
 			</thead>
 		
 		
 			<tbody>
 			
-				<g:each in="${rep.entrySet()}" status="i" var="entry">
+				<g:each in="${tableData}" status="i" var="siteData">
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
-								<td><a href="http://www.ncbi.nlm.nih.gov/taxonomy?term=${entry.key}">${entry.key}</a></td>								
-								<td>${entry.value}</td>
+                        	<g:each in="${siteData}" var="entry">					
+								<td>${entry}</td>
+							</g:each>
                         </tr>
         		</g:each>        	
         	</tbody>
         </table>
-        </g:each>
+        
         
         
 <%--	</div>--%>
