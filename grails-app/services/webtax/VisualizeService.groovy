@@ -92,8 +92,8 @@ class VisualizeService {
 					}
 				}
 			}
-			def dataForChart = reps[counter].sort {a, b -> b.value <=> a.value}
-			reps[counter] = reps[counter].sort {a, b -> -(b.key <=> a.key)}
+			
+			reps[counter] = reps[counter].sort {a, b -> b.value <=> a.value}
 
 
 
@@ -101,7 +101,7 @@ class VisualizeService {
 			reps[counter].each {key, value -> totalHits[counter] += value}
 			def others = ['others', 0]
 
-			dataForChart.each {key, value ->
+			reps[counter].each {key, value ->
 				if ((value / totalHits[counter]) > ((threshold.toDouble()) / 100)) {	//Clump together under "others" chart sections for motus that represent less than threshold% of the total motu count
 					def entry = [key, value]
 					data[counter].add(entry)
