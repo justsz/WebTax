@@ -189,7 +189,7 @@ class VisualizeService {
 		//go through all the names and for each put a list in tableData that has the creature's name at index 0
 		//and then the number of reads matching to that name in each sample site. The order of the read numbers
 		//matches the List sites that ShowController action visualize already has.
-		for (i in 0..allNames.size()) {
+		for (i in 0..<allNames.size()) {
 			tableData[i] = []
 			tableData[i][0] = allNames[i]
 			

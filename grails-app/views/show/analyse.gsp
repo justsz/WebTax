@@ -71,13 +71,6 @@
 		<input onclick="this.select(); pageTracker._trackEvent('new-done-click','short-click');" readonly="readonly" class="readonly" 
 		value="<g:createLink absolute="true" controller="show" action="represent" params="${[sites:params.sites, threshold:params.threshold, cutoff:params.cutoff, type:params.type, chart:params.chart, keyPhrase:params.keyPhrase, dataset:params.dataset]}"/>"/>
 	</div>
-<%--	<g:form controller="output" action="downloadRepresentView">--%>
-<%--			<g:hiddenField name="separator" value="csv" />--%>
-<%--			<g:hiddenField name="sites" value="${sites.toString()}" />--%>
-<%--			<g:hiddenField name="data" value="${data}" />--%>
-<%--			<g:hiddenField name="type" value="${type}" />--%>
-<%--			<g:submitButton name="download CSV" value="Download CSV"/>--%>
-<%--	</g:form>--%>
 
 <g:form controller="output" action="downloadRepresentView">
 			<g:hiddenField name="separator" value="csv" />

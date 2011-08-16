@@ -6,8 +6,10 @@ class PrintableService {
 
 	def List reFormat(String datum) {
 		def out = []
-		datum = datum[1..-2]
+		println datum
 		
+		if (datum =~ /\[\[.*\]\]/) datum = datum[1..-2]
+		println datum
 		
 		def entryPattern = /\[(.*?), (\d+)\]/
 		def entryFilter = datum =~ entryPattern

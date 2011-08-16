@@ -86,8 +86,7 @@ class ShowController {
 		visualizeService.processCriteria(params.dataset, sites as List, params.threshold, params.keyPhrase, cutoff, minBitScore, minBitScoreStep, type)
 		def reps = visualizeService.getReps()	
 		def data = visualizeService.getData()
-		def tableData = visualizeService.getTableData(reps)	
-		
+		def tableData = visualizeService.getTableData(reps)			
 
 		return [reps: reps, tableData: tableData, type: type, data: data, sites:sites, chart: params.chart, params: params, dataset:params.dataset]
 	}
