@@ -22,7 +22,7 @@
                         
                             <g:sortableColumn property="seqID" params="[dataset:dataset]" title="Seq ID" />
                         
-                            <g:sortableColumn property="cutoff" params="[dataset:dataset]" title="Cutoff" />
+                            <g:sortableColumn property="cutoff" params="[dataset:dataset]" title="Cutoff"/>
                                             
                             <g:sortableColumn property="site" params="[dataset:dataset]" title="Site" />
                             
@@ -32,19 +32,19 @@
                     </thead>
                     <tbody>
                     <g:each in="${motuInstanceList}" status="i" var="motuInstance">
-                        <tr class="${(i % 2) == 0 ? 'odd' : 'even'}" >
+                        <tr class="${(i % 2) == 0 ? 'odd' : 'even'}" 
+                        onmouseover="this.style.cursor='pointer'"
+                        onclick="location.href='${createLink(action:'showTable', id:motuInstance.id, params:[dataset:dataset])}'">
                        
+							<td>${motuInstance.id}</td>
                         
-<%--                            <td><g:link action="showTable" id="${motuInstance.id}" params="[dataset:dataset]">${fieldValue(bean: motuInstance, field: "id")}</g:link></td>--%>
-							<td>${fieldValue(bean: motuInstance, field: "id")}</td>
+                            <td>${motuInstance.seqID}</td>
                         
-                            <td><g:link action="showTable" id="${motuInstance.id}" params="[dataset:dataset]">${fieldValue(bean: motuInstance, field: "seqID")}</g:link></td>
-                        
-                            <td>${fieldValue(bean: motuInstance, field: "cutoff")}</td>                    
+                            <td>${motuInstance.cutoff}</td>                    
                        
-                            <td>${fieldValue(bean: motuInstance, field: "site")}</td>
+                            <td>${motuInstance.site}</td>
                             
-                            <td>${fieldValue(bean: motuInstance, field: "freq")}</td>
+                            <td>${motuInstance.freq}</td>
                         
                         </tr>
                     </g:each>

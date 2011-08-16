@@ -25,31 +25,33 @@
                     <thead>
                         <tr>
                         
-                            <g:sortableColumn property="id" title="${message(code: 'motu.id.label', default: 'Id')}" />
+                            <g:sortableColumn property="id" title="Id" />
                         
-                            <g:sortableColumn property="seqID" title="${message(code: 'motu.seqID.label', default: 'Seq ID')}" />
+                            <g:sortableColumn property="seqID" title="Seq ID" />
                         
-                            <g:sortableColumn property="cutoff" title="${message(code: 'motu.cutoff.label', default: 'Cutoff')}" />
+                            <g:sortableColumn property="cutoff" title="Cutoff" />
                                            
-                            <g:sortableColumn property="site" title="${message(code: 'motu.site.label', default: 'Site')}" />
+                            <g:sortableColumn property="site" title="Site" />
                             
-                            <g:sortableColumn property="freq" title="${message(code: 'motu.site.label', default: 'Freq')}" />
+                            <g:sortableColumn property="freq" title="Freq" />
                         
                         </tr>
                     </thead>
                     <tbody>
                     <g:each in="${motuInstanceList}" status="i" var="motuInstance">
-                        <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
+                        <tr class="${(i % 2) == 0 ? 'odd' : 'even'}" 
+                        onmouseover="this.style.cursor='pointer'"
+                        onclick="location.href='${createLink(action:'showTable', id:motuInstance.id, params:[dataset:dataset])}'">
+                       
+							<td>${motuInstance.id}</td>
                         
-							<td>${fieldValue(bean: motuInstance, field: "id")}</td>
+                            <td>${motuInstance.seqID}</td>
                         
-                            <td><g:link action="showTable" id="${motuInstance.id}" params="[dataset:dataset]">${fieldValue(bean: motuInstance, field: "seqID")}</g:link></td>
-                        
-                            <td>${fieldValue(bean: motuInstance, field: "cutoff")}</td>                        
-                      
-                            <td>${fieldValue(bean: motuInstance, field: "site")}</td>
+                            <td>${motuInstance.cutoff}</td>                    
+                       
+                            <td>${motuInstance.site}</td>
                             
-                            <td>${fieldValue(bean: motuInstance, field: "freq")}</td>
+                            <td>${motuInstance.freq}</td>
                         
                         </tr>
                     </g:each>

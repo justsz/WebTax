@@ -11,7 +11,7 @@
     </g:if>
 	
 	<div style="float: left" class="list">
-		 <g:form action='deleteFiles'>
+		 <g:form action='blast'>
 		<table>
 			
 			<thead>
@@ -26,7 +26,7 @@
 				<g:each in="${files}" status="i" var="entry">
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">                        
 								<td>
-								<g:checkBox name="${entry}" />
+								<g:checkBox name="${entry}" value="on" />
 								${entry}
 								</td>
                         </tr>
@@ -36,24 +36,18 @@
         		
         	
         </table>
-       
-        
-        <g:hiddenField name="destination" value="${destination}" />
-        <g:hiddenField name="dataset" value="${dataset}" />
-        <g:submitButton name="delete" value="Delete selected"/> 
+
+        	<label for="database">BLAST database</label>
+        	<g:select name="database" keys="${dbs}" from="${dbDescriptions}" />
+        	<g:hiddenField name="dataset" value="${dataset}" />
+        	<g:hiddenField name="destination" value="${destination}" /> 
+        	<br/>       	
+        	<g:submitButton name="blast" value="Blast and annotate files!"/> 
         </g:form>
         
         <g:form action='add'>
         	<g:hiddenField name="dataset" value="${dataset}" />
         	<g:submitButton name="addMore" value="Add more files"/> 
-        </g:form>
-        
-        <g:form action='blast'>
-        	<label for="database">BLAST databse</label>
-        	<g:select name="database" from="${dbs}" />
-        	<g:hiddenField name="dataset" value="${dataset}" />
-        	<g:hiddenField name="destination" value="${destination}" />        	
-        	<g:submitButton name="blast" value="Blast files!"/> 
         </g:form>
         
         

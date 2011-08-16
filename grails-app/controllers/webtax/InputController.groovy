@@ -89,7 +89,7 @@ class InputController {
 
 	/*-------review-------
 	 * Displays a list of files that the user uploaded in the zip.
-	 * Files can be deleted or more added. Deletion is done with deleteFiles action,
+	 * Files can be deleted or more added. Deletion is done by the blast action,
 	 * addition is just a redirect to the add action. The user can then select the database to 
 	 * blast against.
 	 */
@@ -102,26 +102,15 @@ class InputController {
 		//create a list of available databases from the config-like databases.txt
 		def databaseFile = new File("${grailsApplication.config.databasePath}databases.txt")
 		def dbs = []
-		databaseFile.eachLine { dbs.add(it) }
-
-		return [files: files, destination: params.destination, dataset: params.dataset, dbs:dbs]
-	}
-
-	/*-------deleteFiles--------
-	 * Deletes the files the user ticked in the review view by reading the params map.
-	 * A ticked file will look like this [someFile.fasta : on].
-	 */
-	def deleteFiles = {
-		params.each { if(it.value == 'on') {
-				def file = new File(params.destination, it.key)
-
-				//a single file and a directory need to be deleted differently. Ant is more concise than
-				//standard Groovy for directory deletion
-				if (file.isFile()) file.delete()
-				else ant.delete(dir: "${params.destination}/${it.key}")
-			}
+		def dbDescriptions =[]
+		
+		databaseFile.eachLine {
+			def line = it.split(', ')
+			dbs.add(line[0])
+			dbDescriptions.add(line[1])
 		}
-		redirect (action:'review', params: [destination: params.destination, dataset: params.dataset])
+
+		return [files: files, destination: params.destination, dataset: params.dataset, dbs:dbs, dbDescriptions:dbDescriptions]
 	}
 
 
@@ -136,6 +125,8 @@ class InputController {
 	def blast = {
 		//for some reason inputParserService doesn't take values from params so I have
 		//created a variable for the needed param variables
+		
+		
 		def dataset = params.dataset
 		def database = params.database
 		def destination = params.destination
@@ -144,9 +135,17 @@ class InputController {
 		new Dataset(name: dataset).save(flush: true)
 
 		//create list of files to blast from upload location
-		def dir = new File(params.destination)
 		def files = []
-		dir.eachFile{ files.add(it) }
+		params.each { if(it.value == 'on') files.add(it.key) }
+		
+		//do cleanup of unselected files and folders
+		def dir = new File(params.destination)
+		def filesToDelete = []
+		dir.eachFile{ if(!files.contains(it.getName())) filesToDelete.add(it) }
+		filesToDelete.each { file ->
+			if (file.isFile()) file.delete()
+			else ant.delete(dir: "${params.destination}/${file.getName()}")
+		}
 
 		if (files.size() == 0) {
 			flash.message = "No files to annotate!"
@@ -158,7 +157,7 @@ class InputController {
 		def jobIds = []
 
 		files.each {
-			def fileName = it.getName()
+			def fileName = it
 
 			//job is saved and persisted immediately so that the statuses page can access the progress value
 			def job = new Job(progress: 0, name: fileName).save(flush:true)

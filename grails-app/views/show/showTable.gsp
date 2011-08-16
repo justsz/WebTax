@@ -16,17 +16,18 @@
     </g:if>
     
         <div class="body">
-            <h1>Showing table for MOTU: ${motuInstance.seqID} from site: ${motuInstance.site}</h1>
+            <h1>Showing taxonomy for MOTU: ${motuInstance.seqID}</h1>
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
             </g:if>
             
-            <div class="list">       
+            <div class="cellHighlight">       
                 <table>
                     <thead>
                         <tr>
                             <g:sortableColumn property="accNum" title="Acc Number" />
                             <g:sortableColumn property="bitScore" title="Bitscore" />
+                            <g:sortableColumn property="taxID" title="TaxID" />
                             <g:sortableColumn property="species" title="Species" />
                             <g:sortableColumn property="genus" title="Genus" />
                             <g:sortableColumn property="taxOrder" title="Order" />
@@ -41,25 +42,26 @@
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">                                                
                             <td>${fieldValue(bean: hit, field: "accNum")}</td>
                             <td>${fieldValue(bean: hit, field: "bitScore")}</td>
-                            <td><a href ="http://www.ncbi.nlm.nih.gov/taxonomy?term=${fieldValue(bean: hit, field: "species")}">${fieldValue(bean: hit, field: "species")}</a></td>
-                            <td><a href ="http://www.ncbi.nlm.nih.gov/taxonomy?term=${fieldValue(bean: hit, field: "genus")}">${fieldValue(bean: hit, field: "genus")}</a></td>
-                            <td><a href ="http://www.ncbi.nlm.nih.gov/taxonomy?term=${fieldValue(bean: hit, field: "taxOrder")}">${fieldValue(bean: hit, field: "taxOrder")}</a></td>
-                            <td><a href ="http://www.ncbi.nlm.nih.gov/taxonomy?term=${fieldValue(bean: hit, field: "family")}">${fieldValue(bean: hit, field: "family")}</a></td>
-                            <td><a href ="http://www.ncbi.nlm.nih.gov/taxonomy?term=${fieldValue(bean: hit, field: "taxClass")}">${fieldValue(bean: hit, field: "taxClass")}</a></td>
-                            <td><a href ="http://www.ncbi.nlm.nih.gov/taxonomy?term=${fieldValue(bean: hit, field: "phylum")}">${fieldValue(bean: hit, field: "phylum")}</a></td>                      
+                            
+                            <td onmouseover="this.style.cursor='pointer'"
+        					onclick="location.href='${taxidURL.replaceFirst(/putTaxidHere/, hit.taxID as String)}'">${hit.taxID}</td>
+                            <td onmouseover="this.style.cursor='pointer'"
+        					onclick="location.href='${taxonomyURL.replaceFirst(/putTaxonomyHere/, hit.species)}'">${hit.species}</td>
+                            <td onmouseover="this.style.cursor='pointer'"
+        					onclick="location.href='${taxonomyURL.replaceFirst(/putTaxonomyHere/, hit.genus)}'">${hit.genus}</td>
+                            <td onmouseover="this.style.cursor='pointer'"
+        					onclick="location.href='${taxonomyURL.replaceFirst(/putTaxonomyHere/, hit.taxOrder)}'">${hit.taxOrder}</td>
+                            <td onmouseover="this.style.cursor='pointer'"
+        					onclick="location.href='${taxonomyURL.replaceFirst(/putTaxonomyHere/, hit.family)}'">${hit.family}</td>
+                            <td onmouseover="this.style.cursor='pointer'"
+        					onclick="${taxonomyURL.replaceFirst(/putTaxonomyHere/, hit.taxClass)}'">${hit.taxClass}</td>
+                            <td onmouseover="this.style.cursor='pointer'"
+        					onclick="${taxonomyURL.replaceFirst(/putTaxonomyHere/, hit.phylum)}'">${hit.phylum}</td>                      
                         </tr>
                     </g:each>
                     </tbody>
                 </table>
             </div>
-            
-<%--            <div class="buttons">--%>
-<%--                <g:form>--%>
-<%--                    <g:hiddenField name="id" value="${motuInstance?.id}" />--%>
-<%--                    <span class="button"><g:actionSubmit class="edit" action="edit" value="${message(code: 'default.button.edit.label', default: 'Edit')}" /></span>--%>
-<%--                    <span class="button"><g:actionSubmit class="delete" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" /></span>--%>
-<%--                </g:form>--%>
-<%--            </div>--%>
         </div>
        		
         

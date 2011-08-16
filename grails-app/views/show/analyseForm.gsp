@@ -37,7 +37,7 @@
         <br/>
         
         <label for="type">Taxonomic type</label>
-        <g:select name="type" " from="${['species', 'genus', 'taxOrder', 'family', 'taxClass', 'phylum']}" />
+        <g:select name="type" keys="${['species', 'genus', 'taxOrder', 'family', 'taxClass', 'phylum']}" from="${['Species', 'Genus', 'Order', 'Family', 'Class', 'Phylum']}" />
         
         <label for="chart">Chart type</label>
         <g:select name="chart"  from="${['Pie chart', 'Bar chart', 'Column chart']}" />

@@ -32,7 +32,7 @@
 			<tbody>
 			
 				<g:each in="${tableData}" status="i" var="siteData">
-                        <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
+                        <tr class="${(i % 2) == 0 ? 'odd' : 'even'}" onclick="alert('bang')">
                         	<g:each in="${siteData}" var="entry">					
 								<td>${entry}</td>
 							</g:each>

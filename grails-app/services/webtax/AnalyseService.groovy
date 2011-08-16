@@ -1,5 +1,5 @@
 /*
-*---------------------------VisualizeService---------------------------------
+*---------------------------AnalyseService---------------------------------
 * This service is used in ShowController to take a user's query and turn
 * into data that can be passed to the view and then easily made into a
 * table and graphs.
@@ -11,7 +11,7 @@
 
 package webtax
 
-class VisualizeService {
+class AnalyseService {
 	static transactional = false
 
 	//the filter by phrase keywords will be looked for in these properties of each hit
@@ -160,7 +160,7 @@ class VisualizeService {
 	/*----------getTableData----------
 	* Takes the makeup data of many sites, creates a master list that holds
 	* every present creature's taxonomic name and also how many of the creature is
-	* identified in each site. Formatted for easy parsing and displaying by the visualization
+	* identified in each site. Formatted for easy parsing and displaying by the analyse
 	* view.
 	*/
 	def List getTableData(List repses) {
@@ -188,7 +188,7 @@ class VisualizeService {
 		
 		//go through all the names and for each put a list in tableData that has the creature's name at index 0
 		//and then the number of reads matching to that name in each sample site. The order of the read numbers
-		//matches the List sites that ShowController action visualize already has.
+		//matches the List sites that ShowController action analyse already has.
 		for (i in 0..<allNames.size()) {
 			tableData[i] = []
 			tableData[i][0] = allNames[i]
