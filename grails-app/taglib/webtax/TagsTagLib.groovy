@@ -24,7 +24,7 @@ class TagsTagLib {
 		out << "</span>"
 		
 		out << "<span class='menuButton'>"
-		out << link(class:'represent', controller:'show', action:'repForm', params: [dataset: dataset]) {'Represent'}
+		out << link(class:'analyse', controller:'show', action:'analyseForm', params: [dataset: dataset]) {'Analyse'}
 		out << "</span>"
 		
 		out << "<span class='currentDataset'> Current dataset: ${dataset}"
@@ -51,7 +51,7 @@ class TagsTagLib {
 		out << "</span>"
 		
 		out << "<span class='menuButton'>"
-		out << link(class:'represent', controller:'show', action:'repForm', params: [dataset: dataset]) {'Represent'}
+		out << link(class:'analyse', controller:'show', action:'analyseForm', params: [dataset: dataset]) {'Analyse'}
 		out << "</span>"
 
 		out << "<span class='currentDataset'> Current dataset: ${dataset}"

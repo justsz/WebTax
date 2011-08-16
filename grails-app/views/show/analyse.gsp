@@ -17,30 +17,7 @@
 	
 <%--	<div style="float: left" class="list">--%>
 
-	<g:if test="${reps.size() == 1}">
-		<g:each in="${reps}" status="j" var="rep">
-		<table>
-			
-			<thead>
-				<tr>
-                    <th>${type}</th>                    
-                    <th>${sites[j]}</th>
-				</tr>	
-			</thead>
-			<tbody>
-			
-				<g:each in="${rep.entrySet()}" status="i" var="entry">
-                        <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
-								<td><a href="http://www.ncbi.nlm.nih.gov/taxonomy?term=${entry.key}">${entry.key}</a></td>								
-								<td>${entry.value}</td>
-                        </tr>
-        		</g:each>        	
-        	</tbody>
-        </table>
-        </g:each>
-	</g:if>
 
-	<g:else>
 		<table>
 			<thead>
 				<tr>
@@ -63,7 +40,7 @@
         		</g:each>        	
         	</tbody>
         </table>
-	</g:else>
+
         
         
 <%--	</div>--%>
@@ -94,10 +71,18 @@
 		<input onclick="this.select(); pageTracker._trackEvent('new-done-click','short-click');" readonly="readonly" class="readonly" 
 		value="<g:createLink absolute="true" controller="show" action="represent" params="${[sites:params.sites, threshold:params.threshold, cutoff:params.cutoff, type:params.type, chart:params.chart, keyPhrase:params.keyPhrase, dataset:params.dataset]}"/>"/>
 	</div>
-	<g:form controller="output" action="downloadRepresentView">
+<%--	<g:form controller="output" action="downloadRepresentView">--%>
+<%--			<g:hiddenField name="separator" value="csv" />--%>
+<%--			<g:hiddenField name="sites" value="${sites.toString()}" />--%>
+<%--			<g:hiddenField name="data" value="${data}" />--%>
+<%--			<g:hiddenField name="type" value="${type}" />--%>
+<%--			<g:submitButton name="download CSV" value="Download CSV"/>--%>
+<%--	</g:form>--%>
+
+<g:form controller="output" action="downloadRepresentView">
 			<g:hiddenField name="separator" value="csv" />
 			<g:hiddenField name="sites" value="${sites.toString()}" />
-			<g:hiddenField name="data" value="${data}" />
+			<g:hiddenField name="data" value="${tableData}" />
 			<g:hiddenField name="type" value="${type}" />
 			<g:submitButton name="download CSV" value="Download CSV"/>
 	</g:form>
@@ -105,7 +90,7 @@
 	<g:form controller="output" action="downloadRepresentView">
 			<g:hiddenField name="separator" value="tsv" />
 			<g:hiddenField name="sites" value="${sites.toString()}" />
-			<g:hiddenField name="data" value="${data}" />
+			<g:hiddenField name="data" value="${tableData}" />
 			<g:hiddenField name="type" value="${type}" />
 			<g:submitButton name="download TSV" value="Download TSV"/>
 	</g:form>

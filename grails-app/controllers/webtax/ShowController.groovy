@@ -20,52 +20,52 @@ class ShowController {
 	
 	def index = { }
 
-	/*-------repForm--------
-	* Takes user's criteria for the summary view, represent. The criteria are
+	/*-------analyseForm--------
+	* Takes user's criteria for the summary view, analyse. The criteria are
 	* list of sample sites, MOTU clustering cutoff, clumping threshold (put poorly represented MOTU's in one category),
 	* a filtering phrase that applies to the MOTU's hits, minimum bitscore, minimum difference between first and next bitscore,
 	* taxonomic type to show, and chart type to display.
 	*/
-	def repForm = {
+	def analyseForm = {
 		return [dataset: params.dataset, params: params]
 	}
 
-	/*------represent--------
-	* Gets criteria from repForm, constructs and executes queries (these have many steps)
+	/*------analyse--------
+	* Gets criteria from analyseForm, constructs and executes queries (these have many steps)
 	* and draws the results in tables and charts.
 	*/
-	def represent = {
+	def analyse = {
 		//user input validity checks
 		if(!params.dataset) {
 			flash.message = "No dataset supplied!"
-			redirect(action:'repForm', params: params)
+			redirect(action:'analyseForm', params: params)
 			return
 		}
 		
 		if(!params.sites) {
 			flash.message = "Please enter site(s)."
-			redirect(action:'repForm', params: params)
+			redirect(action:'analyseForm', params: params)
 			return
 		}
 		if(!params.threshold.isNumber()) {
 			flash.message = "Threshold must be a number."
-			redirect(action:'repForm', params: params)
+			redirect(action:'analyseForm', params: params)
 			return
 
 		}
 		if(!params.cutoff.isNumber()) {
 			flash.message = "Cutoff must be a number."
-			redirect(action:'repForm', params: params)
+			redirect(action:'analyseForm', params: params)
 			return
 		}
 		if(!params.minBitScore.isNumber()) {
 			flash.message = "Minimum bitscore must be a number."
-			redirect(action:'repForm', params: params)
+			redirect(action:'analyseForm', params: params)
 			return
 		}
 		if(!params.minBitScoreStep.isNumber()) {
 			flash.message = "Minimum bitscore step must be a number."
-			redirect(action:'repForm', params: params)
+			redirect(action:'analyseForm', params: params)
 			return
 		}
 		//end of validity checks
@@ -81,8 +81,8 @@ class ShowController {
 		for (i in 0..<sites.size()) {
 			sites[i] = sites[i].trim()
 		}
-		//println sites.getClass()
 		
+		//call visualizeService to process the input and then retrieve output and pass to the view
 		visualizeService.processCriteria(params.dataset, sites as List, params.threshold, params.keyPhrase, cutoff, minBitScore, minBitScoreStep, type)
 		def reps = visualizeService.getReps()	
 		def data = visualizeService.getData()
@@ -92,13 +92,19 @@ class ShowController {
 		return [reps: reps, tableData: tableData, type: type, data: data, sites:sites, chart: params.chart, params: params, dataset:params.dataset]
 	}
 
+	
+	/*--------search-------
+	* Takes a user's query and passes to results action.
+	*/
 	def search = {
 		return [dataset:params.dataset]
 	}
 
+
+	/*--------results----------
+	* Creates a paginated list that only displays data with the specified sample site and cutoff.
+	*/
 	def results = {
-		//Add some default values in case user doesn't want to give a value.
-		//def motus = Motu.findAllBySiteAndCutoff(params.site, params.cutoff)
 		params.max = Math.min(params.max ? params.int('max') : 10, 100)
 
 		if (!params.dataset || !Dataset.findByName(params.dataset)) {
@@ -122,12 +128,15 @@ class ShowController {
 		def motus = Motu.createCriteria().list(params, query)
 		def total = Motu.createCriteria().count(query)
 
-		//		request.motuInstanceList = motus
-		//		request.motuInstanceTotal = total
-
 		return [motuInstanceList: motus, motuInstanceTotal: total, params:params, dataset:params.dataset]
 	}
 
+	
+	/*-------showTable--------
+	* Displays a table of blast hits for a particular MOTU.
+	* Each row is a hit, columns hold information about accession number,
+	* bitscore and taxonomic data.
+	*/
 	def showTable = {
 		def motuInstance = Motu.get(params.id)
 		
@@ -136,22 +145,21 @@ class ShowController {
 			redirect(action: "list", params: [dataset: params.dataset])
 		}
 		else {
-
-
-			if (!params.max) params.max = 10
-			if (!params.offset) params.offset = 0
+			//if (!params.max) params.max = 10
+			//if (!params.offset) params.offset = 0
 			if (!params.sort) params.sort = "bitScore"
 			if (!params.order) params.order = "desc"
 			
+			//display an empty list for a motu with no hits
 			if (!motuInstance.hits*.id.size()) {
 				return [motuInstance: motuInstance, hits: [], dataset:params.dataset]
 			}
-
+			
+			//for some reason a custon withCriteria query needs to be supplied for sorting to work
 			def hitS = BlastHit.withCriteria {
-				maxResults(params.max?.toInteger())
-				firstResult(params.offset?.toInteger())
+				//maxResults(params.max?.toInteger())
+				//firstResult(params.offset?.toInteger())
 				'in'("id", motuInstance.hits*.id)
-
 				order(params.sort, params.order)
 			}
 			return [motuInstance: motuInstance, hits: hitS, dataset:params.dataset]
@@ -159,10 +167,10 @@ class ShowController {
 	}
 
 
+	/*--------list----------
+	* Creates a pagianted list of all MOTUs within one dataset.
+	*/
 	def list = {
-
-
-
 		if (!params.dataset || !Dataset.findByName(params.dataset)) {
 			flash.listMessage = "Dataset not found."
 			return [motuInstanceList: [], motuInstanceTotal: 0, dataset: params.dataset]
@@ -189,10 +197,18 @@ class ShowController {
 
 	}
 
+
+	/*------switchDataset--------
+	* Stores current view and redirects user to a page where the dataset can be switched.
+	*/
 	def switchDataset = {
 		return [prevAction: params.prevAction, prevController: params.prevController, dataset: params.dataset]
 	}
 
+
+	/*--------executeSwitch---------
+	* Redirects user to the previously used view but with their specified dataset.
+	*/
 	def executeSwitch = {
 		redirect(action: params.prevAction, controller: params.prevController, params: [dataset: params.newDataset])
 	}

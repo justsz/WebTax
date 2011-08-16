@@ -11,7 +11,7 @@
 	
     <formset> 
         <legend>Get distributions</legend> 
-    <g:form method="get" action="represent"> 
+    <g:form method="get" action="analyse"> 
         <label for="sites">Sites</label> 
         <g:textField name="sites" value="${params.sites}"/> 
         <br/>

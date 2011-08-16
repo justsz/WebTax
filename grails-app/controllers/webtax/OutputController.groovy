@@ -30,10 +30,9 @@ class OutputController {
 	}
 	
 	def downloadSearchView = {
-		params.motus.each { println it }
-		def file = exportDataService.makeSearchView(params.motus, params.separator)
+		def file = exportDataService.makeSearchView(params.dataset, params.site, params.cutoff, params.separator)
 		response.setContentType( "application-xdownload")
-		response.setHeader("Content-Disposition", "attachment; filename=${params.dataset}.${params.separator}")
+		response.setHeader("Content-Disposition", "attachment; filename=${params.dataset}${params.site}${params.cutoff}.${params.separator}")
 		response.outputStream << file.newInputStream()
 	}
 	
