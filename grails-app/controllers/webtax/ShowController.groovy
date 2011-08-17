@@ -35,7 +35,6 @@ class ShowController {
 	 * and draws the results in tables and charts.
 	 */
 	def analyse = {
-		println params
 		//user input validity checks
 		if(!params.dataset) {
 			flash.message = "No dataset supplied!"
@@ -76,6 +75,7 @@ class ShowController {
 		def cutoff = params.cutoff
 		def minBitScore = params.minBitScore as Integer
 		def minBitScoreStep = params.minBitScoreStep as Integer
+		String taxonomyURL = grailsApplication.config.taxonomyURL
 
 
 
@@ -98,7 +98,7 @@ class ShowController {
 		}
 		type = type.capitalize()
 
-		return [reps: reps, tableData: tableData, type: type, data: data, sites:sites, chart: params.chart, params: params, dataset:params.dataset]
+		return [reps: reps, tableData: tableData, type: type, data: data, sites:sites, chart: params.chart, params: params, dataset:params.dataset, taxonomyURL:taxonomyURL]
 	}
 
 

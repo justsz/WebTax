@@ -25,8 +25,8 @@
  			</g:if>
        		<div style="float: left" id="chart"></div>
  			
-	<div id = 'linkToView'>
-	<a href ='<g:createLink absolute="true" controller="motu" action="printable" params="${[datum:datum, site:site, chartType:chartType]}"/>'>Link to this page</a>
-	</div>
+<%--	<div id = 'linkToView'>--%>
+<%--	<a href ='<g:createLink absolute="true" controller="motu" action="printable" params="${[datum:datum, site:site, chartType:chartType]}"/>'>Link to this page</a>--%>
+<%--	</div>--%>
 	</body>
 </html>

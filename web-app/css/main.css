@@ -99,12 +99,24 @@ input:focus, select:focus, textarea:focus {
     padding-left: 25px;
 }
 .menuButton a.list {
-    background: url(../images/skin/database_table.png) center left no-repeat;
+    background: url(../images/skin/list.png) center left no-repeat;
     color: #333;
     padding-left: 25px;
 }
 .menuButton a.create {
-    background: url(../images/skin/database_add.png) center left no-repeat;
+    background: url(../images/skin/create.png) center left no-repeat;
+    color: #333;
+    padding-left: 25px;
+}
+
+.menuButton a.analyse {
+	background: url(../images/skin/analyse.png) center left no-repeat;
+    color: #333;
+    padding-left: 25px;
+}
+
+.menuButton a.search {
+	background: url(../images/skin/search.png) center left no-repeat;
     color: #333;
     padding-left: 25px;
 }
@@ -152,6 +164,15 @@ table {
     border: 1px solid #ccc;
     width: 100%
 }
+
+.invisibleTable {
+	border: 0px solid #ccc;
+	width: 1%
+}
+
+.invisibleTable td {
+		text-align:center
+}
 tr {
     border: 0;
 }
@@ -195,6 +216,11 @@ th.desc a {
     background: #fff;
 }
 
+.graphTable {
+	float: left;
+
+}
+
 /* LIST */
 
 .list table {
@@ -208,7 +234,17 @@ th.desc a {
 }
 
 .cellHighlight td:hover {
+	
 	background: #b2d1ff;
+}
+
+.glowCell:hover {
+	background: #b2d1ff;
+}
+
+.ncbiCell:hover {
+
+	background: #70B8FF;
 }
 /* PAGINATION */
 
