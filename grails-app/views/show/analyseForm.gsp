@@ -8,9 +8,7 @@
 	<g:if test="${flash.message}">
     <div class="message">${flash.message}</div>
     </g:if>
-	
-    <formset> 
-        <legend>Get distributions</legend> 
+
     <g:form method="get" action="analyse"> 
         <label for="sites">Sites</label> 
         <g:textField name="sites" value="${params.sites}"/> 
@@ -46,7 +44,7 @@
         
         <g:submitButton name="search" value="Search"/> 
     </g:form> 
-    </formset> 
+
     
 </body> 
 </html>

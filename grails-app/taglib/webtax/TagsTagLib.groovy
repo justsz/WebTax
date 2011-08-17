@@ -54,8 +54,8 @@ class TagsTagLib {
 		out << link(class:'analyse', controller:'show', action:'analyseForm', params: [dataset: dataset]) {'Analyse'}
 		out << "</span>"
 
-		out << "<span class='currentDataset'> Current dataset: ${dataset}"
-		out << link(class:'switchDataset', controller:'show', action:'switchDataset', params: [prevController: params.controller, prevAction: params.action, dataset: dataset]) {"[Switch]"}
+		out << "<span class='switchDataset'> Current dataset: ${dataset}"
+		out << link(controller:'show', action:'switchDataset', params: [prevController: params.controller, prevAction: params.action, dataset: dataset]) {"[Switch]"}
 		out << "</span>"
 		
 		out << "</div>"
