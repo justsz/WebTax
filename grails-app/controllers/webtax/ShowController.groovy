@@ -35,6 +35,7 @@ class ShowController {
 	 * and draws the results in tables and charts.
 	 */
 	def analyse = {
+		println params
 		//user input validity checks
 		if(!params.dataset) {
 			flash.message = "No dataset supplied!"
@@ -90,6 +91,7 @@ class ShowController {
 		def data = analyseService.getData()
 		def tableData = analyseService.getTableData(reps)
 
+
 		//format type for a neat table header
 		if (type =~ /tax.*/) {
 			type = type[3..-1]
@@ -105,6 +107,17 @@ class ShowController {
 	 */
 	def search = {
 		return [dataset:params.dataset]
+	}
+
+	def descend = {
+		params.keyPhrase = params.id
+		def properties = ['phylum', 'taxClass', 'taxOrder', 'family', 'genus', 'species']
+		def depth = 0
+		properties.eachWithIndex { prop, i -> if(prop == params.type) depth = i }
+		println depth
+		if (depth != 5) depth++
+		params.type = properties[depth]
+		redirect(action:'analyse', params:params)
 	}
 
 
@@ -145,8 +158,8 @@ class ShowController {
 	 * bitscore, taxid, and taxonomic data.
 	 */
 	def showTable = {
-		def taxidURL = grailsApplication.config.taxidURL
-		def taxonomyURL = grailsApplication.config.taxonomyURL
+		String taxidURL = grailsApplication.config.taxidURL
+		String taxonomyURL = grailsApplication.config.taxonomyURL
 		grailsApplication.config.databasePath
 		def motuInstance = Motu.get(params.id)
 

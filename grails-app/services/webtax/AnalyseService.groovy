@@ -15,7 +15,8 @@ class AnalyseService {
 	static transactional = false
 
 	//the filter by phrase keywords will be looked for in these properties of each hit
-	def properties = ['species', 'genus', 'taxOrder', 'family', 'taxClass', 'phylum']
+	
+	def properties = ['phylum', 'taxClass', 'taxOrder', 'family', 'genus', 'species']
 
 	//a list that will contain a map for each sample site. The map will hold the MOTU summary data
 	def reps = []
@@ -66,22 +67,40 @@ class AnalyseService {
 			hits = hits.collect {subHitList -> subHitList = subHitList.split{hit -> hit.bitScore >= minBitScore  }[0] }
 
 
-			//bitscore step stuff is excluded for now, just the highest bitscore hit is taken
-			//if (minBitScoreStep != 0) {
-			//	hits = hits.collect {
-			//		if (it[0] != null && it[1] != null) {
-			//			if ((it[0].bitScore - it[1].bitScore) >= minBitScoreStep) {it = it[0]}
-			//			else it = null
-			//		} else it = null
-			//	}
-			//} else {
-				hits = hits.collect { it = it[0] }
-			//}
+
+			//ADD SOME DOCS HERE
+			if (minBitScoreStep != 0) {
+				hits = hits.collect {
+					for (i in 0..<it.size()) {
+						if (it[i+1]) {
+							if (it[i][type] != it[i+1][type]) {
+								if ((it[i].bitScore - it[i+1].bitScore) >= minBitScoreStep) {
+									return it[i]
+									
+								} else {
+									return null
+									
+								}
+								
+							}
+						} else {							
+							return it[i]
+						
+						}
+					}
+
+				}
+			} else {
+				hits = hits.collect { it[0] }
+			}
 
 			def hitsWithFreqs = [:]
-			//for (i in 0..<hits.size()) {
-				hits.each { hitsWithFreqs.put (it, 0) }
-			//}
+
+				hits.each {
+					hitsWithFreqs.put (it, 0) }
+
+				
+				
 			
 
 			//now, because hits wasn't sorted at any time, it has the same order as freqs. This means that going through hits
@@ -136,6 +155,7 @@ class AnalyseService {
 
 			counter++
 		}
+
 
 	}
 	

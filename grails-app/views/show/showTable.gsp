@@ -30,8 +30,8 @@
                             <g:sortableColumn property="taxID" title="TaxID" />
                             <g:sortableColumn property="species" title="Species" />
                             <g:sortableColumn property="genus" title="Genus" />
-                            <g:sortableColumn property="taxOrder" title="Order" />
                             <g:sortableColumn property="family" title="Family" />
+                            <g:sortableColumn property="taxOrder" title="Order" />                            
                             <g:sortableColumn property="taxClass" title="Class" />
                             <g:sortableColumn property="phylum" title="Phylum" />             
                         </tr>
@@ -44,19 +44,19 @@
                             <td>${fieldValue(bean: hit, field: "bitScore")}</td>
                             
                             <td onmouseover="this.style.cursor='pointer'"
-        					onclick="location.href='${taxidURL.replaceFirst(/putTaxidHere/, hit.taxID as String)}'">${hit.taxID}</td>
+        					onclick="location.href='${taxidURL.replaceFirst(/putTaxidHere/, hit.taxID.toString())}'">${hit.taxID}</td>
                             <td onmouseover="this.style.cursor='pointer'"
-        					onclick="location.href='${taxonomyURL.replaceFirst(/putTaxonomyHere/, hit.species)}'">${hit.species}</td>
+        					onclick="location.href='${taxonomyURL.replaceFirst(/putTaxonomyHere/, hit.species.toString())}'">${hit.species}</td>
                             <td onmouseover="this.style.cursor='pointer'"
-        					onclick="location.href='${taxonomyURL.replaceFirst(/putTaxonomyHere/, hit.genus)}'">${hit.genus}</td>
+        					onclick="location.href='${taxonomyURL.replaceFirst(/putTaxonomyHere/, hit.genus.toString())}'">${hit.genus}</td>
+        					<td onmouseover="this.style.cursor='pointer'"
+        					onclick="location.href='${taxonomyURL.replaceFirst(/putTaxonomyHere/, hit.family.toString())}'">${hit.family}</td>
                             <td onmouseover="this.style.cursor='pointer'"
-        					onclick="location.href='${taxonomyURL.replaceFirst(/putTaxonomyHere/, hit.taxOrder)}'">${hit.taxOrder}</td>
+        					onclick="location.href='${taxonomyURL.replaceFirst(/putTaxonomyHere/, hit.taxOrder.toString())}'">${hit.taxOrder}</td>
                             <td onmouseover="this.style.cursor='pointer'"
-        					onclick="location.href='${taxonomyURL.replaceFirst(/putTaxonomyHere/, hit.family)}'">${hit.family}</td>
+        					onclick="location.href='${taxonomyURL.replaceFirst(/putTaxonomyHere/, hit.taxClass.toString())}'">${hit.taxClass}</td>
                             <td onmouseover="this.style.cursor='pointer'"
-        					onclick="${taxonomyURL.replaceFirst(/putTaxonomyHere/, hit.taxClass)}'">${hit.taxClass}</td>
-                            <td onmouseover="this.style.cursor='pointer'"
-        					onclick="${taxonomyURL.replaceFirst(/putTaxonomyHere/, hit.phylum)}'">${hit.phylum}</td>                      
+        					onclick="location.href='${taxonomyURL.replaceFirst(/putTaxonomyHere/, hit.phylum.toString())}'">${hit.phylum}</td>                      
                         </tr>
                     </g:each>
                     </tbody>

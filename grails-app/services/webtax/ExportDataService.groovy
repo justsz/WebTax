@@ -20,10 +20,10 @@ class ExportDataService {
 		def out = new File('table')
 		out.delete()
 		
-		out.append "accNum${s}bitscore${s}species${s}genus${s}order${s}family${s}class${s}phylum\n"
+		out.append "accNum${s}bitscore${s}TaxID${s}species${s}genus${s}family${s}order${s}class${s}phylum\n"
 		for (i in 0..<idFilter.size()) {
 			def hit = BlastHit.get(idFilter[i][1])
-			def row = [hit.accNum, hit.bitScore, hit.species, hit.genus, hit.taxOrder, hit.family, hit.taxClass, hit.phylum]
+			def row = [hit.accNum, hit.bitScore, hit.taxID, hit.species, hit.genus, hit.family, hit.taxOrder, hit.taxClass, hit.phylum]
 			out.append row.join(s)
 			out.append '\n'
 		}
@@ -45,10 +45,10 @@ class ExportDataService {
 		
 		def header = "seqID${s}cutoff${s}site${s}freq${s}"
 		for (i in 1..9) {
-			def blastHeader = "accNum$i${s}bitscore$i${s}species$i${s}genus$i${s}order$i${s}family$i${s}class$i${s}phylum$i${s}"
+			def blastHeader = "accNum$i${s}bitscore$i${s}TaxID$i${s}species$i${s}genus$i${s}family$i${s}order$i${s}class$i${s}phylum$i${s}"
 			header += blastHeader
 		}
-		header += "accNum10${s}bitscore10${s}species10${s}genus10${s}order10${s}family10${s}class10${s}phylum10\n"
+		header += "accNum10${s}bitscore10${s}TaxID10${s}species10${s}genus10${s}family10${s}order10${s}class10${s}phylum10\n"
 		out.append header
 		
 		def motus = Dataset.findByName(dataset).motus
@@ -59,7 +59,7 @@ class ExportDataService {
 			def row = [it.seqID, it.cutoff, it.site, it.freq]
 			def hits = it.hits.sort {-it.bitScore}
 			hits.each {
-				row += [it.accNum, it.bitScore, it.species, it.genus, it.taxOrder, it.family, it.taxClass, it.phylum]
+				row += [it.accNum, it.bitScore, it.taxID, it.species, it.genus, it.family, it.taxOrder, it.taxClass, it.phylum]
 			}
 			out.append row.join("${s}")
 			out.append '\n'
@@ -80,8 +80,14 @@ class ExportDataService {
 		def out = new File('list')
 		out.delete()
 		
-		def header = "seqID${s}cutoff${s}site${s}freq\n"
+		def header = "seqID${s}cutoff${s}site${s}freq${s}"
+		for (i in 1..9) {
+			def blastHeader = "accNum$i${s}bitscore$i${s}TaxID$i${s}species$i${s}genus$i${s}family$i${s}order$i${s}class$i${s}phylum$i${s}"
+			header += blastHeader
+		}
+		header += "accNum10${s}bitscore10${s}TaxID10${s}species10${s}genus10${s}family10${s}order10${s}class10${s}phylum10\n"
 		out.append header
+		
 		def query = {
 			'in'("id", Dataset.findByName(dataset).motus*.id)
 			eq('site', site)
@@ -92,7 +98,11 @@ class ExportDataService {
 		
 		motus.each {
 			def row = [it.seqID, it.cutoff, it.site, it.freq]
-			out.append row.join(s)
+			def hits = it.hits.sort {-it.bitScore}
+			hits.each {
+				row += [it.accNum, it.bitScore, it.taxID, it.species, it.genus, it.family, it.taxOrder, it.taxClass, it.phylum]
+			}
+			out.append row.join("${s}")
 			out.append '\n'
 		}
 		

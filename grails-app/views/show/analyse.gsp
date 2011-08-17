@@ -32,7 +32,8 @@
 			<tbody>
 			
 				<g:each in="${tableData}" status="i" var="siteData">
-                        <tr class="${(i % 2) == 0 ? 'odd' : 'even'}" onclick="alert('bang')">
+					
+                        <tr class="${(i % 2) == 0 ? 'odd' : 'even'}" onmouseover="this.style.cursor='pointer'" onclick="location.href='${createLink(action:'descend', params:params, id:siteData[0])}'">
                         	<g:each in="${siteData}" var="entry">					
 								<td>${entry}</td>
 							</g:each>
@@ -40,6 +41,8 @@
         		</g:each>        	
         	</tbody>
         </table>
+        
+<%--        [sites:params.sites, threshold:params.threshold, cutoff:params.cutoff, type:params.type, chart:params.chart, keyPhrase:params.keyPhrase, dataset:params.dataset]--%>
 
         
         
