@@ -128,6 +128,11 @@ html,body {
 	padding: 20px 0px 20px 60px;
 }
 
+.tutorialTable {
+	border: 0px solid #ccc;
+/* 	text-align:justify; */
+}
+
 /* NAVIGATION MENU */
 .nav {
 	background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;

@@ -16,11 +16,11 @@
  			columns="${[['string', 'taxonomicType'], ['number', 'count']]}" data="${datum}" />
  			</g:if>
  			<g:if test="${chartType == 'Bar chart'}">
-			<gvisualization:imageBarChart elementId="chart" title="${site}" width="${600}" height="${1000}" 
+			<gvisualization:imageBarChart elementId="chart" title="${site}" width="${600}" height="${1000}" legend="none"
  			columns="${[['string', 'taxonomicType'], ['number', 'count']]}" data="${datum}" />
  			</g:if>
  			<g:if test="${chartType == 'Column chart'}">
-			<gvisualization:imageBarChart elementId="chart" isVertical="${true }" title="${site}" width="${1000}" height="${500}" showCategoryLabels="${false}"  
+			<gvisualization:imageBarChart elementId="chart" isVertical="${true }" title="${site}" width="${1000}" height="${500}" showCategoryLabels="${false}"  legend="none"
  			columns="${[['string', 'taxonomicType'], ['number', 'count']]}" data="${datum}" />
  			</g:if>
        		<div style="float: left" id="chart"></div>

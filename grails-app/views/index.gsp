@@ -1,7 +1,7 @@
 <html>
 <head>
 <title>Welcome to WebTax</title>
-<meta name="layout" content="main" />
+<meta name="layout" content="indexLayout" />
 <style type="text/css" media="screen">
 #nav {
 	margin-top: 20px;
@@ -79,9 +79,7 @@ h2 {
 					that have been clustered into Molecular Operational Taxonomic Units
 					(MOTUs) and assign taxonomic annotation to them using a database of
 					reference sequences. <br /> Choose an action on the right to get
-					started.
-					<br />
-					<br />
+					started. <br /> <br />
 				</p>
 			</div>
 			<div class="panelBtm"></div>
@@ -95,7 +93,8 @@ h2 {
 				<tr>
 					<td onmouseover="this.style.cursor='pointer'"
 						onclick="location.href='${createLink(controller:'input', action:'add')}'">
-						<span class="new"> Create new Dataset and add MOTUs </span></td>
+						<span class="new"> Create new Dataset and add MOTUs </span>
+					</td>
 				</tr>
 				<tr>
 					<td onmouseover="this.style.cursor='pointer'"
@@ -104,7 +103,10 @@ h2 {
 					</td>
 				</tr>
 				<tr>
-					<td><span class="tutorial"> Tutorial </span></td>
+					<td onmouseover="this.style.cursor='pointer'"
+						onclick="location.href='${createLink( absolute:'true', url:'tutorial.gsp')}'">
+						<span class="tutorial"> Tutorial </span>
+					</td>
 				</tr>
 			</tbody>
 		</table>

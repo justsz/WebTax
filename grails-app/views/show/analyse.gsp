@@ -103,13 +103,13 @@
 					</g:if>
 					<g:if test="${chart == 'Bar chart'}">
 						<gvisualization:barCoreChart elementId="chart${i}"
-							title="${sites[i]}" width="${600}" height="${1300}"
+							title="${sites[i]}" width="${600}" height="${1300}" legend="none"
 							columns="${[['string', 'taxonomicType'], ['number', 'count']]}"
 							data="${datum}" />
 					</g:if>
 					<g:if test="${chart == 'Column chart'}">
 						<gvisualization:columnCoreChart elementId="chart${i}"
-							title="${sites[i]}" width="${1000}" height="${500}"
+							title="${sites[i]}" width="${1000}" height="${500}" legend="none"
 							columns="${[['string', 'taxonomicType'], ['number', 'count']]}"
 							data="${datum}" />
 					</g:if>

@@ -15,27 +15,26 @@
 	<table class="inputTable">
 		<tbody>
 			<g:form method="get" action="analyse">
-
+				
 				<tr>
-					<td><label for="sites">Sites</label></td>
-					<td><g:textField name="sites" value="${params.sites}" /></td>
+					<td><label for="sites">Sites/Samples</label></td>
+					<td><g:select name="sites" multiple="true" from="${sites}" /></td>
 				</tr>
 
-
 				<tr>
-					<td><label for="threshold">Threshold</label></td>
+					<td><label for="threshold">Clumping fraction</label></td>
 					<td><g:textField name="threshold" value="${params.threshold}" />
 					</td>
 				</tr>
 
 				<tr>
-					<td><label for="keyPhrase">Filter by phrase</label></td>
+					<td><label for="keyPhrase">Filter taxonomy by phrase</label></td>
 					<td><g:textField name="keyPhrase" value="${params.keyPhrase}" />
 					</td>
 				</tr>
 
 				<tr>
-					<td><label for="cutoff">Cutoff</label></td>
+					<td><label for="cutoff">MOTU Clustering cutoff</label></td>
 					<td><g:textField name="cutoff" value="${params.cutoff}" /></td>
 				</tr>
 
@@ -46,7 +45,7 @@
 				</tr>
 
 				<tr>
-					<td><label for="minBitScoreStep">Minimum bitscore step</label>
+					<td><label for="minBitScoreStep">Minimum bitscore difference</label>
 					</td>
 					<td><g:textField name="minBitScoreStep"
 							value="${params.minBitScoreStep}" /></td>

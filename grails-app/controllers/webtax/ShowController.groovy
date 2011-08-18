@@ -27,7 +27,17 @@ class ShowController {
 	 * taxonomic type to show, and chart type to display.
 	 */
 	def analyseForm = {
-		return [dataset: params.dataset, params: params]
+		
+		//creates the sites select box
+		def motus = Dataset.findByName(params.dataset).motus
+		def sites = []
+		motus.each {
+			def site = it.site
+			if(!sites.contains(site))
+				sites.add(site) 
+		}
+
+		return [sites: sites, dataset: params.dataset, params: params]
 	}
 
 	/*------analyse--------
@@ -35,6 +45,7 @@ class ShowController {
 	 * and draws the results in tables and charts.
 	 */
 	def analyse = {
+	
 		//user input validity checks
 		if(!params.dataset) {
 			flash.message = "No dataset supplied!"
@@ -43,7 +54,7 @@ class ShowController {
 		}
 
 		if(!params.sites) {
-			flash.message = "Please enter site(s)."
+			flash.message = "Please select site(s)."
 			redirect(action:'analyseForm', params: params)
 			return
 		}
@@ -77,16 +88,18 @@ class ShowController {
 		def minBitScoreStep = params.minBitScoreStep as Integer
 		String taxonomyURL = grailsApplication.config.taxonomyURL
 
-
-
-		//make the sites string into a list and trim off excess whitespace
-		def sites = params.sites.split(",")
-		for (i in 0..<sites.size()) {
-			sites[i] = sites[i].trim()
+		//sites selection needs to be parsed differently if the user selects just 1 site, then the resulting string needs to be put into an array
+		//otherwise, params.sites is already a list so it can be used directly
+		def sites = []
+		if (params.sites instanceof String) {
+			sites.add(params.sites)
+		} else {
+			sites = params.sites as List
 		}
+		
 
 		//call analyseService to process the input and then retrieve output and pass to the view
-		analyseService.processCriteria(params.dataset, sites as List, params.threshold, params.keyPhrase, cutoff, minBitScore, minBitScoreStep, type)
+		analyseService.processCriteria(params.dataset, sites, params.threshold, params.keyPhrase, cutoff, minBitScore, minBitScoreStep, type)
 		def reps = analyseService.getReps()
 		def data = analyseService.getData()
 		def tableData = analyseService.getTableData(reps)
