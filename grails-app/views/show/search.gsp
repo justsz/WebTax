@@ -1,6 +1,6 @@
 <html> 
 <head> 
-    <title>Search Motus</title> 
+    <title>Search</title> 
     <meta name="layout" content="main"/> 
 </head> 
 <body> 
@@ -9,19 +9,41 @@
     <div class="message">${flash.message}</div>
     </g:if>
 
-    <formset> 
-        <legend>Search for Motus</legend> 
-    <g:form method="get" action="results"> 
+    
+<table class="inputTable">
+<tbody>
+
+    <g:form method="get" action="results">
+    
     	<g:hiddenField name="dataset" value="${dataset}" />
-        <label for="site">Site</label> 
-        <g:textField name="site" /> 
-        <br/>
-        <label for="cutoff">Cutoff</label> 
-        <g:textField name="cutoff" /> 
+    	<tr>
+    	<td>
+        <label for="site">Site</label>
+        </td>
+        <td> 
+        <g:textField name="site" />
+        </td>
+        </tr>
+         
+        <tr>
+        <td>
+        <label for="cutoff">Cutoff</label>
+        </td>
+        <td> 
+        <g:textField name="cutoff" />
+        </td>
+        </tr> 
         
-        <g:submitButton name="search" value="Search"/> 
-    </g:form> 
-    </formset> 
+        <tr>
+        <td></td>
+        <td>
+        <g:submitButton name="search" value="Search"/>
+        </td>
+        </tr> 
+    </g:form>
+    </tbody>
+    </table> 
+ 
     
 </body> 
 </html>

@@ -1,173 +1,243 @@
 html * {
-    margin: 0;
-    /*padding: 0; SELECT NOT DISPLAYED CORRECTLY IN FIREFOX */
+	margin: 0;
+	/*padding: 0; SELECT NOT DISPLAYED CORRECTLY IN FIREFOX */
 }
 
 /* GENERAL */
-
 .spinner {
-    padding: 5px;
-    position: absolute;
-    right: 0;
+	padding: 5px;
+	position: absolute;
+	right: 0;
 }
 
 body {
-    background: #fff;
-    color: #333;
-    font: 11px verdana, arial, helvetica, sans-serif;
-}
-#grailsLogo {
-	padding:20px;
+	background: #fff;
+	color: #333;
+	font: 11px verdana, arial, helvetica, sans-serif;
 }
 
-a:link, a:visited, a:hover {
-    color: #666;
-    font-weight: bold;
-    text-decoration: none;
+#grailsLogo {
+	padding: 20px;
+}
+
+a:link,a:visited,a:hover {
+	color: #666;
+	font-weight: bold;
+	text-decoration: none;
 }
 
 h1 {
-    color: #48802c;
-    font-weight: normal;
-    font-size: 16px;
-    margin: .8em 0 .3em 0;
+	color: #48802c;
+	font-weight: normal;
+	font-size: 16px;
+	margin: .8em 0 .3em 0;
 }
 
 ul {
-    padding-left: 15px;
+	padding-left: 15px;
 }
 
-input, select, textarea {
-    background-color: #fcfcfc;
-    border: 1px solid #ccc;
-    font: 11px verdana, arial, helvetica, sans-serif;
-    margin: 2px 0;
-    padding: 2px 4px;
+input,select,textarea {
+	background-color: #fcfcfc;
+	border: 1px solid #ccc;
+	font: 11px verdana, arial, helvetica, sans-serif;
+	margin: 2px 0;
+	padding: 2px 4px;
 }
+
 select {
-   padding: 2px 2px 2px 0;
+	padding: 2px 2px 2px 0;
 }
+
 textarea {
 	width: 250px;
 	height: 150px;
 	vertical-align: top;
 }
 
-input:focus, select:focus, textarea:focus {
-    border: 1px solid #b2d1ff;
+input:focus,select:focus,textarea:focus {
+	border: 1px solid #b2d1ff;
 }
 
 .body {
-    float: left;
-    margin: 0 15px 10px 15px;
+	float: left;
+	margin: 0 15px 10px 15px;
+}
+
+* {
+	margin: 0;
+}
+
+html,body {
+	height: 100%;
+}
+
+.wrapper {
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	margin: 0 auto -4em;
+}
+
+.push {
+	height: 4em;
+}
+
+.footer {
+	height: 4em;
+	clear: both;
+	text-align: center;
+	boarder-top: 1px solid #333;
+	color: #8585AD;
+}
+
+/* #linkTo */
+
+/* INDEX */
+.indexTable {
+	
+	border: 0px solid #ccc;
+	text-align:justify;
+}
+
+.indexTable tr {
+	
+	height:64px;
+}
+
+.indexTable tr:hover {
+	background: #F5FFF5;
+}
+
+.new {
+	
+	background: url(../images/index/plus.png) center left no-repeat;
+	font-size: 12px;
+	padding: 20px 0px 20px 60px;
+}
+
+.continue {
+	background: url(../images/index/db.png) center left no-repeat;
+	font-size: 12px;
+	padding: 20px 0px 20px 60px;
+}
+
+.tutorial {
+	background: url(../images/index/books.png) center left no-repeat;
+	font-size: 12px;
+	padding: 20px 0px 20px 60px;
 }
 
 /* NAVIGATION MENU */
-
 .nav {
-    background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
-    border: 1px solid #ccc;
-    border-style: solid none solid none;
-    margin-top: 5px;
-    padding: 7px 12px;
+	background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
+	border: 1px solid #ccc;
+	border-style: solid none solid none;
+	margin-top: 5px;
+	padding: 7px 12px;
 }
 
 .currentDataset {
 	font-size: 11px;
-    padding: 2px 5px;
-    padding-left: 25px;
-    float: right;
+	padding: 2px 5px;
+	padding-left: 25px;
+	float: right;
 	background: url(../images/skin/dataset.png) center left no-repeat;
-    
 }
 
 .switchDataset {
 	font-size: 11px;
-    padding: 2px 5px;
-    padding-left: 25px;
-    float: right;
+	padding: 2px 5px;
+	padding-left: 25px;
+	float: right;
 	background: url(../images/skin/datasetSwitch.png) center left no-repeat;
 }
 
 .menuButton {
-    font-size: 10px;
-    padding: 0 5px;
+	font-size: 10px;
+	padding: 0 5px;
 }
+
 .menuButton a {
-    color: #333;
-    padding: 4px 6px;
+	color: #333;
+	padding: 4px 6px;
 }
 
 .menuButton a.home {
-    background: url(../images/skin/house.png) center left no-repeat;
-    color: #333;
-    padding-left: 25px;
+	background: url(../images/skin/house.png) center left no-repeat;
+	color: #333;
+	padding-left: 25px;
 }
+
 .menuButton a.list {
-    background: url(../images/skin/list.png) center left no-repeat;
-    color: #333;
-    padding-left: 25px;
+	background: url(../images/skin/list.png) center left no-repeat;
+	color: #333;
+	padding-left: 25px;
 }
+
 .menuButton a.create {
-    background: url(../images/skin/create.png) center left no-repeat;
-    color: #333;
-    padding-left: 25px;
+	background: url(../images/skin/create.png) center left no-repeat;
+	color: #333;
+	padding-left: 25px;
 }
 
 .menuButton a.analyse {
 	background: url(../images/skin/analyse.png) center left no-repeat;
-    color: #333;
-    padding-left: 25px;
+	color: #333;
+	padding-left: 25px;
 }
 
 .menuButton a.search {
 	background: url(../images/skin/search.png) center left no-repeat;
-    color: #333;
-    padding-left: 25px;
+	color: #333;
+	padding-left: 25px;
 }
 
 /* MESSAGES AND ERRORS */
-
 .message {
-    background: #f3f8fc url(../images/skin/information.png) 8px 50% no-repeat;
-    border: 1px solid #b2d1ff;
-    color: #006dba;
-    margin: 10px 0 5px 0;
-    padding: 5px 5px 5px 30px
+	background: #f3f8fc url(../images/skin/information.png) 8px 50%
+		no-repeat;
+	border: 1px solid #b2d1ff;
+	color: #006dba;
+	margin: 10px 0 5px 0;
+	padding: 5px 5px 5px 30px
 }
 
 div.errors {
-    background: #fff3f3;
-    border: 1px solid red;
-    color: #cc0000;
-    margin: 10px 0 5px 0;
-    padding: 5px 0 5px 0;
+	background: #fff3f3;
+	border: 1px solid red;
+	color: #cc0000;
+	margin: 10px 0 5px 0;
+	padding: 5px 0 5px 0;
 }
+
 div.errors ul {
-    list-style: none;
-    padding: 0;
+	list-style: none;
+	padding: 0;
 }
+
 div.errors li {
 	background: url(../images/skin/exclamation.png) 8px 0% no-repeat;
-    line-height: 16px;
-    padding-left: 30px;
+	line-height: 16px;
+	padding-left: 30px;
 }
 
 td.errors select {
-    border: 1px solid red;
+	border: 1px solid red;
 }
+
 td.errors input {
-    border: 1px solid red;
+	border: 1px solid red;
 }
+
 td.errors textarea {
-    border: 1px solid red;
+	border: 1px solid red;
 }
 
 /* TABLES */
-
 table {
-    border: 1px solid #ccc;
-    width: 100%
+	border: 1px solid #ccc;
+	width: 100%
 }
 
 .invisibleTable {
@@ -175,71 +245,97 @@ table {
 	width: 1%
 }
 
+.inputTable {
+	border: 1px solid #ccc;
+	cellspacing: 0px;
+	border-collapse: collapse;
+	width: 1%;
+	white-space: nowrap;
+	valing: center
+}
+
+.inputTable td {
+	width: 1%;
+	vertical-align: middle;
+}
+
+.inputTable tr {
+	width: 1%;
+	border: 1px solid #ccc;
+}
+
 .invisibleTable td {
-		text-align:center
+	text-align: center
 }
+
 tr {
-    border: 0;
+	border: 0;
 }
-td, th {
-    font: 11px verdana, arial, helvetica, sans-serif;
-    line-height: 12px;
-    padding: 5px 6px;
-    text-align: left;
-    vertical-align: top;
+
+td,th {
+	font: 11px verdana, arial, helvetica, sans-serif;
+	line-height: 12px;
+	padding: 5px 6px;
+	text-align: left;
+	vertical-align: top;
 }
+
 th {
-    background: #fff url(../images/skin/shadow.jpg);
-    color: #666;
-    font-size: 11px;
-    font-weight: bold;
-    line-height: 17px;
-    padding: 2px 6px;
+	background: #fff url(../images/skin/shadow.jpg);
+	color: #666;
+	font-size: 11px;
+	font-weight: bold;
+	line-height: 17px;
+	padding: 2px 6px;
 }
-th a:link, th a:visited, th a:hover {
-    color: #333;
-    display: block;
-    font-size: 10px;
-    text-decoration: none;
-    width: 100%;
+
+th a:link,th a:visited,th a:hover {
+	color: #333;
+	display: block;
+	font-size: 10px;
+	text-decoration: none;
+	width: 100%;
 }
-th.asc a, th.desc a {
-    background-position: right;
-    background-repeat: no-repeat;
+
+th.asc a,th.desc a {
+	background-position: right;
+	background-repeat: no-repeat;
 }
+
 th.asc a {
-    background-image: url(../images/skin/sorted_asc.gif);
+	background-image: url(../images/skin/sorted_asc.gif);
 }
+
 th.desc a {
-    background-image: url(../images/skin/sorted_desc.gif);
+	background-image: url(../images/skin/sorted_desc.gif);
 }
 
 .odd {
-    background: #f7f7f7;
+	background: #f7f7f7;
 }
+
 .even {
-    background: #fff;
+	background: #fff;
 }
 
 .graphTable {
 	float: left;
-
 }
 
 /* LIST */
-
 .list table {
-    border-collapse: collapse;
+	border-collapse: collapse;
 }
-.list th, .list td {
-    border-left: 1px solid #ddd;
+
+.list th,.list td {
+	border-left: 1px solid #ddd;
 }
-.list th:hover, .list tr:hover {
-    background: #b2d1ff;
+
+.list th:hover,.list tr:hover {
+	background: #b2d1ff;
 }
 
 .cellHighlight td:hover {
-	
 	background: #b2d1ff;
 }
 
@@ -248,83 +344,89 @@ th.desc a {
 }
 
 .ncbiCell:hover {
-
 	background: #70B8FF;
 }
 /* PAGINATION */
-
 .paginateButtons {
-    background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
-    border: 1px solid #ccc;
-    border-top: 0;
-    color: #666;
-    font-size: 10px;
-    overflow: hidden;
-    padding: 10px 3px;
+	background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
+	border: 1px solid #ccc;
+	border-top: 0;
+	color: #666;
+	font-size: 10px;
+	overflow: hidden;
+	padding: 10px 3px;
 }
+
 .paginateButtons a {
-    background: #fff;
-    border: 1px solid #ccc;
-    border-color: #ccc #aaa #aaa #ccc;
-    color: #666;
-    margin: 0 3px;
-    padding: 2px 6px;
+	background: #fff;
+	border: 1px solid #ccc;
+	border-color: #ccc #aaa #aaa #ccc;
+	color: #666;
+	margin: 0 3px;
+	padding: 2px 6px;
 }
+
 .paginateButtons span {
-    padding: 2px 3px;
+	padding: 2px 3px;
 }
 
 /* DIALOG */
-
 .dialog table {
-    padding: 5px 0;
+	padding: 5px 0;
 }
 
 .prop {
-    padding: 5px;
+	padding: 5px;
 }
+
 .prop .name {
-    text-align: left;
-    width: 15%;
-    white-space: nowrap;
+	text-align: left;
+	width: 15%;
+	white-space: nowrap;
 }
+
 .prop .value {
-    text-align: left;
-    width: 85%;
+	text-align: left;
+	width: 85%;
 }
 
 /* ACTION BUTTONS */
-
 .buttons {
-    background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
-    border: 1px solid #ccc;
-    color: #666;
-    font-size: 10px;
-    margin-top: 5px;
-    overflow: hidden;
-    padding: 0;
+	background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
+	border: 1px solid #ccc;
+	color: #666;
+	font-size: 10px;
+	margin-top: 5px;
+	overflow: hidden;
+	padding: 0;
 }
 
 .buttons input {
-    background: #fff;
-    border: 0;
-    color: #333;
-    cursor: pointer;
-    font-size: 10px;
-    font-weight: bold;
-    margin-left: 3px;
-    overflow: visible;
-    padding: 2px 6px;
+	background: #fff;
+	border: 0;
+	color: #333;
+	cursor: pointer;
+	font-size: 10px;
+	font-weight: bold;
+	margin-left: 3px;
+	overflow: visible;
+	padding: 2px 6px;
 }
+
 .buttons input.delete {
-    background: transparent url(../images/skin/database_delete.png) 5px 50% no-repeat;
-    padding-left: 28px;
+	background: transparent url(../images/skin/database_delete.png) 5px 50%
+		no-repeat;
+	padding-left: 28px;
 }
+
 .buttons input.edit {
-    background: transparent url(../images/skin/database_edit.png) 5px 50% no-repeat;
-    padding-left: 28px;
+	background: transparent url(../images/skin/database_edit.png) 5px 50%
+		no-repeat;
+	padding-left: 28px;
 }
+
 .buttons input.save {
-    background: transparent url(../images/skin/database_save.png) 5px 50% no-repeat;
-    padding-left: 28px;
+	background: transparent url(../images/skin/database_save.png) 5px 50%
+		no-repeat;
+	padding-left: 28px;
 }

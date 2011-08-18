@@ -16,7 +16,7 @@ class BlastHit {
 
 
     static constraints = {
-		accNum(unique: true)
+		accNum()
 		bitScore()
 		taxID(nullable: true)
 		
@@ -28,6 +28,10 @@ class BlastHit {
 		species(nullable: true)		
 		
     }
+	
+	static mapping = {
+		accNum column:'accNum', index:'accNum_idx'
+	}
 	
 	
 }

@@ -4,20 +4,26 @@ class Motu {
 	
 	String motuId
 	String seqID
-	String sequence //Might be a reserved name
+	String sequence 
 	String cutoff
 	String site
 	String freq
 	
 	static hasMany = [hits: BlastHit]
-	//static belongsTo = [dataset: Dataset]
+
 	
 	def String toString() {
 		"MOTU$seqID"
 	}
+	
+	static mapping = {
+		sequence type: 'text'
+		site column:'site', index:'site_idx'
+		cutoff column:'cutoff', index:'cutoff_idx'
+		seqID column:'seqID', index:'seqID_idx'
+	}
 
     static constraints = {
-		//seqID(unique: true)
     }
 	
 

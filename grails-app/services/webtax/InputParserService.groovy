@@ -68,7 +68,6 @@ class InputParserService {
 			
 			def fileCount = 0
 			new File(destination).eachFile {fileCount++}
-			println fileCount
 			if (!fileCount) {
 				ant.delete(dir: destination)
 			}
@@ -145,7 +144,6 @@ class InputParserService {
 		//Check if the directory of the dataset is empty. If it is, delete the directory.
 		def fileCount = 0
 		new File(destination).eachFile {fileCount++}
-		println fileCount
 		if (!fileCount) {
 			ant.delete(dir: destination)
 		}

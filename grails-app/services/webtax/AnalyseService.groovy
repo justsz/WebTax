@@ -128,7 +128,7 @@ class AnalyseService {
 				}
 			}
 
-			//sort in order of high to low bitscore
+			//sort in order of high to low frequency
 			reps[counter] = reps[counter].sort {a, b -> b.value <=> a.value}
 
 

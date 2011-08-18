@@ -1,50 +1,81 @@
-<html> 
-<head> 
-    <title>Find motu distribution.. something like that</title> 
-    <meta name="layout" content="main"/> 
-</head> 
-<body> 
-<g:navigationBarWithChangeDataset dataset="${dataset}" />
+<html>
+<head>
+<title>Analyse MOTU diversity</title>
+<meta name="layout" content="main" />
+</head>
+<body>
+	<g:navigationBarWithChangeDataset dataset="${dataset}" />
 	<g:if test="${flash.message}">
-    <div class="message">${flash.message}</div>
-    </g:if>
+		<div class="message">
+			${flash.message}
+		</div>
+	</g:if>
 
-    <g:form method="get" action="analyse"> 
-        <label for="sites">Sites</label> 
-        <g:textField name="sites" value="${params.sites}"/> 
-        <br/>
-        
-        <label for="threshold">Threshold</label> 
-        <g:textField name="threshold" value="${params.threshold}" /> 
-        <br/>
-        
-        <label for="keyPhrase">Filter by phrase</label> 
-        <g:textField name="keyPhrase" value="${params.keyPhrase}" /> 
-        <br/>
-        
-        <label for="cutoff">Cutoff</label> 
-        <g:textField name="cutoff" value="${params.cutoff}" /> 
-        <br/>
-        
-        <label for="minBitScore">Minimum bitscore</label> 
-        <g:textField name="minBitScore" value="${params.minBitScore}" /> 
-        <br/>
-        
-        <label for="minBitScoreStep">Minimum bitscore step</label> 
-        <g:textField name="minBitScoreStep" value="${params.minBitScoreStep}"/> 
-        <br/>
-        
-        <label for="type">Taxonomic type</label>
-        <g:select name="type" keys="${['species', 'genus', 'family', 'taxOrder', 'taxClass', 'phylum']}" from="${['Species', 'Genus', 'Family', 'Order', 'Class', 'Phylum']}" />
-        
-        <label for="chart">Chart type</label>
-        <g:select name="chart"  from="${['Pie chart', 'Bar chart', 'Column chart']}" />
-        
-        <g:hiddenField name="dataset" value="${dataset}" />
-        
-        <g:submitButton name="search" value="Search"/> 
-    </g:form> 
 
-    
-</body> 
+	<table class="inputTable">
+		<tbody>
+			<g:form method="get" action="analyse">
+
+				<tr>
+					<td><label for="sites">Sites</label></td>
+					<td><g:textField name="sites" value="${params.sites}" /></td>
+				</tr>
+
+
+				<tr>
+					<td><label for="threshold">Threshold</label></td>
+					<td><g:textField name="threshold" value="${params.threshold}" />
+					</td>
+				</tr>
+
+				<tr>
+					<td><label for="keyPhrase">Filter by phrase</label></td>
+					<td><g:textField name="keyPhrase" value="${params.keyPhrase}" />
+					</td>
+				</tr>
+
+				<tr>
+					<td><label for="cutoff">Cutoff</label></td>
+					<td><g:textField name="cutoff" value="${params.cutoff}" /></td>
+				</tr>
+
+				<tr>
+					<td><label for="minBitScore">Minimum bitscore</label></td>
+					<td><g:textField name="minBitScore"
+							value="${params.minBitScore}" /></td>
+				</tr>
+
+				<tr>
+					<td><label for="minBitScoreStep">Minimum bitscore step</label>
+					</td>
+					<td><g:textField name="minBitScoreStep"
+							value="${params.minBitScoreStep}" /></td>
+				</tr>
+
+				<tr>
+					<td><label for="type">Taxonomic type</label></td>
+					<td><g:select name="type"
+							keys="${['species', 'genus', 'family', 'taxOrder', 'taxClass', 'phylum']}"
+							from="${['Species', 'Genus', 'Family', 'Order', 'Class', 'Phylum']}" />
+					</td>
+				</tr>
+
+				<tr>
+					<td><label for="chart">Chart type</label></td>
+					<td><g:select name="chart"
+							from="${['Pie chart', 'Bar chart', 'Column chart']}" /></td>
+				</tr>
+				<g:hiddenField name="dataset" value="${dataset}" />
+
+				<tr align="center">
+					<td></td>
+					<td><g:submitButton  name="search" value="Analyse" /></td>
+				</tr>
+			</g:form>
+		</tbody>
+	</table>
+
+
+
+</body>
 </html>

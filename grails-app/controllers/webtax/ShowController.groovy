@@ -114,7 +114,6 @@ class ShowController {
 		def properties = ['phylum', 'taxClass', 'taxOrder', 'family', 'genus', 'species']
 		def depth = 0
 		properties.eachWithIndex { prop, i -> if(prop == params.type) depth = i }
-		println depth
 		if (depth != 5) depth++
 		params.type = properties[depth]
 		redirect(action:'analyse', params:params)

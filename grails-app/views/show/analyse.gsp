@@ -1,5 +1,6 @@
 <html>
 <head>
+<title>${type}</title>
 <meta name="layout" content="main" />
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
 </head>
@@ -96,7 +97,7 @@
 				<g:each in="${data}" status="i" var="datum">
 					<g:if test="${chart == 'Pie chart'}">
 						<gvisualization:pieCoreChart elementId="chart${i}"
-							title="${sites[i]}" width="${600}" height="${400}"
+							title="${sites[i]}" width="${600}" height="${600}"
 							columns="${[['string', 'taxonomicType'], ['number', 'count']]}"
 							data="${datum}" />
 					</g:if>
@@ -113,8 +114,8 @@
 							data="${datum}" />
 					</g:if>
 					<td valign="middle">
-						<div id="chart${i}">
-						</div> 
+						<div id="chart${i}"></div>
+				 
 						<g:form method="get" controller="output" action="printable">
 							<g:hiddenField name="datum" value="${datum}" />
 							<g:hiddenField name="chartType" value="${chart}" />
@@ -122,6 +123,8 @@
 							<g:hiddenField name="dataset" value="${dataset}" />
 							<g:submitButton name="png" value="PNG version(${sites[i]})" />
 						</g:form>
+					</td>
+
 				</g:each>
 			</tr>
 		</tbody>

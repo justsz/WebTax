@@ -110,7 +110,8 @@ class InputController {
 			dbDescriptions.add(line[1])
 		}
 
-		return [files: files, destination: params.destination, dataset: params.dataset, dbs:dbs, dbDescriptions:dbDescriptions]
+		def taxdumpUpdateDate = grailsApplication.config.taxdumpUpdateDate
+		return [files: files, destination: params.destination, dataset: params.dataset, dbs:dbs, dbDescriptions:dbDescriptions, taxdumpUpdateDate:taxdumpUpdateDate]
 	}
 
 

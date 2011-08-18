@@ -1,5 +1,6 @@
 <html>
 	<head>
+	<title>Switch datasets</title>
 		<meta name="layout" content="main" />
 	</head>
 	

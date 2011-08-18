@@ -8,8 +8,7 @@
 <meta name="layout" content="main" />
 <g:set var="entityName"
 	value="${message(code: 'motu.label', default: 'Motu')}" />
-<title><g:message code="default.show.label" args="[entityName]" />
-</title>
+<title>Blast hits</title>
 </head>
 <body>
 	<g:navigationBar dataset="${dataset}" />
