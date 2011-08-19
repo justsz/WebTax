@@ -26,7 +26,7 @@
 	</div>
 
 	<div class="footer">
-	WebTax was created by Justs Zarins in 2011 at Blaxter Lab, University of Edinburgh, as part of a NERC funded summer placement. 
+	WebTax was created by Justs Zarins in 2011 at <a href='http://www.nematodes.org/'>Blaxter Lab</a>, University of Edinburgh, as part of a NERC funded summer research placement. Source available on <a href='https://github.com/justsz/WebTax/tree/production'>GitHub</a>. 
 	</div>
 
 </body>
