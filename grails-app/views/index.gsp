@@ -30,7 +30,7 @@
 	font-size: 1.1em;
 	text-align: justify;
 	background: url(images/leftnav_midstretch.png) repeat-y top;
-	margin: 0px;
+	margin: 4px;
 	padding: 15px;
 }
 
@@ -47,15 +47,16 @@
 }
 
 h2 {
-	margin-top: 15px;
-	margin-bottom: 15px;
-	font-size: 1.2em;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	font-size: 14px;
+	text-align: center;
 }
 
 #pageBody {
 	margin-left: 280px;
 	margin-right: 20px;
-	margin-top: 70px;
+	margin-top: 75px;
 }
 
 <%--
@@ -73,13 +74,13 @@ h2 {
 		<div class="homePagePanel">
 			<div class="panelTop"></div>
 			<div class="panelBody">
-				<h1>Welcome to WebTax</h1>
+				<h2>Welcome to WebTax</h2>
 				<p>
-					WebTax is designed to take a collection of environmental sequences
+					<br />This tool is designed to take an input collection of environmental sequences
 					that have been clustered into Molecular Operational Taxonomic Units
 					(MOTUs) and assign taxonomic annotation to them using a database of
 					reference sequences. <br /> Choose an action on the right to get
-					started. <br /> <br />
+					started. <br /> 
 				</p>
 			</div>
 			<div class="panelBtm"></div>
