@@ -27,14 +27,17 @@ class ShowController {
 	 * taxonomic type to show, and chart type to display.
 	 */
 	def analyseForm = {
-		
 		//creates the sites select box
-		def motus = Dataset.findByName(params.dataset).motus
 		def sites = []
-		motus.each {
-			def site = it.site
-			if(!sites.contains(site))
-				sites.add(site) 
+		def dataset = Dataset.findByName(params.dataset)
+
+		if(dataset) {
+			def motus = dataset.motus
+			motus.each {
+				def site = it.site
+				if(!sites.contains(site))
+					sites.add(site)
+			}
 		}
 
 		return [sites: sites, dataset: params.dataset, params: params]
@@ -45,7 +48,7 @@ class ShowController {
 	 * and draws the results in tables and charts.
 	 */
 	def analyse = {
-	
+
 		//user input validity checks
 		if(!params.dataset) {
 			flash.message = "No dataset supplied!"
@@ -59,13 +62,13 @@ class ShowController {
 			return
 		}
 		if(!params.threshold.isNumber()) {
-			flash.message = "Threshold must be a number."
+			flash.message = "Clumping fraction must be a number."
 			redirect(action:'analyseForm', params: params)
 			return
 
 		}
 		if(!params.cutoff.isNumber()) {
-			flash.message = "Cutoff must be a number."
+			flash.message = "MOTU Clustering cutoff must be a number."
 			redirect(action:'analyseForm', params: params)
 			return
 		}
@@ -96,7 +99,7 @@ class ShowController {
 		} else {
 			sites = params.sites as List
 		}
-		
+
 
 		//call analyseService to process the input and then retrieve output and pass to the view
 		analyseService.processCriteria(params.dataset, sites, params.threshold, params.keyPhrase, cutoff, minBitScore, minBitScoreStep, type)
@@ -137,7 +140,7 @@ class ShowController {
 	 * Creates a paginated list that only displays data with the specified sample site and cutoff.
 	 */
 	def results = {
-		params.max = Math.min(params.max ? params.int('max') : 10, 100)
+		params.max = Math.min(params.max ? params.int('max') : 20, 100)
 
 		if (!params.dataset || !Dataset.findByName(params.dataset)) {
 			flash.message = "Dataset not found."
@@ -216,7 +219,7 @@ class ShowController {
 			return [motuInstanceList: [], motuInstanceTotal: 0, dataset: params.dataset]
 		}
 
-		params.max = Math.min(params.max ? params.int('max') : 10, 100)
+		params.max = Math.min(params.max ? params.int('max') : 20, 100)
 		if (!params.sort) params.sort = "id"
 		if (!params.order) params.order = "asc"
 
@@ -237,7 +240,16 @@ class ShowController {
 	 * Stores current view and redirects user to a page where the dataset can be switched.
 	 */
 	def switchDataset = {
-		return [prevAction: params.prevAction, prevController: params.prevController, dataset: params.dataset]
+		def prevController = params.prevController
+		def prevAction = params.prevAction
+		
+		if(!prevController || !prevAction) {
+			prevController = 'show'
+			prevAction = 'list'
+		}
+		
+		
+		return [prevAction: prevAction, prevController: prevController, dataset: params.dataset]
 	}
 
 

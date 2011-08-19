@@ -111,7 +111,8 @@ class InputController {
 		}
 
 		def taxdumpUpdateDate = grailsApplication.config.taxdumpUpdateDate
-		return [files: files, destination: params.destination, dataset: params.dataset, dbs:dbs, dbDescriptions:dbDescriptions, taxdumpUpdateDate:taxdumpUpdateDate]
+		def silvaVersion = grailsApplication.config.silvaVersion
+		return [files: files, destination: params.destination, dataset: params.dataset, dbs:dbs, dbDescriptions:dbDescriptions, taxdumpUpdateDate:taxdumpUpdateDate, silvaVersion:silvaVersion]
 	}
 
 

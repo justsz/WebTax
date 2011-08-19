@@ -53,9 +53,11 @@
 			<g:submitButton name="addMore" value="Add more files" />
 		</g:form>
 		
-		<pre>
-		NCBI TaxDump updated on ${taxdumpUpdateDate}
-		</pre>
+<pre>
+
+NCBI TaxDump updated on ${taxdumpUpdateDate}
+The databases were built from Silva ${silvaVersion}
+</pre>
 
 
 

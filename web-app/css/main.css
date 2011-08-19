@@ -130,7 +130,14 @@ html,body {
 
 .tutorialTable {
 	border: 0px solid #ccc;
-/* 	text-align:justify; */
+	
+	width:1%;
+	text-align:justify;
+}
+
+.tutorialTable td {
+	font-size: 12px;
+	line-height:150%
 }
 
 /* NAVIGATION MENU */
